@@ -30,17 +30,21 @@ const CATEGORY_DATA = [
   { label: "Demo Engineer", value: "demo_engineer" },
 ];
 
-const ContestForm = (register: UseFormRegister<FieldValues>) => {
+const ContestForm = (register: UseFormRegister<FieldValues>, errors) => {
   return (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
         type="text"
         value={"CN-0001"}
         label="Challenge Id"
-        register={register("id")}
+        register={register("id", {
+          required: true,
+        })}
       />
       <InputField
-        register={register("title")}
+        register={register("title", {
+          required: true,
+        })}
         isRequired={true}
         label="Title"
         placeholder="Enter your contest title"
@@ -51,27 +55,39 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         placeholder="Enter your description"
       />
       <SingleSelect
-        register={register("category")}
+        isRequired={true}
+        register={register("category", {
+          required: true,
+        })}
         label="Category"
         data={CATEGORY_DATA}
       />
-      <InputField
-        register={register("start_date")}
-        isRequired={true}
-        type="date"
-        label="Start Date"
-        placeholder="Enter your contest start date"
-      />
+      <div className="date-wrapper flex items-center gap-x-4">
+        <InputField
+          register={register("start_date", {
+            required: true,
+          })}
+          isRequired={true}
+          type="date"
+          label="Start Date"
+          placeholder="Enter your contest start date"
+        />
 
-      <InputField
-        register={register("end_date")}
-        isRequired={true}
-        type="date"
-        label="End Date"
-        placeholder="Enter your contest end date"
-      />
+        <InputField
+          register={register("end_date", {
+            required: true,
+          })}
+          isRequired={true}
+          type="date"
+          label="End Date"
+          placeholder="Enter your contest end date"
+        />
+      </div>
       <DescriptionField
-        register={register("questions")}
+        isRequired={true}
+        register={register("questions", {
+          required: true,
+        })}
         label="Questions"
         placeholder="Enter your questions"
       />
@@ -93,7 +109,10 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         placeholder="Enter contest status"
       />
       <DescriptionField
-        register={register("job_description")}
+        isRequired={true}
+        register={register("job_description", {
+          required: true,
+        })}
         label="Job Description"
         placeholder="Enter the job requirements"
       />

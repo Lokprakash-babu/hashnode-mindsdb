@@ -36,4 +36,16 @@ body {
     @apply header-2-100;
     font-weight: 600;
   }
+
+  .header-3-100 {
+    font-size: 12px !important;
+    color: #3b4854 !important;
+    font-weight: 100;
+    line-height: normal;
+  }
+
+  .header-3-600 {
+    @apply header-3-100;
+    font-weight: 600;
+  }
 }
