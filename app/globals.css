@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@layer components {
+  .header-2-100 {
+    font-size: 16px;
+    font-weight: 100;
+    line-height: normal;
+  }
+  .header-2-600 {
+    @apply header-2-100;
+    font-weight: 600;
+  }
+}
