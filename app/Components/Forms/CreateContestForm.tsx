@@ -1,11 +1,12 @@
 "use client";
 
-import { Input, Textarea } from "@nextui-org/react";
 import FormLayout from "./FormLayout";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import SingleSelect from "./Fields/SingleSelect";
 import InputField from "./Fields/InputField";
 import DescriptionField from "./Fields/DescriptionField";
+import SuccessToast from "../Toasts/SuccessToast";
+import { toast } from "react-toastify";
 
 /**
  * Form Fields
@@ -122,14 +123,18 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
 const CreateContestForm = () => {
   const onSubmitHandler = (data: any) => {
     console.log(data);
+    toast.success("Contest created successfuly");
   };
   return (
-    <FormLayout
-      formTitle="Create Contest"
-      submitHandler={onSubmitHandler}
-      form={ContestForm}
-      infoContent={<>Test2</>}
-    />
+    <>
+      <FormLayout
+        formTitle="Create Contest"
+        submitHandler={onSubmitHandler}
+        form={ContestForm}
+        infoContent={<>Test2</>}
+      />
+      <SuccessToast />;
+    </>
   );
 };
 
