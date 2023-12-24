@@ -30,7 +30,7 @@ const CATEGORY_DATA = [
   { label: "Demo Engineer", value: "demo_engineer" },
 ];
 
-const ContestForm = (register: UseFormRegister<FieldValues>, errors) => {
+const ContestForm = (register: UseFormRegister<FieldValues>) => {
   return (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
