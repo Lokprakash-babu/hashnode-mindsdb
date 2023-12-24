@@ -5,8 +5,10 @@ import { FieldValues, UseFormRegister } from "react-hook-form";
 import SingleSelect from "./Fields/SingleSelect";
 import InputField from "./Fields/InputField";
 import DescriptionField from "./Fields/DescriptionField";
-import SuccessToast from "../Toasts/SuccessToast";
 import { toast } from "react-toastify";
+import { requestWrapper } from "@/lib/requestWrapper";
+import Toast from "../Toasts/Toast";
+import { useRouter } from "next/navigation";
 
 /**
  * Form Fields
@@ -36,7 +38,7 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
         type="text"
-        value={"CN-0001"}
+        value={`#CN-${Math.round(Math.random() * 1000000)}`}
         label="Challenge Id"
         register={register("id", {
           required: true,
@@ -121,9 +123,21 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
   );
 };
 const CreateContestForm = () => {
-  const onSubmitHandler = (data: any) => {
-    console.log(data);
-    toast.success("Contest created successfuly");
+  const router = useRouter();
+  const onSubmitHandler = async (data: any) => {
+    try {
+      await requestWrapper("contest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      toast.success("Contest created successfuly");
+      router.push("/contests");
+    } catch {
+      toast.error("Unable to create Contest!");
+    }
   };
   return (
     <>
@@ -133,7 +147,7 @@ const CreateContestForm = () => {
         form={ContestForm}
         infoContent={<>Test2</>}
       />
-      <SuccessToast />;
+      <Toast />
     </>
   );
 };

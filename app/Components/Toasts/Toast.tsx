@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const SuccessToast = () => {
+const Toast = () => {
   return (
     <ToastContainer
       position="top-right"
@@ -16,4 +16,4 @@ const SuccessToast = () => {
   );
 };
 
-export default SuccessToast;
+export default Toast;
