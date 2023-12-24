@@ -17,6 +17,9 @@ const config: Config = {
         "primary-btn-gradient":
           "linear-gradient(180deg, #264966 2.56%, #1B3E59 95.75%)",
       },
+      boxShadow: {
+        formFooterShadow: "0 -4px 15px rgb(18 51 76 / 6%)",
+      },
     },
   },
   darkMode: "class",
