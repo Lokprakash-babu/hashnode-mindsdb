@@ -20,18 +20,6 @@ export async function GET(req: NextRequest) {
   try {
     await connect();
     console.log(">>> Minds db connected");
-    // const searchParams = req.nextUrl.searchParams;
-    // const category = searchParams.get("category") as AVAILABLE_CATEGORIES;
-    // if (!category || !ALLOWED_CATEGORIES.includes(category)) {
-    //   return NextResponse.json(
-    //     {
-    //       message: "Invalid value for category",
-    //     },
-    //     {
-    //       status: 400,
-    //     }
-    //   );
-    // }
     const lessonIdAndTitle = await MindsDB.SQL.runQuery(
       getLessonIdAndTitleQuery()
     );
