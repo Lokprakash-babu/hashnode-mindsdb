@@ -27,6 +27,20 @@ body {
 }
 
 @layer components {
+  .header-1-100 {
+    font-size: 20px;
+    font-weight: 100;
+    line-height: normal;
+  }
+  .header-1-500 {
+    @apply header-1-100;
+    font-weight: 500;
+  }
+  .header-1-600 {
+    @apply header-1-100;
+    font-weight: 600;
+  }
+
   .header-2-100 {
     font-size: 16px;
     font-weight: 100;

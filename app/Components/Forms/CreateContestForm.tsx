@@ -38,7 +38,7 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
         type="text"
-        value={`#CN-${Math.round(Math.random() * 1000000)}`}
+        value={`CN-${Math.round(Math.random() * 1000000)}`}
         label="Challenge Id"
         register={register("id", {
           required: true,
