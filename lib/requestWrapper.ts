@@ -7,6 +7,6 @@ export const requestWrapper = async (url: string, options = {}) => {
     return await data.json();
   } catch (err) {
     console.error(err);
-    return null;
+    return err;
   }
 };
