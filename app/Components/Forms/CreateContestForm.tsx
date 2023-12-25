@@ -111,6 +111,14 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         value={"yet_to_start"}
         placeholder="Enter contest status"
       />
+      <InputField
+        register={register("role", {
+          required: true,
+        })}
+        isRequired={true}
+        label="Role"
+        placeholder="Enter the role you are hiring"
+      />
       <DescriptionField
         isRequired={true}
         register={register("job_description", {

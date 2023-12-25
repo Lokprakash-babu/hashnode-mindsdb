@@ -43,9 +43,14 @@ const ContestCard = ({ contest }) => {
       <Card className="!rounded-lg bg-[#fff]">
         <CardHeader>
           <div className="contest-card-header flex justify-between items-center w-full">
-            <h3 className="header-2-600">
-              {contest.title} - {contest.id}
-            </h3>
+            <div className="title-wrapper flex flex-col gap-y-3">
+              <h3 className="header-2-600">
+                {contest.title} - {contest.id}
+              </h3>
+              <Chip color="secondary" variant="dot">
+                {contest.role}
+              </Chip>
+            </div>
             <Chip
               radius="sm"
               color={CONTEST_STATUS_MAPPING[contest.status].color}
