@@ -42,7 +42,9 @@ const AskAI = ({ chapterId }) => {
     });
     setCurrentQuestion("");
 
-    requestWrapper(`/askai?chapterId=${chapterId}&question=${currentQuestion}`)
+    requestWrapper(
+      `/lessons/askai?chapterId=${chapterId}&question=${currentQuestion}`
+    )
       .then((response) => {
         setHttpRequest({
           data: response.message,
