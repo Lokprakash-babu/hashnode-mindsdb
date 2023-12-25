@@ -1,11 +1,14 @@
 "use client";
 
-import { Input, Textarea } from "@nextui-org/react";
 import FormLayout from "./FormLayout";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import SingleSelect from "./Fields/SingleSelect";
 import InputField from "./Fields/InputField";
 import DescriptionField from "./Fields/DescriptionField";
+import { toast } from "react-toastify";
+import { requestWrapper } from "@/lib/requestWrapper";
+import Toast from "../Toasts/Toast";
+import { useRouter } from "next/navigation";
 
 /**
  * Form Fields
@@ -30,12 +33,12 @@ const CATEGORY_DATA = [
   { label: "Demo Engineer", value: "demo_engineer" },
 ];
 
-const ContestForm = (register: UseFormRegister<FieldValues>, errors) => {
+const ContestForm = (register: UseFormRegister<FieldValues>) => {
   return (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
         type="text"
-        value={"CN-0001"}
+        value={`#CN-${Math.round(Math.random() * 1000000)}`}
         label="Challenge Id"
         register={register("id", {
           required: true,
@@ -120,16 +123,32 @@ const ContestForm = (register: UseFormRegister<FieldValues>, errors) => {
   );
 };
 const CreateContestForm = () => {
-  const onSubmitHandler = (data: any) => {
-    console.log(data);
+  const router = useRouter();
+  const onSubmitHandler = async (data: any) => {
+    try {
+      await requestWrapper("contest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      toast.success("Contest created successfuly");
+      router.push("/contests");
+    } catch {
+      toast.error("Unable to create Contest!");
+    }
   };
   return (
-    <FormLayout
-      formTitle="Create Contest"
-      submitHandler={onSubmitHandler}
-      form={ContestForm}
-      infoContent={<>Test2</>}
-    />
+    <>
+      <FormLayout
+        formTitle="Create Contest"
+        submitHandler={onSubmitHandler}
+        form={ContestForm}
+        infoContent={<>Test2</>}
+      />
+      <Toast />
+    </>
   );
 };
 
