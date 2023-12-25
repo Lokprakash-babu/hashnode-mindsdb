@@ -4,7 +4,16 @@ export const generateInsertQuery = (table, columns, values) => {
   )}) values (${values.map((item) => `'${item}'`).join(", ")}); `;
 };
 
-export const selectAllQuery = (table, whereClause) => {
+export const generateUpdateQuery = (table, updateData, id) => {
+  const columnsToUpdate = Object.keys(updateData)
+    .map((key) => `${key} = '${updateData[key]}'`)
+    .join(", ");
+
+  return `UPDATE ${process.env.DB_NAME}.${table} SET ${columnsToUpdate} WHERE id = '${id}';`;
+};
+export const selectAllQuery = (table, whereCondition, limit = 10) => {
   const query = `Select * from ${process.env.DB_NAME}.${table}`;
-  return whereClause ? query + ` ${whereClause}` : query;
+  return whereCondition
+    ? query + ` where ${whereCondition} limit ${limit}`
+    : query;
 };

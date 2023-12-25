@@ -24,7 +24,7 @@ import { useRouter } from "next/navigation";
  * Job Description
  */
 
-const CATEGORY_DATA = [
+export const CATEGORY_DATA = [
   { label: "Sales", value: "sales" },
   { label: "Customer Support", value: "customer_support" },
   { label: "Marketing", value: "marketing" },
