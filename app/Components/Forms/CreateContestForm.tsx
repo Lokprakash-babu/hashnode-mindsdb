@@ -38,7 +38,7 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
         type="text"
-        value={`#CN-${Math.round(Math.random() * 1000000)}`}
+        value={`CN-${Math.round(Math.random() * 1000000)}`}
         label="Challenge Id"
         register={register("id", {
           required: true,
@@ -110,6 +110,14 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         label="Status"
         value={"yet_to_start"}
         placeholder="Enter contest status"
+      />
+      <InputField
+        register={register("role", {
+          required: true,
+        })}
+        isRequired={true}
+        label="Role"
+        placeholder="Enter the role you are hiring"
       />
       <DescriptionField
         isRequired={true}
