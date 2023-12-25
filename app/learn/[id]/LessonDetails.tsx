@@ -43,7 +43,10 @@ const LessonDetails = ({ chapters }: { chapters: IChapters[] }) => {
         content={chapters[chapterNumber].chapter_content}
         maxChapter={chapters.length}
       />
-      <ActionsContainer content={chapters[chapterNumber].chapter_content} />
+      <ActionsContainer
+        content={chapters[chapterNumber].chapter_content}
+        chapterId={chapters[chapterNumber].id}
+      />
     </section>
   );
 };
