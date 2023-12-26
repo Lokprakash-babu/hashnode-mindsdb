@@ -1,5 +1,4 @@
 "use client";
-import { notFound } from "next/navigation";
 import {
   Table,
   TableHeader,
@@ -14,6 +13,7 @@ import {
   AVAILABLE_CATEGORIES,
   categoriesLabelMap,
 } from "../constants/categories";
+import { practiceData } from "../constants/practice";
 
 const tableColumn = [
   {
@@ -22,14 +22,19 @@ const tableColumn = [
     label: "Title",
   },
   {
-    key: "chapters",
-    uid: "chapters",
-    label: "Chapters",
+    key: "type",
+    uid: "type",
+    label: "Type",
   },
   {
-    key: "category",
-    uid: "category",
+    key: "difficulty",
+    uid: "difficulty",
     label: "Category",
+  },
+  {
+    key: "companies",
+    uid: "companies",
+    label: "Companies",
   },
 ];
 
@@ -65,32 +70,15 @@ const renderCell = (
   }
 };
 
-const LessonsListing = ({ lessons }) => {
-  const rows = lessons.reduce(
-    (
-      prev: any,
-      curr: { id: any; title: any; chapter_count: any; category: any }
-    ) => {
-      return [
-        ...prev,
-        {
-          id: curr.id,
-          title: curr.title,
-          chapters: curr.chapter_count,
-          category: curr.category,
-        },
-      ];
-    },
-    []
-  );
+const PracticeListing = () => {
   return (
-    <Table removeWrapper aria-label="Learning module table">
+    <Table removeWrapper aria-label="Practice problems table">
       <TableHeader columns={tableColumn}>
         {(column) => {
           return <TableColumn key={column.key}>{column.label}</TableColumn>;
         }}
       </TableHeader>
-      <TableBody items={rows} emptyContent="No Lessons found">
+      <TableBody items={practiceData} emptyContent="No Practice problems found">
         {(item: any) => {
           return (
             <TableRow key={item.id}>
@@ -105,4 +93,4 @@ const LessonsListing = ({ lessons }) => {
   );
 };
 
-export default LessonsListing;
+export default PracticeListing;

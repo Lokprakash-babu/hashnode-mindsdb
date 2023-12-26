@@ -1,4 +1,4 @@
-export const practice = {
+export const practiceDetails = {
   "chat-specialist-and-pizza": {
     key: "1",
     title: "Chat Specialist and Pizza!",
@@ -41,6 +41,6 @@ export const practice = {
   },
 };
 export const practiceData = [
-  practice["chat-specialist-and-pizza"],
-  practice["support-person-and-tech-problems"],
+  practiceDetails["chat-specialist-and-pizza"],
+  practiceDetails["support-person-and-tech-problems"],
 ];
