@@ -21,8 +21,7 @@ const EditContestForm = ({ details }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
-        cache: "no-store",
+        body: JSON.stringify(data)
       });
       toast.success("Contest updated successfuly");
       router.push(window.location.href);

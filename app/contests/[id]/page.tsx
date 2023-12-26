@@ -1,8 +1,10 @@
 import { requestWrapper } from "@/lib/requestWrapper";
 import ContestDetails from "../manager/ContestDetails";
-export const dynamic = "force-dynamic";
+
 const ContestDetailsPage = async ({ params }: { params: { id: string } }) => {
-  const contestDetail = await requestWrapper(`/contest/${params.id}`);
+  const contestDetail = await requestWrapper(`/contest/${params.id}`, {
+    cache: "no-store",
+  });
   return (
     <div className="contest-details-wrapper bg-white">
       <ContestDetails details={contestDetail.data[0]} />
