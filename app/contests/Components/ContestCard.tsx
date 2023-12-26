@@ -10,7 +10,7 @@ import {
   Link,
 } from "@nextui-org/react";
 
-const CONTEST_STATUS_MAPPING = {
+export const CONTEST_STATUS_MAPPING = {
   yet_to_start: {
     color: "warning",
     label: "Yet to start",
@@ -37,6 +37,26 @@ const CONTEST_STATUS_MAPPING = {
   },
 };
 
+export const RoleChip = ({ children }) => {
+  return (
+    <Chip color="secondary" variant="dot" className="text-ellipsis">
+      {children}
+    </Chip>
+  );
+};
+
+export const StatusChip = ({ status }) => {
+  return (
+    <Chip
+      radius="sm"
+      color={CONTEST_STATUS_MAPPING[status].color}
+      variant="bordered"
+    >
+      {CONTEST_STATUS_MAPPING[status].label}
+    </Chip>
+  );
+};
+
 const ContestCard = ({ contest }) => {
   return (
     <div>
@@ -47,17 +67,9 @@ const ContestCard = ({ contest }) => {
               <h3 className="header-2-600">
                 {contest.title} - {contest.id}
               </h3>
-              <Chip color="secondary" variant="dot">
-                {contest.role}
-              </Chip>
+              <RoleChip>{contest.role}</RoleChip>
             </div>
-            <Chip
-              radius="sm"
-              color={CONTEST_STATUS_MAPPING[contest.status].color}
-              variant="bordered"
-            >
-              {CONTEST_STATUS_MAPPING[contest.status].label}
-            </Chip>
+            <StatusChip status={contest.status} />
           </div>
         </CardHeader>
         <CardBody>

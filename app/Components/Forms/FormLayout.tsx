@@ -58,7 +58,7 @@ const InfoPane = ({ children }: { children: ReactNode }) => (
   <section className="bg-[#EAEEF2] min-w-[413px]">{children}</section>
 );
 const FormWrapper = ({ children }: { children: ReactNode }) => {
-  return <div className="w-full flex ">{children}</div>;
+  return <div className="w-full flex">{children}</div>;
 };
 
 FormWrapper.FormPane = FormPane;
