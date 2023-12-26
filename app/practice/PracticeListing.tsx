@@ -9,11 +9,13 @@ import {
   Chip,
 } from "@nextui-org/react";
 import Link from "next/link";
+
 import {
-  AVAILABLE_CATEGORIES,
-  categoriesLabelMap,
-} from "../constants/categories";
-import { practiceData } from "../constants/practice";
+  Companies,
+  PracticeCategory,
+  practiceCategoryToLabel,
+  practiceData,
+} from "../constants/practice";
 
 const tableColumn = [
   {
@@ -38,12 +40,17 @@ const tableColumn = [
   },
 ];
 
-const getChipType = (category: string) => {
-  if (category === AVAILABLE_CATEGORIES.CUSTOMER_SUPPORT) {
-    return "success";
+const getChipType = (category: PracticeCategory) => {
+  switch (category) {
+    case PracticeCategory.CHAT:
+      return "success";
+    case PracticeCategory.EMAIL:
+      return "warning";
+    default:
+      return "danger";
   }
-  return "warning";
 };
+
 const renderCell = (
   item: {
     id: string;
@@ -56,13 +63,26 @@ const renderCell = (
   console.log("item", { item, columnKey });
   switch (columnKey) {
     case "title":
-      return <Link href={`/learn/${item.id}`}>{item[columnKey]}</Link>;
-    case "category":
+      return <Link href={`/practice/${item.id}`}>{item[columnKey]}</Link>;
+    case "type":
       const chipType = getChipType(item[columnKey]);
       return (
         <Chip variant="bordered" color={chipType}>
-          {categoriesLabelMap[item[columnKey]]}
+          {practiceCategoryToLabel[item[columnKey]]}
         </Chip>
+      );
+    case "companies":
+      return (
+        <div className="flex gap-1">
+          {Companies.map(({ name, type }) => {
+            return (
+              //@ts-ignore
+              <Chip key={name} color={type}>
+                {name}
+              </Chip>
+            );
+          })}
+        </div>
       );
     default:
       //@ts-ignore

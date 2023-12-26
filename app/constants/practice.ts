@@ -1,9 +1,29 @@
+export enum PracticeCategory {
+  CHAT = "chat",
+  EMAIL = "email",
+  SALES = "sales",
+}
+
+export const Companies = [
+  {
+    type: "success",
+    name: "Swiggy",
+  },
+  {
+    type: "secondary",
+    name: "Zomato",
+  },
+  {
+    type: "primary",
+    name: "Zoho",
+  },
+];
 export const practiceDetails = {
   "chat-specialist-and-pizza": {
     key: "1",
     title: "Chat Specialist and Pizza!",
     id: "chat-specialist-and-pizza",
-    type: "chat",
+    type: PracticeCategory.CHAT,
     difficulty: "Easy",
     problemDescription:
       "How can customer support effectively address a complaint regarding the spoiled pizza and provide a satisfactory resolution, including a refund, while maintaining a positive customer experience and restoring trust in the brand?",
@@ -24,7 +44,7 @@ export const practiceDetails = {
     key: "1",
     title: "Support Person and Tech Problems",
     id: "support-person-and-tech-problems",
-    type: "email",
+    type: PracticeCategory.EMAIL,
     difficulty: "Medium",
     problemDescription:
       "I am extremely frustrated and facing a major obstacle for my business! I signed up on your portal, received the activation email, and even set my password. But guess what? I still can't log in! This is causing significant disruption and hindering my progress. The login email I used is hello@login.com. I need urgent assistance to resolve this issue and regain access to my account.",
@@ -44,3 +64,9 @@ export const practiceData = [
   practiceDetails["chat-specialist-and-pizza"],
   practiceDetails["support-person-and-tech-problems"],
 ];
+
+export const practiceCategoryToLabel = {
+  [PracticeCategory.CHAT]: "Chat",
+  [PracticeCategory.EMAIL]: "Email",
+  [PracticeCategory.SALES]: "Sales",
+};

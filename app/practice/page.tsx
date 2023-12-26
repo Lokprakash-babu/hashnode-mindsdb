@@ -1,5 +1,7 @@
+import PracticeListing from "./PracticeListing";
+
 const Practice = () => {
-  return <div>Practice</div>;
+  return <PracticeListing />;
 };
 
 export default Practice;
