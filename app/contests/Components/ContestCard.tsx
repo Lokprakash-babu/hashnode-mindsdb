@@ -39,7 +39,7 @@ export const CONTEST_STATUS_MAPPING = {
 
 export const RoleChip = ({ children }) => {
   return (
-    <Chip color="secondary" variant="dot">
+    <Chip color="secondary" variant="dot" className="text-ellipsis">
       {children}
     </Chip>
   );
