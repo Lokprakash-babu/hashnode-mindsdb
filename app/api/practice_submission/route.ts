@@ -17,19 +17,28 @@ const createSubmissionRecord = (userId, practiceId, answer) => {
   const answerString = JSON.stringify({
     answer,
   });
-  console.log("answer string", answerString);
+  console.log("answer string", answerString.replaceAll("'", "&apos;"));
   return {
     idGenerated: submissionId,
     query: `
-    INSERT INTO ${process.env.DB_NAME}.Submission ('candidate_id', 'entity_id', 'answer', 'id') VALUES ("${userId}", "${practiceId}", '${answerString}', "${submissionId}")
+    INSERT INTO ${
+      process.env.DB_NAME
+    }.Submission ('candidate_id', 'entity_id', 'answer', 'id') VALUES ("${userId}", "${practiceId}", '${answerString.replaceAll(
+      "'",
+      "&apos;"
+    )}', "${submissionId}")
   `,
   };
 };
 
 const updateSubmissionRecord = (submissionId, answer) => {
+  const answerString = JSON.stringify({
+    answer,
+  });
+  console.log("answer string", answerString.replaceAll("'", "&apos;"));
   return `
   UPDATE ${process.env.DB_NAME}.Submission
-SET answer = "${answer}"
+SET answer = '${answerString.replaceAll("'", "&apos;")}'
 WHERE id="${submissionId}";
   `;
 };
@@ -58,6 +67,20 @@ const createEntryInFeedbackTable = ({
 }) => {
   return `
     INSERT INTO ${process.env.DB_NAME}.Feedback ('candidate_id', 'entity_id', 'score', 'feedback', 'submission_id') VALUES ("${userId}", "${practiceId}", '${score}', '${feedback}', "${submissionId}")
+  `;
+};
+
+const updateEntryInFeedbackTable = ({
+  userId,
+  practiceId,
+  submissionId,
+  feedback,
+  score,
+}) => {
+  return `
+  UPDATE ${process.env.DB_NAME}.Feedback
+  SET score="${score}", feedback='${feedback}'
+  WHERE candidate_id="${userId}" AND entity_id="${practiceId}" AND submission_id="${submissionId}"
   `;
 };
 /**
@@ -92,6 +115,7 @@ export async function POST(req: NextRequest) {
     }
     console.log("submission record", getSubmissionRecord);
     let submissionId = getSubmissionRecord.rows?.[0]?.id;
+    let isCreateFlowHappened = false;
     console.log(">>Submission ID", submissionId);
     //If submission exist, update the existing submission record, parallely create feedback and score to store it in feedback table
     if (submissionId) {
@@ -117,24 +141,41 @@ export async function POST(req: NextRequest) {
       }
       submissionId = idGenerated;
       console.log("Record created");
+      isCreateFlowHappened = true;
     }
     const feedback = await MindsDB.SQL.runQuery(generateFeedback(answer));
     const feedbackObject = JSON.parse(feedback.rows?.[0]?.response);
     console.log("feedback object", feedbackObject);
 
     //create entry in feedback table
-    const feedbackTableUpdate = await MindsDB.SQL.runQuery(
-      createEntryInFeedbackTable({
-        userId,
-        practiceId,
-        submissionId,
-        feedback: feedback.rows?.[0]?.response,
-        score: feedbackObject.score,
-      })
-    );
-    if (feedbackTableUpdate.error_message) {
-      throw feedbackTableUpdate.error_message;
+    if (!isCreateFlowHappened) {
+      const updateFeedbackTable = await MindsDB.SQL.runQuery(
+        updateEntryInFeedbackTable({
+          userId,
+          practiceId,
+          feedback: feedback.rows?.[0]?.response,
+          score: feedbackObject.score,
+          submissionId,
+        })
+      );
+      if (updateFeedbackTable.error_message) {
+        throw updateFeedbackTable.error_message;
+      }
+    } else {
+      const createFeedback = await MindsDB.SQL.runQuery(
+        createEntryInFeedbackTable({
+          userId,
+          practiceId,
+          submissionId,
+          feedback: feedback.rows?.[0]?.response,
+          score: feedbackObject.score,
+        })
+      );
+      if (createFeedback.error_message) {
+        throw createFeedback.error_message;
+      }
     }
+
     return NextResponse.json({
       message: {
         submissionId,
