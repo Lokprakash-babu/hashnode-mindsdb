@@ -14,6 +14,7 @@ export interface IChatMessenger {
   chatMessageLimit?: number;
   isReadOnly?: boolean;
   chatHistory?: IChat[];
+  onEndChat?: (messages: IChat[]) => void;
 }
 const ChatMessenger = ({
   initialMessage,
@@ -21,6 +22,7 @@ const ChatMessenger = ({
   chatMessageLimit = 5,
   isReadOnly = false,
   chatHistory = [],
+  onEndChat,
 }: IChatMessenger) => {
   const initialState = !chatHistory.length
     ? [
@@ -62,7 +64,7 @@ const ChatMessenger = ({
     requestWrapper("/chat", {
       method: "POST",
       body: JSON.stringify({
-        previousMesages: chatMessages,
+        previousMessages: chatMessages.previousMessages,
         latestMessage: enteredMessage,
         context,
       }),
@@ -89,6 +91,7 @@ const ChatMessenger = ({
 
   const endChat = () => {
     //Post the messages for feedback
+    onEndChat?.(chatMessages.previousMessages as IChat[]);
   };
   return (
     <>

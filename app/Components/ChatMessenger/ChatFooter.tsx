@@ -15,7 +15,9 @@ const ChatFooter = ({
   return (
     <form onSubmit={onSubmit}>
       <Input
-        onChange={onChange}
+        onChange={(e) => {
+          onChange(e.target.value);
+        }}
         value={currentValue}
         isDisabled={isDisabled}
         required

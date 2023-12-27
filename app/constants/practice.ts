@@ -35,7 +35,7 @@ export const practiceDetails = {
     ],
     context:
       "You are an angry customer who didn't get proper pizza delivered. You are in conversation with support agent of that particular company, you have to keep your messages short and concise not exceeding 70 words",
-    initialSupportMessage: "Hello! I am Joey! How can I help you.",
+    initialMessage: "Where the hell is my food order?",
   },
   "support-person-and-tech-problems": {
     key: "1",
@@ -51,7 +51,7 @@ export const practiceDetails = {
       "Number of character should be within 250 - 500 characters, inclusively",
     ],
     context: "",
-    initialSupportMessage: "",
+    initialMessage: "",
   },
 };
 export const practiceData = [

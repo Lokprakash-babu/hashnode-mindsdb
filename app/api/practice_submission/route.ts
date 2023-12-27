@@ -136,7 +136,9 @@ export async function POST(req: NextRequest) {
       throw feedbackTableUpdate.error_message;
     }
     return NextResponse.json({
-      message: "Submitted succesfully",
+      message: {
+        submissionId,
+      },
     });
   } catch (err) {
     console.log("error in practice submission", err);

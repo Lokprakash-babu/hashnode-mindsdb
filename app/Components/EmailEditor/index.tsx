@@ -2,6 +2,7 @@
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import EmailFooter from "./EmailFooter";
 const QuillNoSSRWrapper = dynamic(import("react-quill"), {
   ssr: false,
   loading: () => <p>Loading ...</p>,
@@ -46,7 +47,7 @@ const EmailEditor = (props: IEmailEditor) => {
           setEmailValue(enteredValue);
         }}
       />
-      {/* {!!props.onSubmit && (
+      {!!props.onSubmit && (
         <EmailFooter
           textContent={onlyTextContent}
           onClick={() => {
@@ -65,11 +66,10 @@ const EmailEditor = (props: IEmailEditor) => {
                 onlyTextContent.length > 500
                   ? "Email Content is too long"
                   : "Email Content is too short";
-
             }
           }}
         />
-      )} */}
+      )}
     </>
   );
 };

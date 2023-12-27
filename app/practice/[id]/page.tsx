@@ -11,7 +11,7 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <PracticeDescription {...practiceDetailsContent} />
-      <PracticeSolution {...practiceDetailsContent} />
+      <PracticeSolution {...practiceDetailsContent} practiceId={params.id} />
     </>
   );
 };

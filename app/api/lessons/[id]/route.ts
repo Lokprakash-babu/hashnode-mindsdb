@@ -4,7 +4,7 @@ import MindsDB from "mindsdb-js-sdk";
 
 const getChaptersQuery = (lessonId: string) => {
   return `
-  SELECT * from planetscale_datasource.lesson_chapter_map WHERE lesson_id="${lessonId}" ORDER BY chapter_order
+  SELECT * from ${process.env.DB_NAME}.lesson_chapter_map WHERE lesson_id="${lessonId}" ORDER BY chapter_order
   `;
 };
 export async function GET(
