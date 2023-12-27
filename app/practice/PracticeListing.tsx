@@ -1,5 +1,4 @@
 "use client";
-import { notFound } from "next/navigation";
 import {
   Table,
   TableHeader,
@@ -10,10 +9,13 @@ import {
   Chip,
 } from "@nextui-org/react";
 import Link from "next/link";
+
 import {
-  AVAILABLE_CATEGORIES,
-  categoriesLabelMap,
-} from "../constants/categories";
+  Companies,
+  PracticeCategory,
+  practiceCategoryToLabel,
+  practiceData,
+} from "../constants/practice";
 
 const tableColumn = [
   {
@@ -22,23 +24,33 @@ const tableColumn = [
     label: "Title",
   },
   {
-    key: "chapters",
-    uid: "chapters",
-    label: "Chapters",
+    key: "type",
+    uid: "type",
+    label: "Type",
   },
   {
-    key: "category",
-    uid: "category",
+    key: "difficulty",
+    uid: "difficulty",
     label: "Category",
+  },
+  {
+    key: "companies",
+    uid: "companies",
+    label: "Companies",
   },
 ];
 
-const getChipType = (category: string) => {
-  if (category === AVAILABLE_CATEGORIES.CUSTOMER_SUPPORT) {
-    return "success";
+const getChipType = (category: PracticeCategory) => {
+  switch (category) {
+    case PracticeCategory.CHAT:
+      return "success";
+    case PracticeCategory.EMAIL:
+      return "warning";
+    default:
+      return "danger";
   }
-  return "warning";
 };
+
 const renderCell = (
   item: {
     id: string;
@@ -51,13 +63,26 @@ const renderCell = (
   console.log("item", { item, columnKey });
   switch (columnKey) {
     case "title":
-      return <Link href={`/learn/${item.id}`}>{item[columnKey]}</Link>;
-    case "category":
+      return <Link href={`/practice/${item.id}`}>{item[columnKey]}</Link>;
+    case "type":
       const chipType = getChipType(item[columnKey]);
       return (
         <Chip variant="bordered" color={chipType}>
-          {categoriesLabelMap[item[columnKey]]}
+          {practiceCategoryToLabel[item[columnKey]]}
         </Chip>
+      );
+    case "companies":
+      return (
+        <div className="flex gap-1">
+          {Companies.map(({ name, type }) => {
+            return (
+              //@ts-ignore
+              <Chip key={name} color={type}>
+                {name}
+              </Chip>
+            );
+          })}
+        </div>
       );
     default:
       //@ts-ignore
@@ -65,32 +90,15 @@ const renderCell = (
   }
 };
 
-const LessonsListing = ({ lessons }) => {
-  const rows = lessons.reduce(
-    (
-      prev: any,
-      curr: { id: any; title: any; chapter_count: any; category: any }
-    ) => {
-      return [
-        ...prev,
-        {
-          id: curr.id,
-          title: curr.title,
-          chapters: curr.chapter_count,
-          category: curr.category,
-        },
-      ];
-    },
-    []
-  );
+const PracticeListing = () => {
   return (
-    <Table removeWrapper aria-label="Learning module table">
+    <Table removeWrapper aria-label="Practice problems table">
       <TableHeader columns={tableColumn}>
         {(column) => {
           return <TableColumn key={column.key}>{column.label}</TableColumn>;
         }}
       </TableHeader>
-      <TableBody items={rows} emptyContent="No Lessons found">
+      <TableBody items={practiceData} emptyContent="No Practice problems found">
         {(item: any) => {
           return (
             <TableRow key={item.id}>
@@ -105,4 +113,4 @@ const LessonsListing = ({ lessons }) => {
   );
 };
 
-export default LessonsListing;
+export default PracticeListing;
