@@ -11,6 +11,7 @@ const QuillNoSSRWrapper = dynamic(import("react-quill"), {
 export interface IEmailEditor {
   onSubmit?: (val: any) => any;
   initialValue?: string;
+  isReadOnly?: boolean;
 }
 const EmailEditor = (props: IEmailEditor) => {
   const [emailValue, setEmailValue] = useState(props.initialValue || "");

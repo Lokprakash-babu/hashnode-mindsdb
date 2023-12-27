@@ -9,20 +9,22 @@ import { useState } from "react";
 
 type MetaProps = {
   practiceId: string;
+  isReadOnly?: boolean;
 };
 type chatMessengerType = {
   type: PracticeCategory.CHAT;
-} & IChatMessenger &
+} & Omit<IChatMessenger, "isReadOnly"> &
   MetaProps;
 
 type emailMessengerType = {
   type: PracticeCategory.EMAIL;
-} & IEmailEditor &
+} & Omit<IEmailEditor, "isReadOnly"> &
   MetaProps;
 
 type PracticeSolutionProps = emailMessengerType | chatMessengerType;
 const PracticeSolution = (props: PracticeSolutionProps) => {
   const solutionType = props.type;
+  const isReadOnly = props.isReadOnly || false;
   const [submissionId, setSubmissionId] = useState("");
 
   const createSubmission = (requestBody) => {
@@ -75,6 +77,7 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
           {...props}
           key={"chat"}
           onEndChat={submitForFeedbackChat}
+          isReadOnly={isReadOnly}
         />
       );
     case PracticeCategory.EMAIL:
@@ -83,6 +86,7 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
           {...props}
           key={"email"}
           onSubmit={submitForFeedbackEmail}
+          isReadOnly={isReadOnly}
         />
       );
     default:

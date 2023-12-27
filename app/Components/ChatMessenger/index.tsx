@@ -9,8 +9,8 @@ interface IChat {
   message: string;
 }
 export interface IChatMessenger {
-  initialMessage: string;
-  context: string;
+  initialMessage?: string;
+  context?: string;
   chatMessageLimit?: number;
   isReadOnly?: boolean;
   chatHistory?: IChat[];
@@ -110,12 +110,14 @@ const ChatMessenger = ({
           return <p key={idx}>{chatMessage.message}</p>;
         })}
       </div>
-      <ChatFooter
-        currentValue={latestMessage}
-        onChange={setLatestMessage}
-        onSubmit={postMessage}
-        isDisabled={isLoading}
-      />
+      {!isReadOnly && (
+        <ChatFooter
+          currentValue={latestMessage}
+          onChange={setLatestMessage}
+          onSubmit={postMessage}
+          isDisabled={isLoading}
+        />
+      )}
     </>
   );
 };

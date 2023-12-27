@@ -3,10 +3,18 @@ import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 
 const getSubmissionDetailsQuery = (submissionId: string) => {
-  return `SELECT ${process.env.DB_NAME}.Submission.id, ${process.env.DB_NAME}.Submission.entity_id, ${process.env.DB_NAME}.Submission.answer, ${process.env.DB_NAME}.Feedback.score, ${process.env.DB_NAME}.Feedback.feedback
-  FROM  ${process.env.DB_NAME}.Submission WHERE id="${submissionId}"
-  JOIN ${process.env.DB_NAME}.Feedback ON ${process.env.DB_NAME}.Submission.id = ${process.env.DB_NAME}.Feedback.submission_id;
-    `;
+  return `SELECT 
+  ${process.env.DB_NAME}.Submission.id, 
+  ${process.env.DB_NAME}.Submission.entity_id, 
+  ${process.env.DB_NAME}.Submission.answer,
+  ${process.env.DB_NAME}.Feedback.score, 
+  ${process.env.DB_NAME}.Feedback.feedback
+FROM 
+  ${process.env.DB_NAME}.Submission
+JOIN 
+  ${process.env.DB_NAME}.Feedback ON ${process.env.DB_NAME}.Submission.id = ${process.env.DB_NAME}.Feedback.submission_id
+WHERE 
+  ${process.env.DB_NAME}.Submission.id = "${submissionId}";`;
 };
 export async function GET(
   req: NextRequest,
