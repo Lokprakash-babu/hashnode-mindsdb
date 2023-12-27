@@ -12,6 +12,11 @@ import { STATUS_COLOR_MAPPING, TABLE_HEADERS } from "../[id]/constants";
 import { useCallback } from "react";
 
 export const LeaderBoard = ({ candidates, setCurrentCandidate }) => {
+  const deriveStatus = useCallback((user) => {
+    if (!user.start_time_candidate) return "pending";
+    if (user.start_time_candidate && !user.feedback) return "in_progress";
+    return "done";
+  }, []);
   const renderCell = useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
@@ -31,11 +36,11 @@ export const LeaderBoard = ({ candidates, setCurrentCandidate }) => {
         return (
           <Chip
             className="capitalize"
-            color={STATUS_COLOR_MAPPING[cellValue].type}
+            color={STATUS_COLOR_MAPPING[deriveStatus(user)].type}
             size="md"
             variant="flat"
           >
-            {STATUS_COLOR_MAPPING[cellValue].label}
+            {STATUS_COLOR_MAPPING[deriveStatus(user)].label}
           </Chip>
         );
       case "actions":

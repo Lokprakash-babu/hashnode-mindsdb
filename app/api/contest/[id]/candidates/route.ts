@@ -4,11 +4,11 @@ import MindsDB from "mindsdb-js-sdk";
 
 // Fetch candidates for that contest
 const CONTEST_CANDIDATE_QUERY = (
-  contest_id
-) => `SELECT ${process.env.DB_NAME}.Account.*,${process.env.DB_NAME}.Candidate_Contest.*
-FROM ${process.env.DB_NAME}.Candidate_Contest
-JOIN ${process.env.DB_NAME}.Account ON ${process.env.DB_NAME}.Candidate_Contest.candidate_id = ${process.env.DB_NAME}.Account.id
-WHERE planetscale_datasource.Candidate_Contest.contest_id = '${contest_id}';`;
+  entity_id
+) => `SELECT ${process.env.DB_NAME}.Account.*,${process.env.DB_NAME}.Feedback.*
+FROM ${process.env.DB_NAME}.Feedback
+JOIN ${process.env.DB_NAME}.Account ON ${process.env.DB_NAME}.Feedback.candidate_id = ${process.env.DB_NAME}.Account.id
+WHERE planetscale_datasource.Feedback.entity_id = '${entity_id}';`;
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Toast from "../Toasts/Toast";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "../Editor/RichTextEditor";
 
 /**
  * Form Fields
@@ -94,6 +95,7 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         label="Questions"
         placeholder="Enter your questions"
       />
+      <RichTextEditor aiUrl="gpt/generate"/>
       <InputField
         register={register("organisation_id")}
         className="hidden"
