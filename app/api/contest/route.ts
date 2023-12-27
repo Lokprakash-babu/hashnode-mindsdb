@@ -7,9 +7,9 @@ import { generateInsertQuery, selectAllQuery } from "@/app/utils/generateQuery";
 const generateListQuery = (
   key,
   value
-) => `SELECT c.*, COUNT(cc.contest_id) AS candidate_count
+) => `SELECT c.*, COUNT(cc.entity_id) AS candidate_count
 FROM ${process.env.DB_NAME}.Contest c
-LEFT JOIN ${process.env.DB_NAME}.Candidate_Contest cc ON c.id = cc.contest_id
+LEFT JOIN ${process.env.DB_NAME}.Feedback cc ON c.id = cc.entity_id
 WHERE c.${key} = ${value}
 GROUP BY c.id;`;
 
