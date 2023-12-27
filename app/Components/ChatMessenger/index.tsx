@@ -1,15 +1,27 @@
+"use client";
 import { requestWrapper } from "@/lib/requestWrapper";
 import { useState } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatFooter from "./ChatFooter";
 
+interface IChat {
+  type: "user" | "bot";
+  message: string;
+}
+export interface IChatMessenger {
+  initialMessage: string;
+  context: string;
+  chatMessageLimit?: number;
+  isReadOnly?: boolean;
+  chatHistory?: IChat[];
+}
 const ChatMessenger = ({
   initialMessage,
   context,
   chatMessageLimit = 5,
   isReadOnly = false,
   chatHistory = [],
-}) => {
+}: IChatMessenger) => {
   const initialState = !chatHistory.length
     ? [
         {
@@ -73,6 +85,10 @@ const ChatMessenger = ({
         setIsLoading(false);
         console.log("error", err);
       });
+  };
+
+  const endChat = () => {
+    //Post the messages for feedback
   };
   return (
     <>
