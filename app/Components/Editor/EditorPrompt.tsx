@@ -18,8 +18,9 @@ const generatePrompt = async ({
   promptText,
   conversationTone,
   setPromptResponse,
+  aiUrl,
 }) => {
-  const promptResponse = await requestWrapper("gpt/generate", {
+  const promptResponse = await requestWrapper(aiUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -34,7 +35,12 @@ const generatePrompt = async ({
   setPromptResponse(promptResponse.rows[0]);
 };
 
-export default function EditorPrompt({ showPrompt, setShowPrompt, setModel }) {
+export default function EditorPrompt({
+  showPrompt,
+  setShowPrompt,
+  setModel,
+  aiUrl = "gpt/generate",
+}) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["academic"]));
   const [promptText, setPromptText] = useState("");
   const [generateClick, setGenerateClick] = useState(false);
@@ -62,6 +68,7 @@ export default function EditorPrompt({ showPrompt, setShowPrompt, setModel }) {
               promptText,
               conversationTone: selectedValue,
               setPromptResponse,
+              aiUrl,
             });
           }}
         >
@@ -103,6 +110,7 @@ export default function EditorPrompt({ showPrompt, setShowPrompt, setModel }) {
                 promptText,
                 conversationTone: selectedValue,
                 setPromptResponse,
+                aiUrl,
               })
             }
           >

@@ -95,7 +95,7 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         label="Questions"
         placeholder="Enter your questions"
       />
-      <RichTextEditor />
+      <RichTextEditor aiUrl="gpt/generate"/>
       <InputField
         register={register("organisation_id")}
         className="hidden"

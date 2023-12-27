@@ -55,6 +55,7 @@ const RichTextEditor = (props) => {
         {...props}
       />
       <EditorPrompt
+        aiUrl={props.aiUrl}
         setModel={setModel}
         showPrompt={isOpen}
         setShowPrompt={onOpenChange}
