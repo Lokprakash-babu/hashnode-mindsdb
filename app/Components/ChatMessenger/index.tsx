@@ -99,7 +99,7 @@ const ChatMessenger = ({
         isChatLoading={isLoading}
         isReadOnlyMode={isReadOnly}
         resetChat={resetChat}
-        onEndChat={postMessage}
+        onEndChat={endChat}
       />
       <div>
         {chatMessages.toBeRenderedMessages.map((chatMessage, idx) => {
