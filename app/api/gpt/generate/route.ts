@@ -7,6 +7,7 @@ const TYPE_MAPPING = {
     "like a bot conversation with the background and a pre-read for the scenario in markdown format",
 };
 
+// Mock data
 const TYPE_RESPONSE_MAPPING = {
   email: {
     columnNames: ["article_title", "conversation_tone", "question", "answer"],
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
     const { question, type, conversation_tone, context } = data;
     const QUERY = `SELECT article_title,conversation_tone, question, answer
 FROM ${process.env.MODEL_NAME}
-WHERE question = '${question} ${TYPE_MAPPING[type]}'
+WHERE question = '${question} ${TYPE_MAPPING[type] || ""}'
 AND conversation_tone = '${conversation_tone}' AND article_title = '${context}';`;
     const promptResponse = TYPE_RESPONSE_MAPPING[type];
     // const promptResponse = await MindsDB.SQL.runQuery(QUERY);

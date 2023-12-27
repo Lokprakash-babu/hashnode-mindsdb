@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   Button,
@@ -12,11 +11,34 @@ import Magic from "../Icons/Magic";
 import { ToneDropdown } from "./ToneDropdown";
 import Regenerate from "../Icons/Regenerate";
 import TickMark from "../Icons/TickMark";
+import { requestWrapper } from "@/lib/requestWrapper";
+import Markdown from "react-markdown";
 
-export default function EditorPrompt({ showPrompt, setShowPrompt }) {
+const generatePrompt = async ({
+  promptText,
+  conversationTone,
+  setPromptResponse,
+}) => {
+  const promptResponse = await requestWrapper("gpt/generate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      question: promptText,
+      conversation_tone: conversationTone,
+      type: "bot_conversation",
+      context: "Customer Support Contest Question",
+    }),
+  });
+  setPromptResponse(promptResponse.rows[0]);
+};
+
+export default function EditorPrompt({ showPrompt, setShowPrompt, setModel }) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["academic"]));
-  const [prompText, setPromptText] = useState("");
+  const [promptText, setPromptText] = useState("");
   const [generateClick, setGenerateClick] = useState(false);
+  const [promptResponse, setPromptResponse] = useState<any>(null);
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
@@ -34,7 +56,14 @@ export default function EditorPrompt({ showPrompt, setShowPrompt }) {
           radius="sm"
           className="flex gap-x-1"
           color="primary"
-          onClick={() => setGenerateClick(true)}
+          onClick={() => {
+            setGenerateClick(true);
+            generatePrompt({
+              promptText,
+              conversationTone: selectedValue,
+              setPromptResponse,
+            });
+          }}
         >
           <Magic></Magic>
           Generate Text
@@ -42,7 +71,7 @@ export default function EditorPrompt({ showPrompt, setShowPrompt }) {
       </div>
     );
   };
-  const AfterPromptFooter = () => {
+  const AfterPromptFooter = ({ onClose }) => {
     return (
       <div className="flex justify-between w-full">
         <ToneDropdown
@@ -51,7 +80,17 @@ export default function EditorPrompt({ showPrompt, setShowPrompt }) {
           selectedValue={selectedValue}
         ></ToneDropdown>
         <div className="action-wrapper flex gap-x-1.5">
-          <Button color="primary" className="flex gap-x-1 items-center" disableRipple radius="sm" variant="bordered">
+          <Button
+            color="primary"
+            className="flex gap-x-1 items-center"
+            disableRipple
+            radius="sm"
+            onPress={onClose}
+            onClick={() => {
+              setModel(promptResponse?.answer);
+            }}
+            variant="bordered"
+          >
             <TickMark /> <div>Insert</div>
           </Button>
           <Button
@@ -59,7 +98,13 @@ export default function EditorPrompt({ showPrompt, setShowPrompt }) {
             radius="sm"
             className="flex gap-x-1 items-center"
             color="primary"
-            onClick={() => setGenerateClick(true)}
+            onClick={() =>
+              generatePrompt({
+                promptText,
+                conversationTone: selectedValue,
+                setPromptResponse,
+              })
+            }
           >
             <Regenerate />
             <div>Regenerate</div>
@@ -74,31 +119,53 @@ export default function EditorPrompt({ showPrompt, setShowPrompt }) {
         size="2xl"
         backdrop="opaque"
         isOpen={showPrompt}
-        onOpenChange={() => setShowPrompt(false)}
+        onOpenChange={() => {
+          setShowPrompt(false);
+          setPromptResponse(null);
+          setGenerateClick(false);
+          setPromptText("");
+        }}
         placement="top-center"
       >
         <ModalContent>
-          {() => (
+          {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 text-black text-md">
-                Prompt
-              </ModalHeader>
               <ModalBody>
-                <Textarea
-                  variant="bordered"
-                  value={prompText}
-                  onChange={(e) => setPromptText(e.target.value)}
-                  placeholder="Tell me what you want me to write about"
-                  disableAnimation
-                  disableAutosize
-                  classNames={{
-                    base: "w-full",
-                    input: "resize-y min-h-[80px] text-black",
-                  }}
-                />
+                <div className="preview-prompt-wrapper flex flex-col gap-y-2">
+                  {promptResponse && (
+                    <div className="preview-section gap-y-2">
+                      <h1 className="text-black text-md text-medium mb-2">
+                        Preview
+                      </h1>
+
+                      <Markdown className="text-black max-h-[180px] overflow-y-auto border-l-4 border-neutral-100 px-8 py-2">
+                        {promptResponse?.answer}
+                      </Markdown>
+                    </div>
+                  )}
+                  <div className="prompt-section flex flex-col gap-y-1">
+                    <h1 className="text-black text-md">Prompt</h1>
+                    <Textarea
+                      variant="bordered"
+                      value={promptText}
+                      onChange={(e) => setPromptText(e.target.value)}
+                      placeholder="Tell me what you want me to write about"
+                      disableAnimation
+                      disableAutosize
+                      classNames={{
+                        base: "w-full",
+                        input: "resize-y min-h-[80px] text-black",
+                      }}
+                    />
+                  </div>
+                </div>
               </ModalBody>
               <ModalFooter>
-                {generateClick ? <AfterPromptFooter /> : <BeforePromptFooter />}
+                {generateClick ? (
+                  <AfterPromptFooter onClose={onClose} />
+                ) : (
+                  <BeforePromptFooter />
+                )}
               </ModalFooter>
             </>
           )}
