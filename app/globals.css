@@ -63,3 +63,8 @@ body {
     font-weight: 600;
   }
 }
+
+/* Froala toolbar bottom */
+.fr-toolbar .fr-newline {
+  background: none !important;
+}
