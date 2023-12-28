@@ -10,6 +10,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        typewriter: "typewriter 2s steps(11) forwards",
+        caret:
+          "typewriter 2s steps(11) forwards, blink 1s steps(11) infinite 2s",
+      },
+      keyframes: {
+        typewriter: {
+          to: {
+            left: "100%",
+          },
+        },
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

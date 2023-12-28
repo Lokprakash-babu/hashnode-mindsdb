@@ -39,6 +39,7 @@ export default function EditorPrompt({
   showPrompt,
   setShowPrompt,
   setModel,
+  onChange,
   aiUrl = "gpt/generate",
 }) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["academic"]));
@@ -95,6 +96,11 @@ export default function EditorPrompt({
             onPress={onClose}
             onClick={() => {
               setModel(promptResponse?.answer);
+              onChange({
+                target: {
+                  value: promptResponse?.answer,
+                },
+              });
             }}
             variant="bordered"
           >
@@ -146,7 +152,7 @@ export default function EditorPrompt({
                         Preview
                       </h1>
 
-                      <Markdown className="text-black max-h-[180px] overflow-y-auto border-l-4 border-neutral-100 px-8 py-2">
+                      <Markdown className="text-black max-h-[180px] overflow-y-auto border-l-4 border-neutral-100 px-8 py-2 before:animate-typewriter">
                         {promptResponse?.answer}
                       </Markdown>
                     </div>

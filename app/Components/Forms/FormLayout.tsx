@@ -16,7 +16,7 @@ const FormPane = ({
 }: {
   formTitle: string;
   submitHandler: (data: any) => void;
-  form: (register: UseFormRegister<FieldValues>) => JSX.Element;
+  form: (register: UseFormRegister<FieldValues>, control: any) => JSX.Element;
 }) => {
   const methods = useForm({
     mode: "onSubmit",
@@ -29,7 +29,7 @@ const FormPane = ({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(submitHandler)}>
             <div className="fields-wrapper pr-[308px] pl-8 pb-10">
-              {form(methods.register)}
+              {form(methods.register, methods.control)}
             </div>
             <footer className="l-0  px-6 py-10 flex justify-end w-full bg-[#FFFFFF] z-10 gap-x-3 sticky bottom-1 shadow-formFooterShadow">
               <Button
@@ -70,7 +70,7 @@ const FormLayout = ({
   formTitle,
   submitHandler,
 }: {
-  form: (register: UseFormRegister<FieldValues>) => JSX.Element;
+  form: (register: UseFormRegister<FieldValues>, control: any) => JSX.Element;
   infoContent: ReactNode;
   formTitle: string;
   submitHandler: (data: any) => void;

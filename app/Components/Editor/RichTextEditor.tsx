@@ -12,12 +12,10 @@ const FroalaEditorComponent = dynamic(() => import("react-froala-wysiwyg"), {
 import Froalaeditor from "froala-editor";
 import EditorPrompt from "./EditorPrompt";
 import { useDisclosure } from "@nextui-org/react";
+import clsx from "clsx";
 
-const OPTIONS = {
-  attribution: false,
-  pluginsEnabled: ["markdown"],
-  toolbarButtons: [
-    "ask_ai",
+const RichTextEditor = (props) => {
+  const TOOLBAR_OPTIONS = [
     "bold",
     "italic",
     "underline",
@@ -28,16 +26,21 @@ const OPTIONS = {
     "markdown",
     "clearFormatting",
     "selectAll",
-  ],
+  ];
+  const OPTIONS = {
+    attribution: false,
+    pluginsEnabled: ["markdown"],
+    placeholderText: props.placeholder,
+    toolbarButtons: props.proFeature
+      ? [`ask_ai_${props.fieldName}`, ...TOOLBAR_OPTIONS]
+      : TOOLBAR_OPTIONS,
 
-  heightMin: 250,
-};
-
-const RichTextEditor = (props) => {
+    heightMin: 250,
+  };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [model, setModel] = useState("");
-  Froalaeditor.DefineIcon("ask_ai", { NAME: "magic" });
-  Froalaeditor.RegisterCommand("ask_ai", {
+  Froalaeditor.DefineIcon(`ask_ai_${props.fieldName}`, { NAME: "magic" });
+  Froalaeditor.RegisterCommand(`ask_ai_${props.fieldName}`, {
     title: "Ask AI",
     focus: false,
     undo: false,
@@ -45,22 +48,33 @@ const RichTextEditor = (props) => {
     refreshAfterCallback: false,
     callback: onOpen,
   });
-
   return (
-    <>
+    <div className="relative">
+      <label
+        htmlFor={props.fieldName}
+        className={clsx(
+          "text-sm pb-2 block",
+          props.isRequired && "after:content-['*'] after:text-danger"
+        )}
+      >
+        {props.label}
+      </label>
       <FroalaEditorComponent
-        model={model}
-        onModelChange={(e) => setModel(e?.target?.value)}
+        model={props?.field?.value || model}
+        onModelChange={(e) => {
+          setModel(e?.target?.value);
+          props?.field?.onChange(e);
+        }}
         config={OPTIONS}
-        {...props}
       />
       <EditorPrompt
         aiUrl={props.aiUrl}
         setModel={setModel}
         showPrompt={isOpen}
+        onChange={props?.field?.onChange}
         setShowPrompt={onOpenChange}
       />
-    </>
+    </div>
   );
 };
 

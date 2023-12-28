@@ -1,7 +1,6 @@
 "use client";
-
 import FormLayout from "./FormLayout";
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { Controller, FieldValues, UseFormRegister } from "react-hook-form";
 import SingleSelect from "./Fields/SingleSelect";
 import InputField from "./Fields/InputField";
 import DescriptionField from "./Fields/DescriptionField";
@@ -34,7 +33,7 @@ export const CATEGORY_DATA = [
   { label: "Demo Engineer", value: "demo_engineer" },
 ];
 
-const ContestForm = (register: UseFormRegister<FieldValues>) => {
+const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
   return (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
@@ -52,19 +51,6 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         isRequired={true}
         label="Title"
         placeholder="Enter your contest title"
-      />
-      <DescriptionField
-        register={register("description")}
-        label="Contest Description"
-        placeholder="Enter your description"
-      />
-      <SingleSelect
-        isRequired={true}
-        register={register("category", {
-          required: true,
-        })}
-        label="Category"
-        data={CATEGORY_DATA}
       />
       <div className="date-wrapper flex items-center gap-x-4">
         <InputField
@@ -87,6 +73,60 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
           placeholder="Enter your contest end date"
         />
       </div>
+      <Controller
+        name="description"
+        rules={{ required: true }}
+        control={control}
+        defaultValue=""
+        render={({ field }) => {
+          return (
+            <RichTextEditor
+              proFeature
+              useForm={true}
+              label="Description"
+              isRequired
+              placeholder="Enter the contest description"
+              fieldName="description"
+              field={field}
+            />
+          );
+        }}
+      />
+      <InputField
+        register={register("role", {
+          required: true,
+        })}
+        isRequired={true}
+        label="Role"
+        placeholder="Enter the role you are hiring"
+      />
+      <Controller
+        name="job_description"
+        rules={{ required: true }}
+        control={control}
+        defaultValue=""
+        render={({ field }) => {
+          return (
+            <RichTextEditor
+              proFeature
+              useForm={true}
+              label="Job Description"
+              isRequired
+              placeholder="Enter the job requirements"
+              fieldName="job_description"
+              field={field}
+            />
+          );
+        }}
+      />
+      <SingleSelect
+        isRequired={true}
+        register={register("category", {
+          required: true,
+        })}
+        label="Category"
+        data={CATEGORY_DATA}
+      />
       <DescriptionField
         isRequired={true}
         register={register("questions", {
@@ -95,7 +135,6 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         label="Questions"
         placeholder="Enter your questions"
       />
-      <RichTextEditor aiUrl="gpt/generate"/>
       <InputField
         register={register("organisation_id")}
         className="hidden"
@@ -112,22 +151,6 @@ const ContestForm = (register: UseFormRegister<FieldValues>) => {
         label="Status"
         value={"yet_to_start"}
         placeholder="Enter contest status"
-      />
-      <InputField
-        register={register("role", {
-          required: true,
-        })}
-        isRequired={true}
-        label="Role"
-        placeholder="Enter the role you are hiring"
-      />
-      <DescriptionField
-        isRequired={true}
-        register={register("job_description", {
-          required: true,
-        })}
-        label="Job Description"
-        placeholder="Enter the job requirements"
       />
     </div>
   );

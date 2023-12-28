@@ -36,6 +36,7 @@ export const LeaderBoard = ({ candidates, setCurrentCandidate }) => {
         return (
           <Chip
             className="capitalize"
+            // @ts-ignore
             color={STATUS_COLOR_MAPPING[deriveStatus(user)].type}
             size="md"
             variant="flat"

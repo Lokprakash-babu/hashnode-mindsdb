@@ -6,7 +6,9 @@ import ContestList from "./ContestList";
 // This page contains list of contests that is associated to an account.
 const Contests = async () => {
   // ! Note this has to removed with user context data
-  const contestLists = (await requestWrapper("contest?organisation_id=1")) || {
+  const contestLists = (await requestWrapper("contest?organisation_id=1", {
+    cache: "no-store",
+  })) || {
     rows: [],
   };
   return (
