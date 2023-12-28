@@ -1,7 +1,14 @@
+import { requestWrapper } from "@/lib/requestWrapper";
 import LinkButton from "../Components/Buttons/LinkButton";
 import PlusIcon from "../Components/Icons/PlusIcon";
 import ContestCard from "./Components/ContestCard";
-const ContestList = ({ contests }) => {
+const ContestList = async () => {
+  const contestLists = (await requestWrapper("contest?organisation_id=1", {
+    cache: "no-store",
+  })) || {
+    rows: [],
+  };
+  const contests = contestLists.rows;
   return (
     <div>
       <div className="contest-list-header py-4 border flex justify-between pr-[84px] items-center w-full">
