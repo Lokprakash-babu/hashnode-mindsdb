@@ -1,7 +1,12 @@
 export const generateInsertQuery = (table, columns, values) => {
   return `INSERT INTO ${process.env.DB_NAME}.${table} (${columns.join(
     ","
-  )}) values (${values.map((item) => `'${item}'`).join(", ")}); `;
+  )}) values (${values
+    .map((item) => {
+      const data = typeof item === "object" ? JSON.stringify(item) : item;
+      return `'${data}'`;
+    })
+    .join(", ")}); `;
 };
 
 export const generateUpdateQuery = (table, updateData, id) => {

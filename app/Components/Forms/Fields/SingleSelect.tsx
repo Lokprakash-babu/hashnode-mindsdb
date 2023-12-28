@@ -8,7 +8,6 @@ interface IItem {
 const SingleSelect = ({ data, label, register, ...rest }: any) => {
   return (
     <Select
-      isRequired
       radius="sm"
       labelPlacement="outside"
       variant="bordered"

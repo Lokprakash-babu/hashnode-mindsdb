@@ -32,6 +32,10 @@ body {
     font-weight: 100;
     line-height: normal;
   }
+  .header-1-400 {
+    @apply header-1-100;
+    font-weight: 400;
+  }
   .header-1-500 {
     @apply header-1-100;
     font-weight: 500;
