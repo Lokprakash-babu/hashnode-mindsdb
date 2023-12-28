@@ -50,6 +50,10 @@ body {
     font-weight: 100;
     line-height: normal;
   }
+  .header-2-400 {
+    @apply header-2-100;
+    font-weight: 400;
+  }
   .header-2-600 {
     @apply header-2-100;
     font-weight: 600;

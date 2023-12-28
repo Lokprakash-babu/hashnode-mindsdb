@@ -17,7 +17,6 @@ import {
   CardFooter,
   CardHeader,
 } from "@nextui-org/react";
-import { ToneDropdown } from "../Editor/ToneDropdown";
 import { TONE_TYPES } from "../Editor/constants";
 import Mic from "../Icons/Mic";
 import { useState } from "react";
@@ -168,8 +167,7 @@ const ContestForm = (
                   key={question}
                   aria-label="Accordion 1"
                   title={
-                    getValues(`questions.question_${question}.title`) ||
-                    "Brief title"
+                    getValues(`questions.question_${question}.title`) || "Title"
                   }
                 >
                   <div className="wrapper flex flex-col gap-y-4">

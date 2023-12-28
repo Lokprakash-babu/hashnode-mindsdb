@@ -60,7 +60,7 @@ const RichTextEditor = (props) => {
         {props.label}
       </label>
       <FroalaEditorComponent
-        model={props?.field?.value || model}
+        model={props?.field?.value || model || props?.initialValue}
         onModelChange={(e) => {
           setModel(e?.target?.value);
           props?.field?.onChange(e);
