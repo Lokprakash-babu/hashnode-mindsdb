@@ -1,19 +1,15 @@
-import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
-import MindsDB from "mindsdb-js-sdk";
-
+import { mysqlConnection } from "@/lib/mysql-connection";
 const listAllContests = () => {
-  return `SELECT id,title,role,status,job_description FROM ${process.env.DB_NAME}.Contest`;
+  return `SELECT id, title, role, job_description, start_date, end_date FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Contest`;
 };
 export async function GET() {
   try {
-    await connect();
-    const contestLists = await MindsDB.SQL.runQuery(listAllContests());
-    if (contestLists.error_message) {
-      throw contestLists.error_message;
-    }
+    const mysql = await mysqlConnection();
+    const [data] = await mysql.query(listAllContests());
+    console.log("contest lists", data);
     return NextResponse.json({
-      message: contestLists.rows,
+      message: data,
     });
   } catch (err) {
     console.log("err in candidate contest", err);

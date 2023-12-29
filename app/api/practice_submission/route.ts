@@ -1,7 +1,7 @@
-import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
-
+import { mysqlConnection } from "@/lib/mysql-connection";
+import connect from "@/lib/mindsdb-connection";
 const submissionIdGenerator = () => {
   const epoch = Date.now();
   return `submission_${epoch}`;
@@ -35,11 +35,11 @@ const updateSubmissionRecord = (submissionId, answer) => {
   const answerString = JSON.stringify({
     answer,
   });
-  console.log("answer string", answerString.replaceAll("'", "&apos;"));
+  console.log("answer string", answerString);
   return `
-  UPDATE ${process.env.DB_NAME}.Submission
-SET answer = '${answerString.replaceAll("'", "&apos;")}'
-WHERE id="${submissionId}";
+  UPDATE ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission
+SET answer = ?
+WHERE id=?;
   `;
 };
 
@@ -90,6 +90,7 @@ const updateEntryInFeedbackTable = ({
  */
 export async function POST(req: NextRequest) {
   try {
+    const mysql = await mysqlConnection();
     await connect();
     const data = await req.json();
     const { practiceId, userId, answer } = data;
@@ -119,12 +120,11 @@ export async function POST(req: NextRequest) {
     console.log(">>Submission ID", submissionId);
     //If submission exist, update the existing submission record, parallely create feedback and score to store it in feedback table
     if (submissionId) {
-      const updateQuery = await MindsDB.SQL.runQuery(
-        updateSubmissionRecord(submissionId, answer)
+      const updateQuery = await mysql.query(
+        updateSubmissionRecord(submissionId, answer),
+        [JSON.stringify({ answer }), submissionId]
       );
-      if (updateQuery.error_message) {
-        throw updateQuery.error_message;
-      }
+      console.log("udpate query", updateQuery);
       console.log("record updated");
     }
     //If submission doesn't exist, create submission, get the submission ID, generate feedback and store it in feedback table
