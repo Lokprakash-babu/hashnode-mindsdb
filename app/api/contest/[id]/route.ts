@@ -2,20 +2,25 @@ import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 import { generateUpdateQuery, selectAllQuery } from "@/app/utils/generateQuery";
+import { mysqlConnection } from "@/lib/mysql-connection";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    await connect();
+    const mysql = await mysqlConnection();
     console.log(">>> Minds db connected");
-    const QUERY = selectAllQuery("Contest", `id='${params.id}'`);
+    const QUERY = selectAllQuery(
+      "Contest",
+      `id='${params.id}'`,
+      process.env.NEXT_PLANETSCALE_DB_NAME
+    );
     console.log(QUERY);
-    const contestDetails = await MindsDB.SQL.runQuery(QUERY);
+    const [contestDetailsRow] = await mysql.query(QUERY);
     return NextResponse.json(
       {
-        data: contestDetails.rows,
+        data: contestDetailsRow,
       },
       {
         status: 200,

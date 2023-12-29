@@ -1,20 +1,18 @@
 "use client";
 import { requestWrapper } from "@/lib/requestWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatFooter from "./ChatFooter";
+import ChatContainer, { IChatMessages, MessagePersona } from "./ChatContainer";
 
-interface IChat {
-  type: "user" | "bot";
-  message: string;
-}
 export interface IChatMessenger {
   initialMessage?: string;
   context?: string;
   chatMessageLimit?: number;
   isReadOnly?: boolean;
-  chatHistory?: IChat[];
-  onEndChat?: (messages: IChat[]) => void;
+  chatHistory?: IChatMessages[];
+  onEndChat?: (messages: IChatMessages[]) => void;
+  onSave?: (messages: IChatMessages[]) => void;
 }
 const ChatMessenger = ({
   initialMessage,
@@ -23,15 +21,16 @@ const ChatMessenger = ({
   isReadOnly = false,
   chatHistory = [],
   onEndChat,
+  onSave,
 }: IChatMessenger) => {
   const initialState = !chatHistory.length
     ? [
         {
-          type: "bot",
-          message: initialMessage,
+          type: "bot" as MessagePersona,
+          message: initialMessage || "",
         },
       ]
-    : chatHistory;
+    : (chatHistory as IChatMessages[]);
   const [chatMessages, setChatMessages] = useState({
     previousMessages: initialState,
     toBeRenderedMessages: initialState,
@@ -52,7 +51,7 @@ const ChatMessenger = ({
     const newToBeRenderedMessage = [
       ...chatMessages.toBeRenderedMessages,
       {
-        type: "user",
+        type: "user" as MessagePersona,
         message: enteredMessage,
       },
     ];
@@ -73,7 +72,7 @@ const ChatMessenger = ({
         const withBot = [
           ...newToBeRenderedMessage,
           {
-            type: "bot",
+            type: "bot" as MessagePersona,
             message: response.message,
           },
         ];
@@ -91,7 +90,7 @@ const ChatMessenger = ({
 
   const endChat = () => {
     //Post the messages for feedback
-    onEndChat?.(chatMessages.previousMessages as IChat[]);
+    onEndChat?.(chatMessages.previousMessages as IChatMessages[]);
   };
   return (
     <>
@@ -101,15 +100,7 @@ const ChatMessenger = ({
         resetChat={resetChat}
         onEndChat={endChat}
       />
-      <div>
-        {chatMessages.toBeRenderedMessages.map((chatMessage, idx) => {
-          const isBotMessage = chatMessage.type === "bot";
-          if (isBotMessage) {
-            return <h2 key={idx}>{chatMessage.message}</h2>;
-          }
-          return <p key={idx}>{chatMessage.message}</p>;
-        })}
-      </div>
+      <ChatContainer chatMessages={chatMessages.toBeRenderedMessages} />
       {!isReadOnly && (
         <ChatFooter
           currentValue={latestMessage}

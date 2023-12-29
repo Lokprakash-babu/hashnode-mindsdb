@@ -1,4 +1,3 @@
-import React from "react";
 import CreateContestForm from "@/app/Components/Forms/CreateContestForm";
 const CreateContest = () => {
   return (

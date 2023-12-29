@@ -11,8 +11,13 @@ export const generateUpdateQuery = (table, updateData, id) => {
 
   return `UPDATE ${process.env.DB_NAME}.${table} SET ${columnsToUpdate} WHERE id = '${id}';`;
 };
-export const selectAllQuery = (table, whereCondition, limit = 10) => {
-  const query = `Select * from ${process.env.DB_NAME}.${table}`;
+export const selectAllQuery = (
+  table,
+  whereCondition,
+  dbName = process.env.DB_NAME,
+  limit = 10
+) => {
+  const query = `Select * from ${dbName}.${table}`;
   return whereCondition
     ? query + ` where ${whereCondition} limit ${limit}`
     : query;
