@@ -56,7 +56,6 @@ const RichTextEditor = (props) => {
     refreshAfterCallback: false,
     callback: onOpen,
   });
-  console.log("field", props.field);
   return (
     <div className="relative">
       <label

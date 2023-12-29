@@ -6,6 +6,7 @@ import ContestHeader from "./ContestHeader";
 import ContestProblemDescription from "./ContestProblemDescription";
 import ContestSolutionWidget from "./ContestSolutionWidget";
 import Footer from "./Footer";
+import AnswerContextProvider from "./AnswerContext";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
@@ -18,10 +19,12 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
          * else, the timer will be retrieved and displayed in the Timer display */}
         <Trigger />
         <ContestDetailsProvider contestDetails={contestDetail.data[0]}>
-          <ContestHeader />
-          <ContestProblemDescription />
-          <ContestSolutionWidget />
-          <Footer />
+          <AnswerContextProvider>
+            <ContestHeader />
+            <ContestProblemDescription />
+            <ContestSolutionWidget />
+            <Footer />
+          </AnswerContextProvider>
         </ContestDetailsProvider>
       </>
     );
