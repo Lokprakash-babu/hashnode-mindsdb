@@ -9,12 +9,14 @@ export const generateInsertQuery = (table, columns, values) => {
     .join(", ")}); `;
 };
 
-export const generateUpdateQuery = (table, updateData, id) => {
+export const generateUpdateQuery = (table, updateData, id, dbName = "") => {
   const columnsToUpdate = Object.keys(updateData)
     .map((key) => `${key} = '${updateData[key]}'`)
     .join(", ");
 
-  return `UPDATE ${process.env.DB_NAME}.${table} SET ${columnsToUpdate} WHERE id = '${id}';`;
+  return `UPDATE ${
+    dbName || process.env.DB_NAME
+  }.${table} SET ${columnsToUpdate} WHERE id = '${id}';`;
 };
 export const selectAllQuery = (
   table,

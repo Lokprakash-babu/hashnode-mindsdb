@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { mysqlConnection } from "@/lib/mysql-connection";
 const listAllContests = () => {
   return `SELECT id, title, role, job_description, start_date, end_date FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Contest`;
