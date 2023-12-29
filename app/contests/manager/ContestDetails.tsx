@@ -30,6 +30,7 @@ import EditPen from "@/app/Components/Icons/EditPen";
 import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
+import Link from "next/link";
 
 const TYPE_MAPPING = {
   bot_conversation: "Bot Conversation",
@@ -55,7 +56,7 @@ const DescriptionCard = ({ title, content }) => {
 };
 
 const DetailsSection = ({ details }) => {
-  const questions = JSON.parse(details.questions);
+  const questions = details.questions;
   const [editForm, showEditForm] = useState(false);
   return (
     <div className="pr-12 flex flex-col gap-y-12">
@@ -150,7 +151,11 @@ const DetailsSection = ({ details }) => {
             })}
           </Accordion>
         ) : (
-          <QuestionsEditForm questions={questions} id={details.id} showEditForm={showEditForm}/>
+          <QuestionsEditForm
+            questions={questions}
+            id={details.id}
+            showEditForm={showEditForm}
+          />
         )}
       </div>
     </div>
@@ -173,6 +178,9 @@ const ContestDetails = ({ details }) => {
       setCurrentCandidate(response.data?.[0]);
     });
   }, [details.id]);
+
+  //TODO: Retrive proper account type
+  const accountType = "user";
   return (
     <div className="contest-details-wrapper flex text-black">
       <div className="details-pane  min-h-[100vh]  flex-1">
@@ -185,6 +193,11 @@ const ContestDetails = ({ details }) => {
                 <Markdown>{removeHtmlTags(details.description)}</Markdown>
               </h3>
             </div>
+            {accountType === "user" && (
+              <Link href={`/contests/${details["Id"]}/attempt`}>
+                <Button>Start contest</Button>
+              </Link>
+            )}
           </div>
           <Tabs
             onSelectionChange={(key: any) => {

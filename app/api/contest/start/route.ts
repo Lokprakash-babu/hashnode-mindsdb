@@ -21,9 +21,12 @@ const createSubmissionRecord = (candidateId, contestId, submissionId) => {
 };
 
 const fetchFeedbackRecord = (candidateId, submissionId) => {
-  return `SELECT start_time_candidate from ${db}.Feedback WHERE candidate_id="${candidateId}" AND submission_id="${submissionId}"`;
+  return `SELECT start_time_candidate, end_time_candidate from ${db}.Feedback WHERE candidate_id="${candidateId}" AND submission_id="${submissionId}"`;
 };
 
+const fetchContestDetails = (contestId) => {
+  return `SELECT * from ${db}.Contest WHERE Id="${contestId}"`;
+};
 const createFeedbackRecord = (
   candidateId,
   contestId,
@@ -37,7 +40,6 @@ const createFeedbackRecord = (
 
 export async function POST(req: NextRequest) {
   const mysql = await mysqlConnection();
-
   try {
     const data = await req.json();
     //TODO: Get the userId from session
@@ -52,7 +54,9 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-
+    const [contestDetails] = await mysql.query(
+      fetchContestDetails(data.contestId)
+    );
     const [submissionRecordData] = await mysql.query(
       fetchSubmissionRecord(userId, data.contestId)
     );
@@ -62,15 +66,36 @@ export async function POST(req: NextRequest) {
       const [feedbackRecord] = await mysql.query(
         fetchFeedbackRecord(userId, submissionId)
       );
-      const startTime = feedbackRecord[0].start_time_candidate;
-      return NextResponse.json({
-        message: {
-          startTime,
-        },
-      });
+      const startTime = Number(feedbackRecord[0].start_time_candidate);
+      const endTime = Number(feedbackRecord[0].end_time_candidate);
+      const contestEndTime = Number(contestDetails[0].end_date);
+      console.log(">>> contest details", contestDetails);
+      const currentTime = Date.now();
+      const isContestEnded = currentTime >= contestEndTime;
+      console.log("contest time", currentTime, contestEndTime);
+      if (!endTime && !isContestEnded) {
+        return NextResponse.json({
+          message: {
+            startTime,
+            contestDetails: {
+              ...contestDetails[0],
+            },
+          },
+        });
+      } else {
+        return NextResponse.json(
+          {
+            message: "Contest already ended",
+          },
+          {
+            status: 400,
+          }
+        );
+      }
     } else {
       //Create submission record
       const toBeGeneratedSubmissionId = `submission_${Date.now()}`;
+      console.log("contest details else block", contestDetails);
       await mysql.query(
         createSubmissionRecord(
           userId,
@@ -92,11 +117,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         message: {
           startTime: currentTime,
+          contestDetails: { ...contestDetails[0] },
         },
       });
     }
   } catch (err) {
-    console.log("err", err);
+    console.log("err in start contest", err);
+    await mysql.query("ROLLBACK");
     return new NextResponse("Internal error", { status: 500 });
   }
 }

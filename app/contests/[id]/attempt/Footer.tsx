@@ -1,10 +1,12 @@
 "use client";
 import { Button } from "@nextui-org/react";
 import { useContestDetailsContext } from "./ContestDetailsContext";
+import { useAnswerContext } from "./AnswerContext";
 
 const Footer = () => {
   const { currentSelectedQuestion, questionKeys, setCurrentSelectedQuestion } =
     useContestDetailsContext();
+  const { onSaveHandler, onContestEndHandler } = useAnswerContext();
   const questionIndex = questionKeys.findIndex(
     (keys) => keys === currentSelectedQuestion
   );
@@ -25,9 +27,11 @@ const Footer = () => {
         onClick={(e) => {
           e.stopPropagation();
           if (isSaveAndNext) {
+            onSaveHandler();
             setCurrentSelectedQuestion(questionKeys[questionIndex + 1]);
           } else {
             //Trigger submit call
+            onContestEndHandler();
           }
         }}
       >
