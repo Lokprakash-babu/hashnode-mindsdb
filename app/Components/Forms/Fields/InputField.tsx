@@ -22,7 +22,6 @@ const InputField = ({
       radius="sm"
       variant="bordered"
       labelPlacement="outside"
-      isRequired
       type={type}
       label={label}
       placeholder={placeholder}

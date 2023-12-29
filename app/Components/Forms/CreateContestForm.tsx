@@ -3,12 +3,25 @@ import FormLayout from "./FormLayout";
 import { Controller, FieldValues, UseFormRegister } from "react-hook-form";
 import SingleSelect from "./Fields/SingleSelect";
 import InputField from "./Fields/InputField";
-import DescriptionField from "./Fields/DescriptionField";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Toast from "../Toasts/Toast";
 import { useRouter } from "next/navigation";
 import RichTextEditor from "../Editor/RichTextEditor";
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "@nextui-org/react";
+import { TONE_TYPES } from "../Editor/constants";
+import Mic from "../Icons/Mic";
+import { useState } from "react";
+import RightArrow from "../Icons/RightArrow";
+import clsx from "clsx";
 
 /**
  * Form Fields
@@ -33,7 +46,16 @@ export const CATEGORY_DATA = [
   { label: "Demo Engineer", value: "demo_engineer" },
 ];
 
-const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
+export const QUESTION_TYPE = [
+  { label: "Email", value: "email" },
+  { label: "Bot Converstaion", value: "bot_conversation" },
+];
+const ContestForm = (
+  register: UseFormRegister<FieldValues>,
+  control: any,
+  getValues: any
+) => {
+  const [questions, setQuestion] = useState([Date.now()]);
   return (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
@@ -82,7 +104,6 @@ const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
           return (
             <RichTextEditor
               proFeature
-              useForm={true}
               label="Description"
               isRequired
               placeholder="Enter the contest description"
@@ -91,14 +112,6 @@ const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
             />
           );
         }}
-      />
-      <InputField
-        register={register("role", {
-          required: true,
-        })}
-        isRequired={true}
-        label="Role"
-        placeholder="Enter the role you are hiring"
       />
       <Controller
         name="job_description"
@@ -109,7 +122,6 @@ const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
           return (
             <RichTextEditor
               proFeature
-              useForm={true}
               label="Job Description"
               isRequired
               placeholder="Enter the job requirements"
@@ -121,19 +133,11 @@ const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
       />
       <SingleSelect
         isRequired={true}
-        register={register("category", {
+        register={register("role", {
           required: true,
         })}
-        label="Category"
+        label="Role"
         data={CATEGORY_DATA}
-      />
-      <DescriptionField
-        isRequired={true}
-        register={register("questions", {
-          required: true,
-        })}
-        label="Questions"
-        placeholder="Enter your questions"
       />
       <InputField
         register={register("organisation_id")}
@@ -152,6 +156,144 @@ const ContestForm = (register: UseFormRegister<FieldValues>, control: any) => {
         value={"yet_to_start"}
         placeholder="Enter contest status"
       />
+      <Card radius="sm" shadow="sm">
+        <CardHeader className="header-1-400">Contest Questions</CardHeader>
+        <CardBody>
+          <Accordion variant="splitted">
+            {questions.map((question) => {
+              return (
+                <AccordionItem
+                  indicator={<RightArrow />}
+                  key={question}
+                  aria-label="Accordion 1"
+                  title={
+                    getValues(`questions.question_${question}.title`) || "Title"
+                  }
+                >
+                  <div className="wrapper flex flex-col gap-y-4">
+                    <section className="question-header flex flex-col gap-y-6">
+                      <div className="header-row flex justify-between gap-4">
+                        <InputField
+                          value={getValues(
+                            `questions.question_${question}.title`
+                          )}
+                          register={register(
+                            `questions.question_${question}.title`
+                          )}
+                          isRequired={true}
+                          placeholder="Enter your question title"
+                        />
+                        <SingleSelect
+                          defaultSelectedKeys={[
+                            getValues(`questions.question_${question}.type`) ||
+                              "email",
+                          ]}
+                          className="flex-1 min-w-[150px]"
+                          isRequired={true}
+                          register={register(
+                            `questions.question_${question}.type`,
+                            {
+                              required: true,
+                            }
+                          )}
+                          placeholder="Question type"
+                          data={QUESTION_TYPE}
+                        />
+                      </div>
+                      {getValues(`questions.question_${question}.type`) ==
+                        "bot_conversation" && (
+                        <InputField
+                          value={getValues(
+                            `questions.question_${question}.initial_text`
+                          )}
+                          register={register(
+                            `questions.question_${question}.initial_text`
+                          )}
+                          isRequired={true}
+                          placeholder="Enter the initial chat"
+                        />
+                      )}
+                    </section>
+                    <section className="question-body mb-2 flex flex-col gap-y-2">
+                      <Controller
+                        name={`questions.question_${question}.content`}
+                        rules={{ required: true }}
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => {
+                          return (
+                            <RichTextEditor
+                              proFeature
+                              label="Question Content"
+                              isRequired
+                              placeholder="Enter the contest question"
+                              fieldName={`questions.question_${question}.content`}
+                              field={field}
+                            />
+                          );
+                        }}
+                      />
+                      <div className="action-footer flex justify-between items-cent">
+                        {getValues(`questions.question_${question}.type`) ==
+                          "bot_conversation" && (
+                          <SingleSelect
+                            startContent={<Mic />}
+                            defaultSelectedKeys={[
+                              getValues(
+                                `questions.question_${question}.tone`
+                              ) || "angry",
+                            ]}
+                            className="flex-1 max-w-[180px]"
+                            isRequired={true}
+                            register={register(
+                              `questions.question_${question}.tone`,
+                              {
+                                required: true,
+                              }
+                            )}
+                            placeholder="Tone"
+                            data={TONE_TYPES}
+                          />
+                        )}
+                        <Button
+                          isDisabled={questions.length === 1}
+                          radius="sm"
+                          onClick={() => {
+                            setQuestion((prev) =>
+                              prev.filter((id) => id !== question)
+                            );
+                          }}
+                          className={clsx(
+                            "bg-[#C82124] text-white",
+                            questions.length === 1 && "cursor-no-drop"
+                          )}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </section>
+                  </div>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </CardBody>
+        <CardFooter>
+          <div className="footer-wrapper w-full flex flex-end justify-end">
+            <Button
+              isDisabled={questions.length > 2}
+              className={clsx(
+                "rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100",
+                questions.length > 2 && "cursor-no-drop"
+              )}
+              type="button"
+              onClick={() => setQuestion((prev) => [...prev, Date.now()])}
+            >
+              Add
+            </Button>
+          </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

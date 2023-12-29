@@ -16,12 +16,17 @@ const FormPane = ({
 }: {
   formTitle: string;
   submitHandler: (data: any) => void;
-  form: (register: UseFormRegister<FieldValues>, control: any) => JSX.Element;
+  form: (
+    register: UseFormRegister<FieldValues>,
+    control: any,
+    getValues: any
+  ) => JSX.Element;
 }) => {
   const methods = useForm({
     mode: "onSubmit",
   });
   const router = useRouter();
+  methods.watch("questions");
   return (
     <div className="flex flex-col w-full">
       <h3 className="header-2-600 my-5 pl-8">{formTitle}</h3>
@@ -29,7 +34,7 @@ const FormPane = ({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(submitHandler)}>
             <div className="fields-wrapper pr-[308px] pl-8 pb-10">
-              {form(methods.register, methods.control)}
+              {form(methods.register, methods.control, methods.getValues)}
             </div>
             <footer className="l-0  px-6 py-10 flex justify-end w-full bg-[#FFFFFF] z-10 gap-x-3 sticky bottom-1 shadow-formFooterShadow">
               <Button
@@ -70,7 +75,11 @@ const FormLayout = ({
   formTitle,
   submitHandler,
 }: {
-  form: (register: UseFormRegister<FieldValues>, control: any) => JSX.Element;
+  form: (
+    register: UseFormRegister<FieldValues>,
+    control: any,
+    getValues: any
+  ) => JSX.Element;
   infoContent: ReactNode;
   formTitle: string;
   submitHandler: (data: any) => void;

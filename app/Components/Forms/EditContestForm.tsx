@@ -21,7 +21,7 @@ const EditContestForm = ({ details }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
       toast.success("Contest updated successfuly");
       router.push(window.location.href);
@@ -49,13 +49,13 @@ const EditContestForm = ({ details }) => {
         />
         <SingleSelect
           isRequired={true}
-          register={methods.register("category", {
+          register={methods.register("role", {
             required: true,
           })}
-          defaultSelectedKeys={[details.category]}
-          label="Category"
+          defaultSelectedKeys={[details.role]}
+          label="Role"
           value={CATEGORY_DATA}
-          name="category"
+          name="role"
           data={CATEGORY_DATA}
         />
 
@@ -89,18 +89,6 @@ const EditContestForm = ({ details }) => {
           labelPlacement="outside"
         />
 
-        <Input
-          {...methods.register("role", {
-            required: true,
-          })}
-          defaultValue={details.role}
-          label="Role"
-          name="role"
-          placeholder="Enter the role you are hiring"
-          radius="sm"
-          variant="bordered"
-          labelPlacement="outside"
-        />
         <Button
           className="rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100"
           type="submit"

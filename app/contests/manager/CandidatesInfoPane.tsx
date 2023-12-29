@@ -29,8 +29,8 @@ const CandidateInfo = ({ candidate }) => {
         </CardHeader>
         <CardBody className="flex flex-col gap-y-4">
           <div className="wrapper gap-y-2 flex-col flex items-center w-full">
-            <Avatar src={candidate.avatar_url} size="lg"></Avatar>
-            <h3 className="header-3-600">{candidate.name}</h3>
+            <Avatar src={candidate?.avatar_url} size="lg"></Avatar>
+            <h3 className="header-3-600">{candidate?.name}</h3>
           </div>
           <div className="additional-info flex gap-x-8 justify-between">
             <div className="flex gap-3">
@@ -41,12 +41,12 @@ const CandidateInfo = ({ candidate }) => {
               </div>
               <div className="flex flex-col gap-y-1">
                 <div className="header-3-600">Email</div>
-                <h3 className="header-3-600">{candidate.email}</h3>
+                <h3 className="header-3-600">{candidate?.email}</h3>
               </div>
             </div>
             <AdditionalInfo
               title="Phone"
-              value={candidate.phone_number || "--"}
+              value={candidate?.phone_number || "--"}
               Icon={<Phone />}
             />
           </div>
