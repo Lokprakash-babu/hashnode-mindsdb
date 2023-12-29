@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 const AnswerContext = createContext({
   answers: {},
@@ -12,9 +12,16 @@ export const useAnswerContext = () => {
     ...contextValues,
   };
 };
+
 const AnswerContextProvider = ({ children }) => {
   const [answer, setAnswer] = useState({});
   console.log("answer context", answer);
+  // const onSaveHandler = useCallback(
+  //   async() => {
+  //     const
+  //   },
+  //   [answer]
+  // )
 
   return (
     <AnswerContext.Provider
