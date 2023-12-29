@@ -1,0 +1,2 @@
+1. Clear all the todo flag
+2. Move all the dates to moment

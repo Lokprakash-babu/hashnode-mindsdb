@@ -1,6 +1,6 @@
 import { mysqlConnection } from "@/lib/mysql-connection";
 import { NextRequest, NextResponse } from "next/server";
-
+import moment from "moment";
 //Start contest flow
 //Create a dummy submission entry in the submission table, if there is no submission entry.
 //If there is a submission entry, don't do anything.
@@ -68,9 +68,9 @@ export async function POST(req: NextRequest) {
       );
       const startTime = Number(feedbackRecord[0].start_time_candidate);
       const endTime = Number(feedbackRecord[0].end_time_candidate);
-      const contestEndTime = Number(contestDetails[0].end_date);
+      const contestEndTime = contestDetails[0].end_date;
       console.log(">>> contest details", contestDetails);
-      const currentTime = Date.now();
+      const currentTime = moment(Date.now()).unix();
       const isContestEnded = currentTime >= contestEndTime;
       console.log("contest time", currentTime, contestEndTime);
       if (!endTime && !isContestEnded) {

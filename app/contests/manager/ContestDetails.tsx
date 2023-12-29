@@ -30,7 +30,7 @@ import EditPen from "@/app/Components/Icons/EditPen";
 import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
-import Link from "next/link";
+import StartContestBtn from "../[id]/attempt/StartContestBtn";
 
 const TYPE_MAPPING = {
   bot_conversation: "Bot Conversation",
@@ -193,11 +193,7 @@ const ContestDetails = ({ details }) => {
                 <Markdown>{removeHtmlTags(details.description)}</Markdown>
               </h3>
             </div>
-            {accountType === "user" && (
-              <Link href={`/contests/${details["Id"]}/attempt`}>
-                <Button>Start contest</Button>
-              </Link>
-            )}
+            {accountType === "user" && <StartContestBtn />}
           </div>
           <Tabs
             onSelectionChange={(key: any) => {

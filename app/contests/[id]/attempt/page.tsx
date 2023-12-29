@@ -7,6 +7,7 @@ import ContestProblemDescription from "./ContestProblemDescription";
 import ContestSolutionWidget from "./ContestSolutionWidget";
 import Footer from "./Footer";
 import AnswerContextProvider from "./AnswerContext";
+import FullScreenChecker from "./Fullscreen";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
@@ -31,6 +32,7 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
          * If not, the trigger will register that the candidate started the contest,
          * else, the timer will be retrieved and displayed in the Timer display */}
         <Trigger params={params} />
+        <FullScreenChecker />
         <ContestDetailsProvider
           contestDetails={contestDetail.message.contestDetails}
         >

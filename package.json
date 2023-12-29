@@ -14,6 +14,7 @@
     "date-fns": "^3.0.6",
     "framer-motion": "^10.16.16",
     "mindsdb-js-sdk": "^2.3.0",
+    "moment": "^2.30.1",
     "mysql2": "^3.6.5",
     "next": "14.0.4",
     "react": "^18",
