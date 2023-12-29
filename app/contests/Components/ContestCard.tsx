@@ -78,26 +78,28 @@ const ContestCard = ({ contest }) => {
         </CardBody>
         <CardFooter>
           <div className="footer wrapper flex  justify-between w-full">
-            <div className="flex w-[200.85px] h-7 pl-1 pr-3 py-1  bg-gradient-to-b from-neutral-100 to-gray-100 rounded-3xl justify-center items-center gap-2 ">
-              <div className="avatar-group flex -space-x-2 hover:-space-x-0 transition ease-in-out delay-150 cursor-pointer">
-                <Avatar
-                  src="https://i.pravatar.cc/150?u=fdfedffd"
-                  size="sm"
-                  className="w-5 h-5"
-                ></Avatar>
-                <Avatar
-                  src="https://i.pravatar.cc/150?u=ffgwedfd"
-                  size="sm"
-                  className="w-5 h-5"
-                ></Avatar>
-                <Avatar
-                  src="https://i.pravatar.cc/150?u=fdfdfgrfd"
-                  size="sm"
-                  className="w-5 h-5"
-                ></Avatar>
+            {contest.candidate_count && (
+              <div className="flex w-[200.85px] h-7 pl-1 pr-3 py-1  bg-gradient-to-b from-neutral-100 to-gray-100 rounded-3xl justify-center items-center gap-2 ">
+                <div className="avatar-group flex -space-x-2 hover:-space-x-0 transition ease-in-out delay-150 cursor-pointer">
+                  <Avatar
+                    src="https://i.pravatar.cc/150?u=fdfedffd"
+                    size="sm"
+                    className="w-5 h-5"
+                  ></Avatar>
+                  <Avatar
+                    src="https://i.pravatar.cc/150?u=ffgwedfd"
+                    size="sm"
+                    className="w-5 h-5"
+                  ></Avatar>
+                  <Avatar
+                    src="https://i.pravatar.cc/150?u=fdfdfgrfd"
+                    size="sm"
+                    className="w-5 h-5"
+                  ></Avatar>
+                </div>
+                <div>{contest.candidate_count} Candidate/s</div>
               </div>
-              <div>{contest.candidate_count} Candidate/s</div>
-            </div>
+            )}
             <Button
               href={`/contests/${contest.id}`}
               as={Link}

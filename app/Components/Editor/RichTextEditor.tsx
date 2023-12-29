@@ -26,15 +26,23 @@ const RichTextEditor = (props) => {
     "markdown",
     "clearFormatting",
     "selectAll",
+    "fontSize",
+    "insertLink",
+    "align",
   ];
   const OPTIONS = {
     attribution: false,
-    pluginsEnabled: ["markdown"],
+    pluginsEnabled: [
+      "markdown",
+      "paragraphFormat",
+      "fontSize",
+      "link",
+      "align",
+    ],
     placeholderText: props.placeholder,
     toolbarButtons: props.proFeature
       ? [`ask_ai_${props.fieldName}`, ...TOOLBAR_OPTIONS]
       : TOOLBAR_OPTIONS,
-
     heightMin: 250,
   };
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -48,6 +56,7 @@ const RichTextEditor = (props) => {
     refreshAfterCallback: false,
     callback: onOpen,
   });
+  console.log("field", props.field);
   return (
     <div className="relative">
       <label
