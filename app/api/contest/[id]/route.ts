@@ -16,7 +16,6 @@ export async function GET(
       `id='${params.id}'`,
       process.env.NEXT_PLANETSCALE_DB_NAME
     );
-    console.log(QUERY);
     const [contestDetailsRow] = await mysql.query(QUERY);
     return NextResponse.json(
       {

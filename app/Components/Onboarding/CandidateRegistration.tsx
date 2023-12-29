@@ -1,7 +1,7 @@
 import Toast from "../Toasts/Toast";
 import { Button } from "@nextui-org/react";
 import BackArrow from "../Icons/BackArrow";
-import CandidateRegistrationForm from "../Forms/CandidateRegistrationForm";
+import AccountRegistrationForm from "../Forms/AccountRegistrationForm";
 
 const CandidateRegistration = ({ setPathComponent, accountId }) => {
   return (
@@ -22,7 +22,7 @@ const CandidateRegistration = ({ setPathComponent, accountId }) => {
             For the purpose of industry regulation, your details are required.
           </p>
         </div>
-        <CandidateRegistrationForm accountId={accountId} />
+        <AccountRegistrationForm accountId={accountId} />
       </div>
       <Toast />
     </div>

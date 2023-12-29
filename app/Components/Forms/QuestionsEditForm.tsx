@@ -190,7 +190,6 @@ const QuestionsEditForm = ({ questions, id, showEditForm }) => {
                   type="button"
                   onClick={() =>
                     setQuestions((prev) => {
-                      console.log(prev);
                       return [...prev, `question_${Date.now()}`];
                     })
                   }

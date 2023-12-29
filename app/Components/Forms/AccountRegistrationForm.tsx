@@ -8,13 +8,14 @@ import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 
-const CandidateRegistrationForm = ({ accountId }) => {
+const AccountRegistrationForm = ({ accountId, type = "candidate" }) => {
   const { register, handleSubmit } = useForm({
     mode: "onSubmit",
   });
+  const isCandidate = type === "candidate";
   const router = useRouter();
   const onSubmitHandler = (data) => {
-    const updateData = { ...data, account_type: "candidate" };
+    const updateData = { ...data, account_type: type };
     requestWrapper(`account/${accountId}`, {
       method: "PUT",
       headers: {
@@ -45,14 +46,16 @@ const CandidateRegistrationForm = ({ accountId }) => {
           })}
           startContent={<Phone />}
         />
-        <InputField
-          type="text"
-          label="Area of interest"
-          register={register("area_of_interest", {
-            required: true,
-          })}
-          placeholder="Enter your interests"
-        />
+        {isCandidate && (
+          <InputField
+            type="text"
+            label="Area of interest"
+            register={register("area_of_interest", {
+              required: true,
+            })}
+            placeholder="Enter your interests"
+          />
+        )}
         <InputField
           type="text"
           label="Experience in years"
@@ -85,4 +88,4 @@ const CandidateRegistrationForm = ({ accountId }) => {
   );
 };
 
-export default CandidateRegistrationForm;
+export default AccountRegistrationForm;
