@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 const Practice = async () => {
   const session = await getServerSession();
   if (!session || !session.user) redirect("/login");
-  return <PracticeListing />;
 
   return (
     <section className="layout">
