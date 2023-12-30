@@ -1,6 +1,7 @@
 import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
+import { getServerSession } from "next-auth";
 
 const getSummaryQuery = (article: string) => {
   return `
@@ -10,6 +11,11 @@ WHERE article = "${article}";
   `;
 };
 export async function POST(req: NextRequest) {
+  const session = await getServerSession();
+
+  if (!session || !session.user) {
+    return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  }
   try {
     await connect();
     const requestBody = await req.json();

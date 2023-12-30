@@ -3,11 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { findUser } from "../../auth/[...nextauth]/route";
 import connect from "@/lib/mindsdb-connection";
 import { generateUpdateQuery } from "@/app/utils/generateQuery";
+import { getServerSession } from "next-auth";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const session = await getServerSession();
+
+  if (!session || !session.user) {
+    return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  }
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(findUser(params.id, "id"));
@@ -22,6 +28,11 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const session = await getServerSession();
+
+  if (!session || !session.user) {
+    return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  }
   try {
     const mysql = await mysqlConnection();
     const data = await req.json();
