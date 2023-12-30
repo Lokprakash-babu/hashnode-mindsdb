@@ -12,6 +12,7 @@ const AccountRegistrationForm = ({
   accountId,
   type = "candidate",
   currentOrg = null,
+  resumeFileUrl = "",
 }) => {
   const { register, handleSubmit } = useForm({
     mode: "onSubmit",
@@ -23,6 +24,7 @@ const AccountRegistrationForm = ({
       ...data,
       account_type: type,
       organisation_id: currentOrg,
+      document_url: resumeFileUrl,
     };
     requestWrapper(`account/${accountId}`, {
       method: "PUT",
