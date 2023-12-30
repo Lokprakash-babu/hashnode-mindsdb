@@ -12,7 +12,6 @@ import {
   Chip,
   Dropdown,
   DropdownTrigger,
-  Button,
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
@@ -31,6 +30,7 @@ import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
 import StartContestBtn from "../[id]/attempt/StartContestBtn";
+import Button from "@/app/Components/Buttons";
 
 const TYPE_MAPPING = {
   bot_conversation: "Bot Conversation",

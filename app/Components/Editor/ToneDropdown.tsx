@@ -1,12 +1,13 @@
 import {
-  Button,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
 import Mic from "../Icons/Mic";
+
 import { TONE_TYPES } from "./constants";
+import Button from "../Buttons";
 export const ToneDropdown = ({
   selectedValue,
   selectedKeys,

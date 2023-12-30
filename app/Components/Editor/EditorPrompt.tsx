@@ -4,15 +4,16 @@ import {
   ModalContent,
   ModalBody,
   ModalFooter,
-  Button,
   Textarea,
 } from "@nextui-org/react";
+
 import Magic from "../Icons/Magic";
 import { ToneDropdown } from "./ToneDropdown";
 import Regenerate from "../Icons/Regenerate";
 import TickMark from "../Icons/TickMark";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Markdown from "react-markdown";
+import Button from "../Buttons";
 
 const generatePrompt = async ({
   promptText,

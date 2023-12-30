@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@nextui-org/react";
 
 import { useSession, signIn, signOut } from "next-auth/react";
+import Button from ".";
 const SignInButton = () => {
   const { data: session } = useSession();
   if (session && session.user) {

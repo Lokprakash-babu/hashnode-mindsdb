@@ -5,12 +5,12 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
   Spinner,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import AskAI from "./AskAI";
+import Button from "@/app/Components/Buttons";
 
 const Summarize = ({ content }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

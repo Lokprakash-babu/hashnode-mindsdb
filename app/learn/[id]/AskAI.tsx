@@ -1,5 +1,5 @@
+import Button from "@/app/Components/Buttons";
 import { requestWrapper } from "@/lib/requestWrapper";
-import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import {
   Modal,

@@ -1,3 +1,4 @@
+import Button from "@/app/Components/Buttons";
 import {
   Card,
   CardBody,
@@ -6,7 +7,6 @@ import {
   Divider,
   CardFooter,
   Avatar,
-  Button,
   Link,
 } from "@nextui-org/react";
 

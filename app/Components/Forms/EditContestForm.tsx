@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { CATEGORY_DATA } from "./CreateContestForm";
 import SingleSelect from "./Fields/SingleSelect";
 import DateFormatter from "@/app/utils/dateFormatter";
-import { Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import Button from "../Buttons";
 
 const EditContestForm = ({ details }) => {
   const methods = useForm({
@@ -89,12 +90,7 @@ const EditContestForm = ({ details }) => {
           labelPlacement="outside"
         />
 
-        <Button
-          className="rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100"
-          type="submit"
-        >
-          Update
-        </Button>
+        <Button type="submit">Update</Button>
       </div>
     </form>
   );

@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@nextui-org/react";
+import Button from "@/app/Components/Buttons";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import Markdown from "react-markdown";

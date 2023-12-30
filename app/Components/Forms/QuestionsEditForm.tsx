@@ -1,7 +1,6 @@
 import {
   Accordion,
   AccordionItem,
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -20,6 +19,7 @@ import { requestWrapper } from "@/lib/requestWrapper";
 import { toast } from "react-toastify";
 import Toast from "../Toasts/Toast";
 import { useRouter } from "next/navigation";
+import Button from "../Buttons";
 
 const QuestionsEditForm = ({ questions, id, showEditForm }) => {
   const router = useRouter();
@@ -158,13 +158,13 @@ const QuestionsEditForm = ({ questions, id, showEditForm }) => {
                           <Button
                             isDisabled={questions.length === 1}
                             radius="sm"
+                            color="danger"
                             onClick={() => {
                               setQuestions((prev) =>
                                 prev.filter((id) => id !== question)
                               );
                             }}
                             className={clsx(
-                              "bg-[#C82124] text-white",
                               questions.length === 1 && "cursor-no-drop"
                             )}
                           >
@@ -183,10 +183,7 @@ const QuestionsEditForm = ({ questions, id, showEditForm }) => {
               <div className="action-wrapper flex gap-x-3">
                 <Button
                   isDisabled={questions.length > 2}
-                  className={clsx(
-                    "rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100",
-                    questions.length > 2 && "cursor-no-drop"
-                  )}
+                  className={clsx(questions.length > 2 && "cursor-no-drop")}
                   type="button"
                   onClick={() =>
                     setQuestions((prev) => {
@@ -197,10 +194,7 @@ const QuestionsEditForm = ({ questions, id, showEditForm }) => {
                   Add
                 </Button>
                 <Button
-                  className={clsx(
-                    "rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100",
-                    questions.length > 2 && "cursor-no-drop"
-                  )}
+                  className={clsx(questions.length > 2 && "cursor-no-drop")}
                   type="submit"
                 >
                   Save
