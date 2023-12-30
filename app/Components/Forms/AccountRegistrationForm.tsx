@@ -8,14 +8,22 @@ import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 
-const AccountRegistrationForm = ({ accountId, type = "candidate" }) => {
+const AccountRegistrationForm = ({
+  accountId,
+  type = "candidate",
+  currentOrg = null,
+}) => {
   const { register, handleSubmit } = useForm({
     mode: "onSubmit",
   });
   const isCandidate = type === "candidate";
   const router = useRouter();
   const onSubmitHandler = (data) => {
-    const updateData = { ...data, account_type: type };
+    const updateData = {
+      ...data,
+      account_type: type,
+      organisation_id: currentOrg,
+    };
     requestWrapper(`account/${accountId}`, {
       method: "PUT",
       headers: {
@@ -24,6 +32,7 @@ const AccountRegistrationForm = ({ accountId, type = "candidate" }) => {
       body: JSON.stringify(updateData),
     }).then(
       () => {
+        router.refresh();
         toast.success("Information updated successfuly");
       },
       () => {

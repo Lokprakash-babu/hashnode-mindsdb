@@ -1,5 +1,5 @@
-export const generateInsertQuery = (table, columns, values) => {
-  return `INSERT INTO ${process.env.DB_NAME}.${table} (${columns.join(
+export const generateInsertQuery = (table, columns, values, dbName = "") => {
+  return `INSERT INTO ${dbName || process.env.DB_NAME}.${table} (${columns.join(
     ","
   )}) values (${values
     .map((item) => {

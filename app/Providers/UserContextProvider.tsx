@@ -9,9 +9,9 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     session?.user &&
-      requestWrapper(`/account?email=${session?.user?.email}`).then((account) =>
-        setUserContextData(account)
-      );
+      requestWrapper(`/account?email=${session?.user?.email}`, {
+        cache: "no-store",
+      }).then((account) => setUserContextData(account));
   }, [session]);
 
   return (
