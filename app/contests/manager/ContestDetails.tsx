@@ -184,7 +184,7 @@ const ContestDetails = ({ details }) => {
   return (
     <div className="contest-details-wrapper flex text-black">
       <div className="details-pane  min-h-[100vh]  flex-1">
-        <div className="details-header py-4 px-8 flex flex-col gap-y-6">
+        <div className="details-header py-4 pr-8 flex flex-col gap-y-6">
           <div className="flex gap-x-4 items-center">
             <Trophy />
             <div className="flex flex-col gap-y-2">

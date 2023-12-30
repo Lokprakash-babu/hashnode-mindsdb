@@ -76,3 +76,11 @@ body {
 .fr-toolbar .fr-newline {
   background: none !important;
 }
+
+.layout {
+  padding-left: 90px;
+  padding-right: 60px;
+}
+.main_container_height {
+  height: calc(100vh - 60px);
+}

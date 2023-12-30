@@ -1,11 +1,21 @@
+import clsx from "clsx";
+import Header from "../Header";
+import HeaderContextProvider from "../Header/HeaderContextProvider";
 import Sidebar from "../Sidebar";
 
 const Applayout = ({ children }) => {
   return (
-    <main>
+    <>
       <Sidebar />
-      <section className="pl-[60px]">{children}</section>
-    </main>
+      <main className={clsx("bg-white")}>
+        <HeaderContextProvider>
+          <Header />
+          <section className="main_container_height overflow-auto">
+            {children}
+          </section>
+        </HeaderContextProvider>
+      </main>
+    </>
   );
 };
 

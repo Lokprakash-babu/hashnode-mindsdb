@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 const candidateSidebarOption = [
   {
-    link: "/",
+    link: "/learn",
     label: "Learn",
     icon: <></>,
   },

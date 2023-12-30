@@ -1,15 +1,34 @@
 import { requestWrapper } from "@/lib/requestWrapper";
 import { notFound } from "next/navigation";
 import LessonDetails from "./LessonDetails";
+import HeaderSetter from "@/app/Components/Header/HeaderSetter";
+import BreadCrumb from "@/app/Components/BreadCrumb";
+import SubHeader from "@/app/Components/SubHeader";
 
 const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
   try {
     console.log("params", params);
     const lessonDetails = await requestWrapper(`/lessons/${params.id}`);
     console.log("lesson details", lessonDetails.message);
+    const crumbs = [
+      {
+        label: "Learn",
+        href: "/learn",
+      },
+      {
+        label: params.id,
+        href: `/learn/${params.id}`,
+      },
+    ];
     return (
       <>
-        <LessonDetails chapters={lessonDetails.message} />
+        <HeaderSetter title={`Lesson`} />
+        <SubHeader>
+          <BreadCrumb crumbs={crumbs} />
+        </SubHeader>
+        <section className="layout">
+          <LessonDetails chapters={lessonDetails.message} />
+        </section>
       </>
     );
   } catch (err) {

@@ -33,7 +33,7 @@ const FormPane = ({
       <section className="bg-[#FFFFFF] flex-1 pb-5 relative">
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(submitHandler)}>
-            <div className="fields-wrapper pr-[308px] pl-8 pb-10">
+            <div className="fields-wrapper pr-[308px] pb-10">
               {form(methods.register, methods.control, methods.getValues)}
             </div>
             <footer className="l-0  px-6 py-10 flex justify-end w-full bg-[#FFFFFF] z-10 gap-x-3 sticky bottom-1 shadow-formFooterShadow">

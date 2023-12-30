@@ -314,7 +314,7 @@ const CreateContestForm = () => {
   return (
     <>
       <FormLayout
-        formTitle="Create Contest"
+        formTitle=""
         submitHandler={onSubmitHandler}
         form={ContestForm}
         infoContent={<>Test2</>}

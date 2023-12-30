@@ -1,9 +1,9 @@
 import CreateContestForm from "@/app/Components/Forms/CreateContestForm";
 const CreateContest = () => {
   return (
-    <div className="text-black">
+    <section className="layout !pr-0">
       <CreateContestForm />
-    </div>
+    </section>
   );
 };
 
