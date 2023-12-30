@@ -185,13 +185,15 @@ const ContestDetails = ({ details }) => {
     <div className="contest-details-wrapper flex text-black">
       <div className="details-pane  min-h-[100vh]  flex-1">
         <div className="details-header py-4 pr-8 flex flex-col gap-y-6">
-          <div className="flex gap-x-4 items-center">
-            <Trophy />
-            <div className="flex flex-col gap-y-2">
-              <h2 className="header-2-600">{details.title}</h2>
-              <h3 className="header-3-600">
-                <Markdown>{removeHtmlTags(details.description)}</Markdown>
-              </h3>
+          <div className="flex justify-between items-center">
+            <div className="flex gap-x-4 items-center">
+              <Trophy />
+              <div className="flex flex-col gap-y-2">
+                <h2 className="header-2-600">{details.title}</h2>
+                <h3 className="header-3-600">
+                  <Markdown>{removeHtmlTags(details.description)}</Markdown>
+                </h3>
+              </div>
             </div>
             {accountType === "user" && <StartContestBtn />}
           </div>

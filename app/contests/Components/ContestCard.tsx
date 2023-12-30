@@ -68,7 +68,7 @@ const ContestCard = ({ contest }) => {
 
   return (
     <div>
-      <Card className="!rounded-lg bg-[#fff]">
+      <Card className="!rounded-lg bg-[#fff] h-full">
         <CardHeader>
           <div className="contest-card-header flex justify-between items-center w-full">
             <div className="title-wrapper flex flex-col gap-y-3">
@@ -113,7 +113,6 @@ const ContestCard = ({ contest }) => {
               as={Link}
               className="rounded-md"
               color="primary"
-              variant="ghost"
             >
               View Challenge
             </Button>

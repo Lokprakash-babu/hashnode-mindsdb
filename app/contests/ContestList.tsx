@@ -19,7 +19,7 @@ const ContestList = async () => {
           anchorIcon={<PlusIcon />}
         />
       </div>
-      <div className="contest-card-wrapper grid grid-cols-3 gap-x-4 gap-y-8 w-full p-8">
+      <div className="contest-card-wrapper grid grid-cols-3 gap-x-4 gap-y-8 w-full py-8">
         {contests.map((contest, index) => (
           <ContestCard contest={contest} key={index} />
         ))}
