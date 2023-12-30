@@ -2,6 +2,7 @@
 
 import ContestList from "./ContestList";
 import CandidateContestList from "./CandidateContestList";
+import HeaderSetter from "../Components/Header/HeaderSetter";
 
 // This page contains list of contests that is associated to an account.
 const Contests = async () => {
@@ -10,9 +11,19 @@ const Contests = async () => {
 
   switch (accountType) {
     case "user":
-      return <CandidateContestList />;
+      return (
+        <section className="layout">
+          <HeaderSetter title={"Contests"} />
+          <CandidateContestList />
+        </section>
+      );
     default:
-      return <ContestList />;
+      return (
+        <section className="layout">
+          <HeaderSetter title={"Contests"} />
+          <ContestList />
+        </section>
+      );
   }
 };
 

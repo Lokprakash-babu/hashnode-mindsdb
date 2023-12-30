@@ -1,6 +1,7 @@
 import { requestWrapper } from "@/lib/requestWrapper";
 import { notFound } from "next/navigation";
 import SubmissionList from "./SubmissionListing";
+import HeaderSetter from "../Components/Header/HeaderSetter";
 
 const SubmissionListing = async () => {
   try {
@@ -15,7 +16,12 @@ const SubmissionListing = async () => {
         };
       }) || [];
 
-    return <SubmissionList submissions={modifiedSubmissionList} />;
+    return (
+      <section className="layout">
+        <HeaderSetter title="Submissions" />
+        <SubmissionList submissions={modifiedSubmissionList} />
+      </section>
+    );
   } catch (err) {
     return notFound();
   }

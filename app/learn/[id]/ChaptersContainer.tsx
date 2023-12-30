@@ -1,22 +1,27 @@
 "use client";
 import Link from "next/link";
 import { IChapters } from "./LessonDetails";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import clsx from "clsx";
 
 const ChaptersContainer = ({ chapters }: { chapters: IChapters[] }) => {
   const pathName = usePathname();
+  const searchParams = useSearchParams();
+  const currentChapter = Number(searchParams.get("chapter")) || 0;
   return (
-    <div>
-      <div className="sticky left-0 top-0">
-        {chapters.map(({ id, title, about }, idx) => {
+    <div className={clsx("chapter-container min-w-[300px] mb-5")}>
+      <div className="sticky left-0 top-5 border rounded-md pl-4 pr-2 py-5 ">
+        {chapters.map(({ id, title }, idx) => {
+          const isActiveChapter = idx === currentChapter;
           return (
-            <Link href={`${pathName}?chapter=${idx}`} key={id}>
-              <div>
-                <h3>{title}</h3>
-                <hr />
-                <p>{about}</p>
-              </div>
-            </Link>
+            <div key={id} className={clsx("mb-5 text-md last:mb-0")}>
+              <Link
+                href={`${pathName}?chapter=${idx}`}
+                className={clsx(isActiveChapter && "text-blue underline")}
+              >
+                <p>{title}</p>
+              </Link>
+            </div>
           );
         })}
       </div>

@@ -70,9 +70,60 @@ body {
     @apply header-3-100;
     font-weight: 600;
   }
+
+  .text-lg {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .text-md {
+    font-size: 14px;
+    line-height: 21px;
+  }
+  .text-md-500 {
+    @apply text-md;
+    font-weight: 500;
+  }
+  .text-sm {
+    font-size: 12px;
+    line-height: 150%;
+  }
 }
 
 /* Froala toolbar bottom */
 .fr-toolbar .fr-newline {
   background: none !important;
+}
+
+.layout {
+  padding-left: 90px;
+  padding-right: 60px;
+}
+.main_container_height {
+  height: calc(100vh - 60px);
+}
+
+.markdown h1 {
+  font-size: 28px;
+  font-weight: 600;
+  text-decoration: underline;
+  margin-bottom: 20px;
+}
+.markdown h2 {
+  font-size: 24px;
+  font-weight: 600;
+  text-decoration: underline;
+
+  margin-bottom: 20px;
+}
+.markdown h3 {
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: underline;
+
+  margin-bottom: 20px;
+}
+.markdown p {
+  @apply text-lg;
+  line-height: 40px;
+  margin-bottom: 1rem;
 }

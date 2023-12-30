@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import Button from "../Buttons";
 
 export interface IEmailFooter {
   onClick: () => any;

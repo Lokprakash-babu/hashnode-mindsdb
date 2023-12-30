@@ -1,5 +1,6 @@
+import Button from "@/app/Components/Buttons";
+import { IChatMessages } from "@/app/Components/ChatMessenger/ChatContainer";
 import { requestWrapper } from "@/lib/requestWrapper";
-import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import {
   Modal,
@@ -9,17 +10,17 @@ import {
   ModalFooter,
 } from "@nextui-org/modal";
 import { CircularProgress } from "@nextui-org/progress";
+import { Tooltip } from "@nextui-org/react";
 import { useDisclosure } from "@nextui-org/use-disclosure";
 import { useState } from "react";
+import { AiFillCustomerService } from "react-icons/ai";
+import { IoMdSend } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
+import { FaRobot } from "react-icons/fa6";
 
 const AskAI = ({ chapterId }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [chatContext, setChatContext] = useState([
-    {
-      message: "Having a doubt in the current chapter? Ask AI to get clarified",
-      type: "bot",
-    },
-  ]);
+  const [chatContext, setChatContext] = useState<IChatMessages[]>([]);
   const [httpRequest, setHttpRequest] = useState({
     data: "",
     loading: false,
@@ -72,26 +73,56 @@ const AskAI = ({ chapterId }) => {
   console.log("http request", httpRequest);
   return (
     <>
-      <Button onClick={onOpen}>Quiz</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Tooltip content="Ask AI" placement="left">
+        <button
+          onClick={onOpen}
+          className="border border-gray rounded-full flex items-center gap-1 group text-black p-5"
+        >
+          <AiFillCustomerService />
+        </button>
+      </Tooltip>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={(isModalOpen) => {
+          if (!isModalOpen) {
+            setChatContext([]);
+          }
+          onOpenChange();
+        }}
+        size="3xl"
+      >
         <ModalContent>
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-1">Ask AI</ModalHeader>
               <ModalBody>
                 <div className="max-h-[40vh] overflow-y-auto">
+                  {chatContext.length === 0 && (
+                    <h1>
+                      Having a doubt in the current chapter? Ask AI to get
+                      clarified
+                    </h1>
+                  )}
                   {chatContext.map((chatMessage, idx) => {
                     if (chatMessage.type === "bot") {
                       return (
-                        <h1 key={idx} className="text-black">
-                          {chatMessage.message}
-                        </h1>
+                        <div key={idx} className="flex gap-4 items-start mb-5">
+                          <div>
+                            <FaRobot size={25} />
+                          </div>
+                          <p className="text-gray text-lg">
+                            {chatMessage.message}
+                          </p>
+                        </div>
                       );
                     }
                     return (
-                      <p key={idx} className="text-black">
-                        {chatMessage.message}
-                      </p>
+                      <div key={idx} className="flex gap-4 items-start mb-5">
+                        <CiEdit size={25} />
+                        <h2 className="text-black header-2">
+                          {chatMessage.message}
+                        </h2>
+                      </div>
                     );
                   })}
                   {httpRequest.loading && (
@@ -100,13 +131,19 @@ const AskAI = ({ chapterId }) => {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <form onSubmit={onFormSubmit}>
+                <form onSubmit={onFormSubmit} className="w-full">
                   <Input
                     placeholder="Ask a question"
                     value={currentQuestion}
                     onValueChange={setCurrentQuestion}
                     inputMode="text"
                     disabled={httpRequest.loading}
+                    endContent={
+                      <button type="submit">
+                        <IoMdSend />
+                      </button>
+                    }
+                    required
                     isRequired
                   />
                 </form>

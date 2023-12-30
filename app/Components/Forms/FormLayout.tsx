@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import {
@@ -8,6 +7,7 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
+import Button from "../Buttons";
 
 const FormPane = ({
   formTitle,
@@ -33,7 +33,7 @@ const FormPane = ({
       <section className="bg-[#FFFFFF] flex-1 pb-5 relative">
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(submitHandler)}>
-            <div className="fields-wrapper pr-[308px] pl-8 pb-10">
+            <div className="fields-wrapper pr-[308px] pb-10">
               {form(methods.register, methods.control, methods.getValues)}
             </div>
             <footer className="l-0  px-6 py-10 flex justify-end w-full bg-[#FFFFFF] z-10 gap-x-3 sticky bottom-1 shadow-formFooterShadow">
@@ -41,17 +41,12 @@ const FormPane = ({
                 onClick={() => {
                   router.back();
                 }}
-                className="bg-white rounded-md border border-[#C9D3DB]"
+                color="secondary"
                 type="button"
               >
                 Cancel
               </Button>
-              <Button
-                className="rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100"
-                type="submit"
-              >
-                Submit
-              </Button>
+              <Button type="submit">Submit</Button>
             </footer>
           </form>
         </FormProvider>

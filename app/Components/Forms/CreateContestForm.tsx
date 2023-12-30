@@ -11,7 +11,6 @@ import RichTextEditor from "../Editor/RichTextEditor";
 import {
   Accordion,
   AccordionItem,
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -22,6 +21,7 @@ import Mic from "../Icons/Mic";
 import { useState } from "react";
 import RightArrow from "../Icons/RightArrow";
 import clsx from "clsx";
+import Button from "../Buttons";
 
 /**
  * Form Fields
@@ -258,13 +258,13 @@ const ContestForm = (
                         <Button
                           isDisabled={questions.length === 1}
                           radius="sm"
+                          color="danger"
                           onClick={() => {
                             setQuestion((prev) =>
                               prev.filter((id) => id !== question)
                             );
                           }}
                           className={clsx(
-                            "bg-[#C82124] text-white",
                             questions.length === 1 && "cursor-no-drop"
                           )}
                         >
@@ -282,10 +282,7 @@ const ContestForm = (
           <div className="footer-wrapper w-full flex flex-end justify-end">
             <Button
               isDisabled={questions.length > 2}
-              className={clsx(
-                "rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100",
-                questions.length > 2 && "cursor-no-drop"
-              )}
+              className={clsx(questions.length > 2 && "cursor-no-drop")}
               type="button"
               onClick={() => setQuestion((prev) => [...prev, Date.now()])}
             >
@@ -317,7 +314,7 @@ const CreateContestForm = () => {
   return (
     <>
       <FormLayout
-        formTitle="Create Contest"
+        formTitle=""
         submitHandler={onSubmitHandler}
         form={ContestForm}
         infoContent={<>Test2</>}

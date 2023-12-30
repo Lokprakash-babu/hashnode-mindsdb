@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@nextui-org/react";
 import { useContestDetailsContext } from "./ContestDetailsContext";
 import { useAnswerContext } from "./AnswerContext";
+import Button from "@/app/Components/Buttons";
 
 const Footer = () => {
   const { currentSelectedQuestion, questionKeys, setCurrentSelectedQuestion } =

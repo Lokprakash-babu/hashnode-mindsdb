@@ -14,6 +14,7 @@ import {
   AVAILABLE_CATEGORIES,
   categoriesLabelMap,
 } from "../constants/categories";
+import clsx from "clsx";
 
 const tableColumn = [
   {
@@ -51,7 +52,11 @@ const renderCell = (
   console.log("item", { item, columnKey });
   switch (columnKey) {
     case "title":
-      return <Link href={`/learn/${item.id}`}>{item[columnKey]}</Link>;
+      return (
+        <Link href={`/learn/${item.id}`} className="text-blue underline">
+          {item[columnKey]}
+        </Link>
+      );
     case "category":
       const chipType = getChipType(item[columnKey]);
       return (
@@ -84,7 +89,12 @@ const LessonsListing = ({ lessons }) => {
     []
   );
   return (
-    <Table removeWrapper aria-label="Learning module table">
+    <Table
+      isStriped
+      isHeaderSticky
+      aria-label="Learning module table"
+      className={clsx("mt-8")}
+    >
       <TableHeader columns={tableColumn}>
         {(column) => {
           return <TableColumn key={column.key}>{column.label}</TableColumn>;
