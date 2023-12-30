@@ -1,5 +1,5 @@
 import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import ContestDetailsProvider from "./ContestDetailsContext";
 import Trigger from "./Timer/Trigger";
 import ContestHeader from "./ContestHeader";
@@ -8,9 +8,12 @@ import ContestSolutionWidget from "./ContestSolutionWidget";
 import Footer from "./Footer";
 import AnswerContextProvider from "./AnswerContext";
 import FullScreenChecker from "./Fullscreen";
+import { getServerSession } from "next-auth";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
+  const session = await getServerSession();
+  if (!session || !session.user) redirect("/login");
   try {
     const contestDetail = await requestWrapper(`/contest/start`, {
       method: "POST",

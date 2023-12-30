@@ -1,9 +1,12 @@
 import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import SubmissionList from "./SubmissionListing";
+import { getServerSession } from "next-auth";
 import HeaderSetter from "../Components/Header/HeaderSetter";
 
 const SubmissionListing = async () => {
+  const session = await getServerSession();
+  if (!session || !session.user) redirect("/login");
   try {
     const submissionList = await requestWrapper("/submission");
     const modifiedSubmissionList =

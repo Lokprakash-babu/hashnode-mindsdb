@@ -1,9 +1,12 @@
 import Toast from "../Toasts/Toast";
 import BackArrow from "../Icons/BackArrow";
 import AccountRegistrationForm from "../Forms/AccountRegistrationForm";
+import FileUpload from "../FileUpload/FileUpload";
+import { useState } from "react";
 import Button from "../Buttons";
 
 const CandidateRegistration = ({ setPathComponent, accountId }) => {
+  const [resumeFileUrl, setResumeFileUrl] = useState("");
   return (
     <div className="p-10 flex flex-col gap-y-10">
       <div className="header-wrapper">
@@ -22,7 +25,15 @@ const CandidateRegistration = ({ setPathComponent, accountId }) => {
             For the purpose of industry regulation, your details are required.
           </p>
         </div>
-        <AccountRegistrationForm accountId={accountId} />
+        <FileUpload
+          setFileUrl={(url) => {
+            setResumeFileUrl(url);
+          }}
+        />
+        <AccountRegistrationForm
+          accountId={accountId}
+          resumeFileUrl={resumeFileUrl}
+        />
       </div>
       <Toast />
     </div>

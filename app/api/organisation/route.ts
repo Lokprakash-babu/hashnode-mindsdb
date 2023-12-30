@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import { generateInsertQuery } from "@/app/utils/generateQuery";
+import { getServerSession } from "next-auth";
 
 const listOrg = () =>
   `SELECT * FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Organisation`;
 
 export async function GET() {
+  const session = await getServerSession();
+
+  if (!session || !session.user) {
+    return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  }
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(listOrg());
@@ -17,6 +23,11 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const session = await getServerSession();
+
+  if (!session || !session.user) {
+    return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  }
   try {
     const mysql = await mysqlConnection();
     const data = await req.json();

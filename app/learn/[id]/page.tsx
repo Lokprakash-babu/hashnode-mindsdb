@@ -1,11 +1,14 @@
 import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import LessonDetails from "./LessonDetails";
+import { getServerSession } from "next-auth";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import BreadCrumb from "@/app/Components/BreadCrumb";
 import SubHeader from "@/app/Components/SubHeader";
 
 const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
+  const session = await getServerSession();
+  if (!session || !session.user) redirect("/login");
   try {
     console.log("params", params);
     const lessonDetails = await requestWrapper(`/lessons/${params.id}`);
