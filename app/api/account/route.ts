@@ -5,10 +5,6 @@ import { findUser } from "../auth/[...nextauth]/route";
 export async function GET(request: NextRequest) {
   try {
     const mysql = await mysqlConnection();
-    console.log(
-      "FInd user query",
-      findUser(request.nextUrl.searchParams.get("email"), "email")
-    );
     const [data] = await mysql.query(
       findUser(request.nextUrl.searchParams.get("email"), "email")
     );
