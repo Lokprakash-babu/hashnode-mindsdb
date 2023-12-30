@@ -4,6 +4,8 @@ import "./globals.css";
 import { NextUiProvider } from "./Components/NextUiProvider";
 import SessionAuthProvider from "./Providers/SessionAuthProvider";
 import UserContextProvider from "./Providers/UserContextProvider";
+import Sidebar from "./Components/Sidebar";
+import Applayout from "./Components/Applayout.tsx";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <SessionAuthProvider>
           <UserContextProvider>
-            <NextUiProvider>{children}</NextUiProvider>
+            <NextUiProvider>
+              <Applayout>{children}</Applayout>
+            </NextUiProvider>
           </UserContextProvider>
         </SessionAuthProvider>
       </body>
