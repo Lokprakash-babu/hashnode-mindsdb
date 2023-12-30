@@ -32,9 +32,24 @@ const config: Config = {
       boxShadow: {
         formFooterShadow: "0 -4px 15px rgb(18 51 76 / 6%)",
       },
+      colors: {
+        blue: {
+          DEFAULT: "#1234dd",
+        },
+      },
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            primary: "#1234dd",
+          },
+        },
+      },
+    }),
+  ],
 };
 export default config;

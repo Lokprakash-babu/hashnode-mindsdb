@@ -4,6 +4,9 @@ import "./globals.css";
 import { NextUiProvider } from "./Components/NextUiProvider";
 import SessionAuthProvider from "./Providers/SessionAuthProvider";
 import UserContextProvider from "./Providers/UserContextProvider";
+import Sidebar from "./Components/Sidebar";
+import Applayout from "./Components/Applayout.tsx";
+import clsx from "clsx";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,10 +21,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={clsx(
+          inter.className,
+          "h-screen overflow-hidden text-[#27313b]"
+        )}
+      >
         <SessionAuthProvider>
           <UserContextProvider>
-            <NextUiProvider>{children}</NextUiProvider>
+            <NextUiProvider>
+              <Applayout>{children}</Applayout>
+            </NextUiProvider>
           </UserContextProvider>
         </SessionAuthProvider>
       </body>

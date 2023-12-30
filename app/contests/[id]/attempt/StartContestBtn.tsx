@@ -1,11 +1,11 @@
 "use client";
+import Button from "@/app/Components/Buttons";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
 } from "@nextui-org/react";
 import { usePathname, useRouter } from "next/navigation";

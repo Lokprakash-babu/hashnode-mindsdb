@@ -1,9 +1,9 @@
 import Toast from "../Toasts/Toast";
-import { Button } from "@nextui-org/react";
 import BackArrow from "../Icons/BackArrow";
 import AccountRegistrationForm from "../Forms/AccountRegistrationForm";
 import FileUpload from "../FileUpload/FileUpload";
 import { useState } from "react";
+import Button from "../Buttons";
 
 const CandidateRegistration = ({ setPathComponent, accountId }) => {
   const [resumeFileUrl, setResumeFileUrl] = useState("");

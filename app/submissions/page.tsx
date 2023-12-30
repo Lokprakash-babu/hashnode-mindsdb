@@ -2,6 +2,7 @@ import { requestWrapper } from "@/lib/requestWrapper";
 import { notFound, redirect } from "next/navigation";
 import SubmissionList from "./SubmissionListing";
 import { getServerSession } from "next-auth";
+import HeaderSetter from "../Components/Header/HeaderSetter";
 
 const SubmissionListing = async () => {
   const session = await getServerSession();
@@ -18,7 +19,12 @@ const SubmissionListing = async () => {
         };
       }) || [];
 
-    return <SubmissionList submissions={modifiedSubmissionList} />;
+    return (
+      <section className="layout">
+        <HeaderSetter title="Submissions" />
+        <SubmissionList submissions={modifiedSubmissionList} />
+      </section>
+    );
   } catch (err) {
     return notFound();
   }

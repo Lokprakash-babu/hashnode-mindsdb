@@ -1,5 +1,4 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
@@ -15,6 +14,7 @@ import { useEffect, useState } from "react";
 import SingleSelect from "../Forms/Fields/SingleSelect";
 import Business from "../Icons/Business";
 import InputField from "../Forms/Fields/InputField";
+import Button from "../Buttons";
 
 const ChooseOrganization = ({ selectCurrentOrg }) => {
   const [orgs, setOrgs] = useState([]);

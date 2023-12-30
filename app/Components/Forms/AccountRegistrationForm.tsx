@@ -4,9 +4,9 @@ import InputField from "./Fields/InputField";
 import Phone from "../Icons/Phone";
 import SingleSelect from "./Fields/SingleSelect";
 import { CountryList } from "@/app/constants/countries";
-import { Button } from "@nextui-org/react";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
+import Button from "../Buttons";
 
 const AccountRegistrationForm = ({
   accountId,
@@ -88,12 +88,7 @@ const AccountRegistrationForm = ({
         />
       </div>
       <div className="footer flex justify-end">
-        <Button
-          className="rounded-md  border-[#12344D] !opacity-100 text-white bg-primary-btn-gradient min-w-[120px] min-h-8 px-6 py-1.5 hover:!bg-[#12334C] hover:opacity-100 active:!opacity-100"
-          type="submit"
-        >
-          Save
-        </Button>
+        <Button type="submit">Save</Button>
       </div>
     </form>
   );

@@ -13,10 +13,6 @@ export const Companies = [
     type: "secondary",
     name: "Zomato",
   },
-  {
-    type: "primary",
-    name: "Zoho",
-  },
 ];
 export const practiceDetails = {
   "chat-specialist-and-pizza": {

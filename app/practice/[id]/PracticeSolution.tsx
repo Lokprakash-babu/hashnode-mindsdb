@@ -1,9 +1,9 @@
 "use client";
+import Button from "@/app/Components/Buttons";
 import ChatMessenger, { IChatMessenger } from "@/app/Components/ChatMessenger";
 import EmailEditor, { IEmailEditor } from "@/app/Components/EmailEditor";
 import { PracticeCategory } from "@/app/constants/practice";
 import { requestWrapper } from "@/lib/requestWrapper";
-import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
 
