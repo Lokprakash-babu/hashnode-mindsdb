@@ -7,7 +7,7 @@ const Button = extendVariants(NextUIButton, {
     color: {
       primary:
         "text-white bg-primary-btn-gradient border-[#12344D] opacity-100 hover:!bg-[#12334C] hover:opacity-100 active:opacity-100",
-      secondary: "bg-white rounded-md border border-[#C9D3DB]",
+      secondary: "bg-white text-black rounded-md border-[2px] border-[#C9D3DB]",
       danger: "bg-[#C82124] text-white",
     },
     isDisabled: {

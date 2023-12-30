@@ -32,6 +32,11 @@ const config: Config = {
       boxShadow: {
         formFooterShadow: "0 -4px 15px rgb(18 51 76 / 6%)",
       },
+      colors: {
+        blue: {
+          DEFAULT: "#1234dd",
+        },
+      },
     },
   },
   darkMode: "class",
