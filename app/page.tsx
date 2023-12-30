@@ -1,7 +1,9 @@
-"use client";
-import RegisterPath from "./Components/Onboarding/RegisterPath";
-import useAccountContext from "./hooks/useAccountContext";
-export default function Home() {
-  const { account_type, id } = useAccountContext();
-  return !account_type && <RegisterPath accountId={id} />;
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import HomePage from "./Components/HomePage/HomePage";
+
+export default async function Home() {
+  const session = await getServerSession();
+  if (!session || !session.user) redirect("/login");
+  return <HomePage />;
 }
