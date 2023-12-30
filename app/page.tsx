@@ -1,9 +1,7 @@
-
-
+"use client";
+import RegisterPath from "./Components/Onboarding/RegisterPath";
+import useAccountContext from "./hooks/useAccountContext";
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
-    </main>
-  );
+  const { account_type, id } = useAccountContext();
+  return !account_type && <RegisterPath accountId={id}/>;
 }
