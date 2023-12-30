@@ -17,7 +17,7 @@ const initiateRegisterFlow = async (data, user, mysql) => {
   }
 };
 
-const handler = NextAuth({
+export const AUTH_OPTIONS = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -40,6 +40,7 @@ const handler = NextAuth({
       return { ...params.session, id: params.user?.id };
     },
   },
-});
+};
+const handler = NextAuth(AUTH_OPTIONS);
 
 export { handler as GET, handler as POST };

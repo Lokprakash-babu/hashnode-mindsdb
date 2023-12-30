@@ -17,9 +17,9 @@ GROUP BY c.id;`;
 export async function POST(req: NextRequest) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+//   if (!session || !session.user) {
+//     return new NextResponse("UNAUTHENTICATED", { status: 401 });
+//   }
   try {
     await connect();
     const data = await req.json();
@@ -39,9 +39,9 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+//   if (!session || !session.user) {
+//     return new NextResponse("UNAUTHENTICATED", { status: 401 });
+//   }
   try {
     await connect();
     const { searchParams } = new URL(req.url);

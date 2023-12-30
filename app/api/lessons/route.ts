@@ -20,9 +20,9 @@ const getLessonIdAndTitleQuery = () => {
 export async function GET(req: NextRequest) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     await connect();
     console.log(">>> Minds db connected");
