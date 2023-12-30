@@ -91,6 +91,7 @@ const LessonsListing = ({ lessons }) => {
   return (
     <Table
       isStriped
+      isHeaderSticky
       aria-label="Learning module table"
       className={clsx("mt-8")}
     >

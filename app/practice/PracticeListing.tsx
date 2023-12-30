@@ -16,6 +16,7 @@ import {
   practiceCategoryToLabel,
   practiceData,
 } from "../constants/practice";
+import clsx from "clsx";
 
 const tableColumn = [
   {
@@ -63,7 +64,11 @@ const renderCell = (
   console.log("item", { item, columnKey });
   switch (columnKey) {
     case "title":
-      return <Link href={`/practice/${item.id}`}>{item[columnKey]}</Link>;
+      return (
+        <Link href={`/practice/${item.id}`} className="text-blue underline">
+          {item[columnKey]}
+        </Link>
+      );
     case "type":
       const chipType = getChipType(item[columnKey]);
       return (
@@ -92,7 +97,12 @@ const renderCell = (
 
 const PracticeListing = () => {
   return (
-    <Table removeWrapper aria-label="Practice problems table">
+    <Table
+      isStriped
+      isHeaderSticky
+      aria-label="Practice problems table"
+      className={clsx("mt-8")}
+    >
       <TableHeader columns={tableColumn}>
         {(column) => {
           return <TableColumn key={column.key}>{column.label}</TableColumn>;
