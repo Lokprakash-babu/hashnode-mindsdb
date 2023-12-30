@@ -47,13 +47,22 @@ const renderCell = (item, columnKey: string) => {
         columnKey === "submission_id"
           ? { text: "View Submission", href: `/submissions/${item[columnKey]}` }
           : { text: "View Problem", href: `/practice/${item[columnKey]}` };
-      return <Link href={link.href}>{link.text}</Link>;
+      return (
+        <Link href={link.href} className="text-blue underline">
+          {link.text}
+        </Link>
+      );
   }
 };
 
 const SubmissionList = ({ submissions }) => {
   return (
-    <Table removeWrapper aria-label="Practice problems table">
+    <Table
+      isHeaderSticky
+      isStriped
+      aria-label="Submissions table"
+      className="mt-8"
+    >
       <TableHeader columns={tableColumn}>
         {(column) => {
           return <TableColumn key={column.key}>{column.label}</TableColumn>;
