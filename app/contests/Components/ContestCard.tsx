@@ -46,6 +46,12 @@ export const RoleChip = ({ children }) => {
 };
 
 export const StatusChip = ({ status }) => {
+  //TODO: Implement proper chip
+  return (
+    <Chip radius="sm" variant="bordered">
+      TODO Chip
+    </Chip>
+  );
   return (
     <Chip
       radius="sm"
@@ -58,6 +64,8 @@ export const StatusChip = ({ status }) => {
 };
 
 const ContestCard = ({ contest }) => {
+  const currentDate = Date.now();
+
   return (
     <div>
       <Card className="!rounded-lg bg-[#fff]">
@@ -69,7 +77,7 @@ const ContestCard = ({ contest }) => {
               </h3>
               <RoleChip>{contest.role}</RoleChip>
             </div>
-            <StatusChip status={contest.status} />
+            {/* <StatusChip status={contest.status} /> */}
           </div>
         </CardHeader>
         <CardBody>

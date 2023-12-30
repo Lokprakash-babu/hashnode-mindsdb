@@ -13,7 +13,12 @@ const ChatFooter = ({
   isDisabled,
 }: IChatFooterProps) => {
   return (
-    <form onSubmit={onSubmit}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(e);
+      }}
+    >
       <Input
         onChange={(e) => {
           onChange(e.target.value);

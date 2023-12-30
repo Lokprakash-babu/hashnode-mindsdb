@@ -1,0 +1,4 @@
+1. Clear all the TODO flag
+2. Move all the dates to moment
+3. Timer
+4. Auto save

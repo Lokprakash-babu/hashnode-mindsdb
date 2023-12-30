@@ -1,9 +1,15 @@
 import RichTextEditor from "@/app/Components/Editor/RichTextEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAnswerContext } from "../AnswerContext";
 
-const EmailSolutionWidget = ({ questionDetails }) => {
-  const [enteredEmail, setEnteredEmail] = useState("");
-  console.log("entered email", enteredEmail);
+const EmailSolutionWidget = ({ onChange, questionKey }) => {
+  const { answers } = useAnswerContext();
+  const [enteredEmail, setEnteredEmail] = useState(
+    answers[questionKey]?.value || ""
+  );
+  useEffect(() => {
+    onChange(enteredEmail);
+  }, [enteredEmail]);
   return (
     <div>
       <RichTextEditor
