@@ -9,9 +9,9 @@ AND article_title = 'Abraham_Lincoln';`;
 export async function GET(req: Request) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     await connect();
     const queryResult = await MindsDB.SQL.runQuery(QUERY);

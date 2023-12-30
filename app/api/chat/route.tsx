@@ -24,9 +24,9 @@ AND latest_message = "${latestMessage}" AND context="${context}"`;
 export async function POST(req: Request) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     await connect();
     const requestBody = await req.json();

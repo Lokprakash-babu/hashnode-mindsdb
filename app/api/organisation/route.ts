@@ -9,9 +9,9 @@ const listOrg = () =>
 export async function GET() {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(listOrg());
@@ -25,9 +25,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     const mysql = await mysqlConnection();
     const data = await req.json();

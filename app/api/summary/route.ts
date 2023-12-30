@@ -13,9 +13,9 @@ WHERE article = "${article}";
 export async function POST(req: NextRequest) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     await connect();
     const requestBody = await req.json();

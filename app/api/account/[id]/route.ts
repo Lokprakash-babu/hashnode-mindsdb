@@ -11,9 +11,9 @@ export async function GET(
 ) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(findUser(params.id, "id"));
@@ -30,9 +30,9 @@ export async function PUT(
 ) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     const mysql = await mysqlConnection();
     const data = await req.json();

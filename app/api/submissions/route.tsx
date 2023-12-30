@@ -14,9 +14,9 @@ const getUsersSubmission = () => {
 export async function GET(req: Request) {
   const session = await getServerSession();
 
-  if (!session || !session.user) {
-    return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  // }
   try {
     await connect();
     //TODO: Get the user Id from cookie/headers
