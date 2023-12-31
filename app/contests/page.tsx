@@ -3,7 +3,6 @@
 import ContestList from "./ContestList";
 import CandidateContestList from "./CandidateContestList";
 
-import { redirect } from "next/navigation";
 import HeaderSetter from "../Components/Header/HeaderSetter";
 
 // This page contains list of contests that is associated to an account.

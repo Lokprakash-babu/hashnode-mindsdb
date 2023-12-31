@@ -36,10 +36,15 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    await connect();
+    const mysql = await mysqlConnection();
     const data = await req.json();
-    const QUERY = generateUpdateQuery("Contest", data, params.id);
-    const updateContest = await MindsDB.SQL.runQuery(QUERY);
+    const QUERY = generateUpdateQuery(
+      "Contest",
+      data,
+      params.id,
+      process.env.NEXT_PLANETSCALE_DB_NAME
+    );
+    const updateContest = await mysql.query(QUERY);
     return NextResponse.json(updateContest);
   } catch (err) {
     console.error("err", err);

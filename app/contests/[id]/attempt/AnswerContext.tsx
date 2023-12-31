@@ -1,6 +1,15 @@
 "use client";
-import Toast from "@/app/Components/Toasts/Toast";
+import Button from "@/app/Components/Buttons";
 import { requestWrapper } from "@/lib/requestWrapper";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@nextui-org/react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -9,7 +18,6 @@ import {
   useEffect,
   useState,
 } from "react";
-
 const AnswerContext = createContext({
   answers: {},
   setAnswer: (index) => {},
@@ -42,8 +50,8 @@ const AnswerContextProvider = ({ children }) => {
    * For email the value is string
    */
   const [answer, setAnswer] = useState({});
+  const [isInitialAnswerFetching, setIsInitialAnswerFetching] = useState(false);
   const param = useParams();
-  console.log("answer context", answer);
   const onSaveHandler = useCallback(
     async (onSaveNotification?: (response: any) => void) => {
       console.log("param get", param.id);
@@ -65,8 +73,7 @@ const AnswerContextProvider = ({ children }) => {
     },
     [answer]
   );
-
-  //AutoSave handler
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onContestEndHandler = useCallback(
     (onContestEndNotification?: (response: any) => void) => {
@@ -74,12 +81,13 @@ const AnswerContextProvider = ({ children }) => {
         contestId: param.id,
         answers: answer,
       };
-      requestWrapper("/contest/save", {
+      requestWrapper("/contest/end", {
         method: "POST",
         body: JSON.stringify(requestBody),
       })
         .then((response) => {
           onContestEndNotification?.(response);
+          onOpen();
         })
         .catch((err) => {
           console.log("error in answer context", err);
@@ -88,6 +96,29 @@ const AnswerContextProvider = ({ children }) => {
     },
     [answer]
   );
+
+  const savedAnswerFetcher = () => {
+    setIsInitialAnswerFetching(true);
+    requestWrapper(`contest/${param.id}/answer`, {
+      cache: "no-store",
+    })
+      .then((response) => {
+        console.log("client", response.message.answer);
+        setAnswer(response.message.answer || {});
+      })
+      .catch(() => {
+        setAnswer({});
+      })
+      .finally(() => {
+        setIsInitialAnswerFetching(false);
+      });
+  };
+  useEffect(() => {
+    savedAnswerFetcher();
+  }, []);
+  if (isInitialAnswerFetching) {
+    return <p>Loading...</p>;
+  }
   return (
     <AnswerContext.Provider
       value={{
@@ -98,6 +129,33 @@ const AnswerContextProvider = ({ children }) => {
       }}
     >
       {children}
+      <Modal
+        isDismissable={false}
+        size={"lg"}
+        isOpen={isOpen}
+        onClose={onClose}
+        closeButton={<></>}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Hurray!</ModalHeader>
+              <ModalBody>
+                <p className="text-md">
+                  You have successfully completed the contest
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Link href={"/contests"}>
+                  <Button color="primary" onPress={onClose}>
+                    Go to contests
+                  </Button>
+                </Link>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </AnswerContext.Provider>
   );
 };

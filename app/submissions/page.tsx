@@ -6,7 +6,9 @@ import HeaderSetter from "../Components/Header/HeaderSetter";
 
 const SubmissionListing = async () => {
   try {
-    const submissionList = await requestWrapper("/submissions");
+    const submissionList = await requestWrapper("submissions?type=practice", {
+      cache: "no-store",
+    });
     const modifiedSubmissionList =
       submissionList?.message?.map((submission) => {
         return {

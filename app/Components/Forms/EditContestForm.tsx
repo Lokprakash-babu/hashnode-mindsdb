@@ -9,6 +9,7 @@ import DateFormatter from "@/app/utils/dateFormatter";
 import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import Button from "../Buttons";
+import moment from "moment";
 
 const EditContestForm = ({ details }) => {
   const methods = useForm({
@@ -22,16 +23,22 @@ const EditContestForm = ({ details }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          end_date: moment(data.end_date).unix(),
+          start_date: moment(data.start_date).unix(),
+        }),
       });
       toast.success("Contest updated successfuly");
-      router.push(window.location.href);
-      router.refresh();
+      setTimeout(() => {
+        router.push(window.location.href);
+        router.refresh();
+      }, 750);
     } catch {
       toast.error("Unable to update Contest!");
     }
   };
-  <Toast />;
+  // <Toast />;
   return (
     <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
       <div className="form-wrapper flex flex-col gap-y-8">
@@ -66,7 +73,7 @@ const EditContestForm = ({ details }) => {
           {...methods.register("start_date", {
             required: true,
           })}
-          defaultValue={DateFormatter(details.start_date)}
+          defaultValue={moment.unix(details.start_date).format("YYYY-MM-DD")}
           label="Start Date"
           name="start_date"
           placeholder="Enter your contest title"
@@ -80,7 +87,7 @@ const EditContestForm = ({ details }) => {
             required: true,
           })}
           isRequired={true}
-          defaultValue={DateFormatter(details.end_date)}
+          defaultValue={moment.unix(details.end_date).format("YYYY-MM-DD")}
           type="date"
           label="End Date"
           name="end_date"

@@ -190,12 +190,14 @@ const QuestionsEditForm = ({ questions, id, showEditForm }) => {
                       return [...prev, `question_${Date.now()}`];
                     })
                   }
+                  color="default"
                 >
                   Add
                 </Button>
                 <Button
                   className={clsx(questions.length > 2 && "cursor-no-drop")}
                   type="submit"
+                  color="primary"
                 >
                   Save
                 </Button>

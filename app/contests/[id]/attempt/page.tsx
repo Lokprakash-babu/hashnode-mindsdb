@@ -10,6 +10,8 @@ import FullScreenChecker from "./Fullscreen";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import AutoSave from "./AutoSave";
 import Timer from "./Timer";
+import Button from "@/app/Components/Buttons";
+import Link from "next/link";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
@@ -27,13 +29,26 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
     //TODO: Contest ended page
     if (isContestAlreadyEnded) {
       console.log("contest ended");
-      return notFound();
+      return (
+        <>
+          <HeaderSetter title={`Contest: ${params.id}`} />
+
+          <div className="w-full h-full flex flex-col gap-3 justify-center items-center">
+            <p className="text-lg font-bold">
+              You have completed the contest already
+            </p>
+            <Link href="/contests">
+              <Button color="primary">Go to contests</Button>
+            </Link>
+          </div>
+        </>
+      );
     }
     return (
       <>
         <HeaderSetter title={`Contest: ${params.id}`} />
         <section className="px-[90px] pt-[50px]">
-          <FullScreenChecker />
+          {/* <FullScreenChecker /> */}
           <ContestDetailsProvider
             contestDetails={contestDetail.message.contestDetails}
           >
@@ -63,7 +78,7 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
       </>
     );
   } catch (err) {
-    console.log("contest details attemp page error", err);
+    console.log("contest details attempt page error", err);
     return notFound();
   }
 };

@@ -1,6 +1,5 @@
 import HeaderSetter from "../Components/Header/HeaderSetter";
 import PracticeListing from "./PracticeListing";
-import { redirect } from "next/navigation";
 
 const Practice = async () => {
   return (
