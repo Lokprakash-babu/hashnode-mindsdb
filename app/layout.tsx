@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextUiProvider } from "./Components/NextUiProvider";
-import SessionAuthProvider from "./Providers/SessionAuthProvider";
 import UserContextProvider from "./Providers/UserContextProvider";
 import Sidebar from "./Components/Sidebar";
 import Applayout from "./Components/Applayout.tsx";
@@ -27,13 +26,11 @@ export default function RootLayout({
           "h-screen overflow-hidden text-[#27313b]"
         )}
       >
-        <SessionAuthProvider>
-          <UserContextProvider>
-            <NextUiProvider>
-              <Applayout>{children}</Applayout>
-            </NextUiProvider>
-          </UserContextProvider>
-        </SessionAuthProvider>
+        <UserContextProvider>
+          <NextUiProvider>
+            <Applayout>{children}</Applayout>
+          </NextUiProvider>
+        </UserContextProvider>
       </body>
     </html>
   );

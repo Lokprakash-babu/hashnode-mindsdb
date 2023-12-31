@@ -1,7 +1,6 @@
 import connect from "@/lib/mindsdb-connection";
 import { NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
-import { getServerSession } from "next-auth";
 const generateChatQuery = (
   previousMessages: { type: "user" | "bot"; message: string }[],
   latestMessage: string,
@@ -22,11 +21,6 @@ WHERE previous_messages = "${previousMessagesString}"
 AND latest_message = "${latestMessage}" AND context="${context}"`;
 };
 export async function POST(req: Request) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     await connect();
     const requestBody = await req.json();

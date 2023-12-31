@@ -1,5 +1,4 @@
 import { mysqlConnection } from "@/lib/mysql-connection";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -21,11 +20,6 @@ const updateSubmissionRecord = (candidateId, contestId) => {
 };
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     const data = await req.json();
     //TODO: Get the userId from session
