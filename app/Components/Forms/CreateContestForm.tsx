@@ -22,6 +22,7 @@ import { useState } from "react";
 import RightArrow from "../Icons/RightArrow";
 import clsx from "clsx";
 import Button from "../Buttons";
+import moment from "moment";
 
 /**
  * Form Fields
@@ -60,7 +61,7 @@ const ContestForm = (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
         type="text"
-        value={`CN-${Math.round(Math.random() * 1000000)}`}
+        value={`CN-${moment().unix()}`}
         label="Challenge Id"
         register={register("id", {
           required: true,
@@ -148,14 +149,7 @@ const ContestForm = (
         value={"1"}
         placeholder="Enter your organisation id"
       />
-      <InputField
-        register={register("status")}
-        className="hidden"
-        isRequired={true}
-        label="Status"
-        value={"yet_to_start"}
-        placeholder="Enter contest status"
-      />
+
       <Card radius="sm" shadow="sm">
         <CardHeader className="header-1-400">Contest Questions</CardHeader>
         <CardBody>
@@ -284,6 +278,7 @@ const ContestForm = (
               isDisabled={questions.length > 2}
               className={clsx(questions.length > 2 && "cursor-no-drop")}
               type="button"
+              color="primary"
               onClick={() => setQuestion((prev) => [...prev, Date.now()])}
             >
               Add
@@ -306,7 +301,7 @@ const CreateContestForm = () => {
         body: JSON.stringify(data),
       });
       toast.success("Contest created successfuly");
-      router.push("/contests");
+      // router.push("/contests");
     } catch {
       toast.error("Unable to create Contest!");
     }

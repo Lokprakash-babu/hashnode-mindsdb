@@ -1,7 +1,6 @@
 import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import ContestDetailsProvider from "./ContestDetailsContext";
-import Trigger from "./Timer/Trigger";
 import ContestHeader from "./ContestHeader";
 import ContestProblemDescription from "./ContestProblemDescription";
 import ContestSolutionWidget from "./ContestSolutionWidget";
@@ -9,6 +8,8 @@ import Footer from "./Footer";
 import AnswerContextProvider from "./AnswerContext";
 import FullScreenChecker from "./Fullscreen";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
+import AutoSave from "./AutoSave";
+import Timer from "./Timer";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
@@ -18,10 +19,11 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
       body: JSON.stringify({
         contestId: params.id,
       }),
+      cache: "no-store",
     });
     console.log("contest details", contestDetail);
     const isContestAlreadyEnded =
-      contestDetail?.message === "Contest already ended";
+      contestDetail?.message === "Contest is done already!";
     //TODO: Contest ended page
     if (isContestAlreadyEnded) {
       console.log("contest ended");
@@ -29,19 +31,24 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
     }
     return (
       <>
-        {/**Trigger checks if the candidate already started the contest.
-         * If not, the trigger will register that the candidate started the contest,
-         * else, the timer will be retrieved and displayed in the Timer display */}
         <HeaderSetter title={`Contest: ${params.id}`} />
-        <Trigger params={params} />
-        <section className="px-[90px]">
+        <section className="px-[90px] pt-[50px]">
           <FullScreenChecker />
           <ContestDetailsProvider
             contestDetails={contestDetail.message.contestDetails}
           >
             <AnswerContextProvider>
-              <ContestHeader />
-              <div className="flex mb-5">
+              <div className="flex justify-between w-full items-center">
+                <div>
+                  <ContestHeader />
+                </div>
+                <div className="flex gap-1 items-center">
+                  <Timer endTime={contestDetail?.message?.endTime} />
+
+                  <AutoSave />
+                </div>
+              </div>
+              <div className="flex mb-5 gap-8">
                 <div className="flex-1">
                   <ContestProblemDescription />
                 </div>

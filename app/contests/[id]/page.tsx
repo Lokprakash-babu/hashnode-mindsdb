@@ -1,7 +1,6 @@
 import { requestWrapper } from "@/lib/requestWrapper";
 import ContestDetails from "../manager/ContestDetails";
 
-import { redirect } from "next/navigation";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import SubHeader from "@/app/Components/SubHeader";
 import BreadCrumb from "@/app/Components/BreadCrumb";
