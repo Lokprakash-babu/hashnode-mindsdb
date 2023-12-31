@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import connect from "@/lib/mindsdb-connection";
-import { getServerSession } from "next-auth";
+
 const submissionIdGenerator = () => {
   const epoch = Date.now();
   return `submission_${epoch}`;
@@ -90,11 +90,6 @@ const updateEntryInFeedbackTable = ({
  * 2. Create an entry in the feedback table against the practice id for an user if it doesn't exist, else, overwrite it with the score and feedback.
  */
 export async function POST(req: NextRequest) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     const mysql = await mysqlConnection();
     await connect();

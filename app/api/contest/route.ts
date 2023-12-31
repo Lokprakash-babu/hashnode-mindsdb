@@ -2,7 +2,6 @@ import connect from "@/lib/mindsdb-connection";
 import { NextResponse, NextRequest } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 import { generateInsertQuery, selectAllQuery } from "@/app/utils/generateQuery";
-import { getServerSession } from "next-auth";
 
 // Get contest and candidates who have subscribed to that contest
 const generateListQuery = (
@@ -15,11 +14,6 @@ WHERE c.${key} = ${value}
 GROUP BY c.id;`;
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession();
-
-//   if (!session || !session.user) {
-//     return new NextResponse("UNAUTHENTICATED", { status: 401 });
-//   }
   try {
     await connect();
     const data = await req.json();
@@ -39,9 +33,9 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const session = await getServerSession();
 
-//   if (!session || !session.user) {
-//     return new NextResponse("UNAUTHENTICATED", { status: 401 });
-//   }
+  //   if (!session || !session.user) {
+  //     return new NextResponse("UNAUTHENTICATED", { status: 401 });
+  //   }
   try {
     await connect();
     const { searchParams } = new URL(req.url);

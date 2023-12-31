@@ -8,12 +8,9 @@ import ContestSolutionWidget from "./ContestSolutionWidget";
 import Footer from "./Footer";
 import AnswerContextProvider from "./AnswerContext";
 import FullScreenChecker from "./Fullscreen";
-import { getServerSession } from "next-auth";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
-  const session = await getServerSession();
-  if (!session || !session.user) redirect("/login");
   try {
     const contestDetail = await requestWrapper(`/contest/start`, {
       method: "POST",

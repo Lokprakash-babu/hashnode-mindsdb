@@ -1,14 +1,8 @@
 import { mysqlConnection } from "@/lib/mysql-connection";
 import { NextRequest, NextResponse } from "next/server";
-import { findUser } from "../auth/[...nextauth]/route";
-import { getServerSession } from "next-auth/next";
+import { findUser } from "./[id]/route";
 
 export async function GET(request: NextRequest) {
-  // const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(
