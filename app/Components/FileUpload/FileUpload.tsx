@@ -30,22 +30,33 @@ const create = (file, setFileUrl) => {
     );
   }
 };
-const FileUpload = ({ label = "Resume", setFileUrl }) => {
-  const [file, setFile] = useState([]);
+const FileUpload = ({
+  label = "Resume",
+  setFileUrl,
+  showLabel = true,
+  disabled = false,
+  initialFile = [],
+}) => {
+  const [file, setFile] = useState(initialFile);
   return (
     <div className="flex flex-col gap-y-2">
-      <label>Resume</label>
+      {showLabel && <label>Resume</label>}
       <FilePond
         files={file}
+        disabled={disabled}
         credits={false}
         allowReorder={true}
         allowMultiple={true}
         onupdatefiles={(data) => {
-          create(data, setFileUrl);
+          !disabled && create(data, setFileUrl);
           // @ts-ignore
           setFile(data);
         }}
-        labelIdle={`Drag & Drop your ${label} or <span class="filepond--label-action">Browse</span>`}
+        labelIdle={
+          disabled
+            ? ""
+            : `Drag & Drop your ${label} or <span class="filepond--label-action">Browse</span>`
+        }
       />
     </div>
   );
