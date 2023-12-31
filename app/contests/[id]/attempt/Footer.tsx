@@ -21,7 +21,11 @@ const Footer = () => {
           e.stopPropagation();
           setCurrentSelectedQuestion(questionKeys[questionIndex - 1]);
         }}
-        className={clsx(totalNoOfQuestions > 1 ? "visible" : "invisible")}
+        className={clsx(
+          totalNoOfQuestions > 1 && questionIndex !== 0
+            ? "visible"
+            : "invisible"
+        )}
       >
         Previous
       </Button>

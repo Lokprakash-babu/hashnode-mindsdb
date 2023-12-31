@@ -3,9 +3,10 @@
 
 
 HIGH:
-3. Timer
-4. Auto save
-5: Uniform contest submission and Practice submission format
+4. Uniform contest submission and Practice submission format
+5. Duplicate contest id checker
+
+
 
 6. 404 page style
 7. Error dialog

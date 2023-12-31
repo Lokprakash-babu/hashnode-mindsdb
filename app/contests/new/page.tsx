@@ -1,7 +1,5 @@
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import CreateContest from "./CreateContest";
-import { redirect } from "next/navigation";
-import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 const NewContest = async () => {
   return (
     <div className="bg-white">

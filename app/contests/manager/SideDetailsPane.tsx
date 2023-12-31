@@ -2,6 +2,7 @@ import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { RoleChip, StatusChip } from "../Components/ContestCard";
 import DateFormatter from "@/app/utils/dateFormatter";
 import EditContestForm from "@/app/Components/Forms/EditContestForm";
+import moment from "moment";
 
 const InfoCard = ({ details }) => {
   return (
@@ -16,9 +17,19 @@ const InfoCard = ({ details }) => {
             <RoleChip>{details.role}</RoleChip>
             <StatusChip status={details.status} />
           </div>
-          <div className="flex flex-col gap-y-3">
-            <span>Start date: {DateFormatter(details.start_date)}</span>
-            <span>End date: {DateFormatter(details.end_date)}</span>
+          <div className="flex flex-col gap-y-3 text-md">
+            <p>
+              Start date:{" "}
+              <span className="text-md-500">
+                {moment.unix(details.start_date).format("DD-MM-YYYY")}
+              </span>
+            </p>
+            <p>
+              End date:{" "}
+              <span className="text-md-500">
+                {moment.unix(details.end_date).format("DD-MM-YYYY")}
+              </span>
+            </p>
           </div>
         </CardBody>
       </Card>

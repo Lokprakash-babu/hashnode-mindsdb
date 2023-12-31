@@ -1,12 +1,19 @@
 "use client";
+import Toast from "@/app/Components/Toasts/Toast";
 import { requestWrapper } from "@/lib/requestWrapper";
 import { useParams } from "next/navigation";
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const AnswerContext = createContext({
   answers: {},
   setAnswer: (index) => {},
-  onSaveHandler: (onSaveNotification?: () => {}) => {},
+  onSaveHandler: (onSaveNotification?: () => void) => {},
   onContestEndHandler: (onContestEndNotification?: () => {}) => {},
 });
 
@@ -18,6 +25,22 @@ export const useAnswerContext = () => {
 };
 
 const AnswerContextProvider = ({ children }) => {
+  /**
+   * answer:{
+   * [questionKey]:{
+   * value: Respective state value
+   * }}
+   */
+  /**
+   * For chat the value is
+   * {
+   *  previousMessages:[],
+   * toBeRenderedMessages:[]
+   * }
+   */
+  /**
+   * For email the value is string
+   */
   const [answer, setAnswer] = useState({});
   const param = useParams();
   console.log("answer context", answer);
@@ -42,6 +65,9 @@ const AnswerContextProvider = ({ children }) => {
     },
     [answer]
   );
+
+  //AutoSave handler
+
   const onContestEndHandler = useCallback(
     (onContestEndNotification?: (response: any) => void) => {
       const requestBody = {

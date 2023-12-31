@@ -46,7 +46,9 @@ const FormPane = ({
               >
                 Cancel
               </Button>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" color="primary">
+                Submit
+              </Button>
             </footer>
           </form>
         </FormProvider>
