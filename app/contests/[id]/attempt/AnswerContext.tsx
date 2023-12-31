@@ -42,8 +42,8 @@ const AnswerContextProvider = ({ children }) => {
    * For email the value is string
    */
   const [answer, setAnswer] = useState({});
+  const [isInitialAnswerFetching, setIsInitialAnswerFetching] = useState(false);
   const param = useParams();
-  console.log("answer context", answer);
   const onSaveHandler = useCallback(
     async (onSaveNotification?: (response: any) => void) => {
       console.log("param get", param.id);
@@ -66,8 +66,6 @@ const AnswerContextProvider = ({ children }) => {
     [answer]
   );
 
-  //AutoSave handler
-
   const onContestEndHandler = useCallback(
     (onContestEndNotification?: (response: any) => void) => {
       const requestBody = {
@@ -88,6 +86,29 @@ const AnswerContextProvider = ({ children }) => {
     },
     [answer]
   );
+
+  const savedAnswerFetcher = () => {
+    setIsInitialAnswerFetching(true);
+    requestWrapper(`contest/${param.id}/answer`, {
+      cache: "no-store",
+    })
+      .then((response) => {
+        console.log("client", response.message.answer);
+        setAnswer(response.message.answer || {});
+      })
+      .catch(() => {
+        setAnswer({});
+      })
+      .finally(() => {
+        setIsInitialAnswerFetching(false);
+      });
+  };
+  useEffect(() => {
+    savedAnswerFetcher();
+  }, []);
+  if (isInitialAnswerFetching) {
+    return <p>Loading...</p>;
+  }
   return (
     <AnswerContext.Provider
       value={{
