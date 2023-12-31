@@ -12,6 +12,7 @@ const ContestHeader = () => {
       aria-label="Questions Tab"
       selectedKey={currentSelectedQuestion}
       onSelectionChange={setCurrentSelectedQuestion}
+      className="mb-4"
     >
       {questionKeys.map((question, idx) => {
         return <Tab key={question} title={`Question ${idx + 1}`}></Tab>;

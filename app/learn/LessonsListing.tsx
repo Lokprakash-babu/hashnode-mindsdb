@@ -60,7 +60,7 @@ const renderCell = (
     case "category":
       const chipType = getChipType(item[columnKey]);
       return (
-        <Chip variant="bordered" color={chipType}>
+        <Chip variant="dot" color={chipType}>
           {categoriesLabelMap[item[columnKey]]}
         </Chip>
       );

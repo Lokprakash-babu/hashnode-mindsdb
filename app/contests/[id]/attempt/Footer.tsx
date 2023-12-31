@@ -2,6 +2,7 @@
 import { useContestDetailsContext } from "./ContestDetailsContext";
 import { useAnswerContext } from "./AnswerContext";
 import Button from "@/app/Components/Buttons";
+import clsx from "clsx";
 
 const Footer = () => {
   const { currentSelectedQuestion, questionKeys, setCurrentSelectedQuestion } =
@@ -20,6 +21,7 @@ const Footer = () => {
           e.stopPropagation();
           setCurrentSelectedQuestion(questionKeys[questionIndex - 1]);
         }}
+        className={clsx(totalNoOfQuestions > 1 ? "visible" : "invisible")}
       >
         Previous
       </Button>

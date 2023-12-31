@@ -70,9 +70,9 @@ const DetailsSection = ({ details }) => {
           <h3 className="underline">Contest Questions</h3>
           <Dropdown>
             <DropdownTrigger>
-              <Button isIconOnly radius="sm" variant="bordered">
+              <button>
                 <ActionMenu />
-              </Button>
+              </button>
             </DropdownTrigger>
             <DropdownMenu
               variant="faded"

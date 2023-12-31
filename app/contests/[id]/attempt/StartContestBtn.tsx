@@ -26,7 +26,9 @@ const StartContestBtn = () => {
   };
   return (
     <>
-      <Button onPress={onOpen}>Start Contest</Button>
+      <Button onClick={onOpen} color="primary">
+        Start Contest
+      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (

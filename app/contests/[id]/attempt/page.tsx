@@ -8,6 +8,7 @@ import ContestSolutionWidget from "./ContestSolutionWidget";
 import Footer from "./Footer";
 import AnswerContextProvider from "./AnswerContext";
 import FullScreenChecker from "./Fullscreen";
+import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
@@ -31,18 +32,27 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
         {/**Trigger checks if the candidate already started the contest.
          * If not, the trigger will register that the candidate started the contest,
          * else, the timer will be retrieved and displayed in the Timer display */}
+        <HeaderSetter title={`Contest: ${params.id}`} />
         <Trigger params={params} />
-        <FullScreenChecker />
-        <ContestDetailsProvider
-          contestDetails={contestDetail.message.contestDetails}
-        >
-          <AnswerContextProvider>
-            <ContestHeader />
-            <ContestProblemDescription />
-            <ContestSolutionWidget />
-            <Footer />
-          </AnswerContextProvider>
-        </ContestDetailsProvider>
+        <section className="px-[90px]">
+          <FullScreenChecker />
+          <ContestDetailsProvider
+            contestDetails={contestDetail.message.contestDetails}
+          >
+            <AnswerContextProvider>
+              <ContestHeader />
+              <div className="flex mb-5">
+                <div className="flex-1">
+                  <ContestProblemDescription />
+                </div>
+                <div className="flex-1">
+                  <ContestSolutionWidget />
+                </div>
+              </div>
+              <Footer />
+            </AnswerContextProvider>
+          </ContestDetailsProvider>
+        </section>
       </>
     );
   } catch (err) {
