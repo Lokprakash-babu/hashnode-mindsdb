@@ -30,7 +30,6 @@ import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
 import StartContestBtn from "../[id]/attempt/StartContestBtn";
-import Button from "@/app/Components/Buttons";
 
 const TYPE_MAPPING = {
   bot_conversation: "Bot Conversation",
@@ -185,10 +184,12 @@ const ContestDetails = ({ details }) => {
     <div className="contest-details-wrapper flex text-black">
       <div className="details-pane  min-h-[100vh]  flex-1">
         <div className="details-header py-4 pr-8 flex flex-col gap-y-6">
-          <div className="flex justify-between items-center">
-            <div className="flex gap-x-4 items-center">
-              <Trophy />
-              <div className="flex flex-col gap-y-2">
+          <div className="flex justify-between items-center gap-5">
+            <div className="flex gap-x-4 items-start">
+              <div>
+                <Trophy />
+              </div>
+              <div className="flex flex-1 flex-col gap-y-2">
                 <h2 className="header-2-600">{details.title}</h2>
                 <h3 className="header-3-600">
                   <Markdown>{removeHtmlTags(details.description)}</Markdown>
