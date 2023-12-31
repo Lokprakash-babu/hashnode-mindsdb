@@ -1,14 +1,12 @@
 import { requestWrapper } from "@/lib/requestWrapper";
 import { notFound, redirect } from "next/navigation";
 import SubmissionDetails from "./SubmissionDetails";
-import { getServerSession } from "next-auth";
+
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import SubHeader from "@/app/Components/SubHeader";
 import BreadCrumb from "@/app/Components/BreadCrumb";
 
 const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
-  const session = await getServerSession();
-  if (!session || !session.user) redirect("/login");
   try {
     const getSubmissionDetails = await requestWrapper(
       `/submissions/${params.id}`

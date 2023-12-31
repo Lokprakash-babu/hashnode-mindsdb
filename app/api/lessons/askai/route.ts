@@ -1,7 +1,6 @@
 import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
-import { getServerSession } from "next-auth";
 
 const getChapterQuery = (chapterId: string) => {
   return `
@@ -17,11 +16,6 @@ AND about = '${about}';
     `;
 };
 export async function GET(req: NextRequest) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     await connect();
     const searchParams = req.nextUrl.searchParams;

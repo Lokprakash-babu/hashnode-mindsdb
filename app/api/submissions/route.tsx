@@ -1,7 +1,6 @@
 import connect from "@/lib/mindsdb-connection";
 import { NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
-import { getServerSession } from "next-auth";
 
 //TODO: Add user id to the query
 const getUsersSubmission = () => {
@@ -12,11 +11,6 @@ const getUsersSubmission = () => {
     `;
 };
 export async function GET(req: Request) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     await connect();
     //TODO: Get the user Id from cookie/headers

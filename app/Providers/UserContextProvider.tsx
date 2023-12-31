@@ -1,18 +1,16 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { requestWrapper } from "@/lib/requestWrapper";
 export const UserContext = createContext<any>(null);
 const UserContextProvider = ({ children }) => {
-  const { data: session } = useSession();
   const [userContextData, setUserContextData] = useState({});
-
+  // Todo move to user email after auth logic
   useEffect(() => {
-    session?.user &&
-      requestWrapper(`/account?email=${session?.user?.email}`, {
-        cache: "no-store",
-      }).then((account) => setUserContextData(account));
-  }, [session]);
+    // session?.user &&
+    requestWrapper(`/account?email=devlokprakash100@gmail.com`, {
+      cache: "no-store",
+    }).then((account) => setUserContextData(account));
+  }, []);
 
   return (
     <UserContext.Provider value={userContextData}>

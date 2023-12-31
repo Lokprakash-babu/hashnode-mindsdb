@@ -1,11 +1,8 @@
-import { getServerSession } from "next-auth";
+import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import CreateContest from "./CreateContest";
 import { redirect } from "next/navigation";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 const NewContest = async () => {
-  const session = await getServerSession();
-  if (!session || !session.user) redirect("/login");
-
   return (
     <div className="bg-white">
       <HeaderSetter title={"Create a Contest"} />

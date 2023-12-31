@@ -1,19 +1,21 @@
 import { mysqlConnection } from "@/lib/mysql-connection";
 import { NextRequest, NextResponse } from "next/server";
-import { findUser } from "../../auth/[...nextauth]/route";
+
 import connect from "@/lib/mindsdb-connection";
 import { generateUpdateQuery } from "@/app/utils/generateQuery";
-import { getServerSession } from "next-auth";
 
+export const findUser = (data, key = "email") => {
+  return `SELECT * FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account where ${key}='${data}'`;
+};
+
+export const insertUser = ({ id, name, email, image }) => {
+  return `INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account (id,name, email, avatar_url)
+  VALUES ('${id}','${name}', '${email}', '${image}');`;
+};
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(findUser(params.id, "id"));
@@ -28,11 +30,6 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession();
-
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
   try {
     const mysql = await mysqlConnection();
     const data = await req.json();
