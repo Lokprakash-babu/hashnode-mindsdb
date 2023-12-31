@@ -10,13 +10,10 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 
-import {
-  Companies,
-  PracticeCategory,
-  practiceCategoryToLabel,
-  practiceData,
-} from "../constants/practice";
+import { Companies, practiceData } from "../constants/practice";
 import clsx from "clsx";
+import CategoryChip from "../Components/CategoryChip";
+import DifficultyChip from "../Components/DifficultyChip";
 
 const tableColumn = [
   {
@@ -41,17 +38,6 @@ const tableColumn = [
   },
 ];
 
-const getChipType = (category: PracticeCategory) => {
-  switch (category) {
-    case PracticeCategory.CHAT:
-      return "success";
-    case PracticeCategory.EMAIL:
-      return "warning";
-    default:
-      return "danger";
-  }
-};
-
 const renderCell = (
   item: {
     id: string;
@@ -61,7 +47,6 @@ const renderCell = (
   },
   columnKey: string
 ) => {
-  console.log("item", { item, columnKey });
   switch (columnKey) {
     case "title":
       return (
@@ -70,25 +55,22 @@ const renderCell = (
         </Link>
       );
     case "type":
-      const chipType = getChipType(item[columnKey]);
-      return (
-        <Chip variant="bordered" color={chipType}>
-          {practiceCategoryToLabel[item[columnKey]]}
-        </Chip>
-      );
+      return <CategoryChip category={item[columnKey]} />;
     case "companies":
       return (
         <div className="flex gap-1">
           {Companies.map(({ name, type }) => {
             return (
               //@ts-ignore
-              <Chip key={name} color={type}>
-                {name}
+              <Chip key={name} color={type} variant={"dot"}>
+                <p className={clsx("text-md-500")}>{name}</p>
               </Chip>
             );
           })}
         </div>
       );
+    case "difficulty":
+      return <DifficultyChip difficulty={item[columnKey]} />;
     default:
       //@ts-ignore
       return <p>{item[columnKey]}</p>;
