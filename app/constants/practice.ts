@@ -6,11 +6,11 @@ export enum PracticeCategory {
 
 export const Companies = [
   {
-    type: "success",
+    type: "warning",
     name: "Swiggy",
   },
   {
-    type: "secondary",
+    type: "danger",
     name: "Zomato",
   },
 ];

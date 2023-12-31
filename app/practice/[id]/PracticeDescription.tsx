@@ -1,4 +1,6 @@
-import { Chip } from "@nextui-org/react";
+import CategoryChip, { Category } from "@/app/Components/CategoryChip";
+import DifficultyChip, { Difficulty } from "@/app/Components/DifficultyChip";
+import clsx from "clsx";
 export interface IProblemSection {
   description: string;
   expectations: string[];
@@ -9,21 +11,24 @@ export interface IProblemSection {
 
 const PracticeDescription = (props: IProblemSection) => {
   const { type, difficulty } = props;
+  console.log("type", type);
   return (
     <>
-      <div>
-        <Chip>{type}</Chip>
-        <Chip>{difficulty}</Chip>
+      <div className={clsx("flex items-center gap-2 mb-5")}>
+        <CategoryChip category={type as Category} />
+        <DifficultyChip difficulty={difficulty as Difficulty} />
       </div>
-      <div>
-        <h4>Description</h4>
+      <div className={clsx("mb-6 text-md")}>
+        <h2 className={clsx("header-2-600 mb-2")}>Description</h2>
         {props.description}
       </div>
-      <div>
-        <h3>Expectations</h3>
-        <ul>
+      <div className="text-md">
+        <h2 className={clsx("header-2-600 mb-2")}>Expectations</h2>
+        <ul className={clsx("list-disc list-inside	")}>
           {props.expectations.map((expectation, index) => (
-            <li key={index}>{expectation}</li>
+            <li key={index} className={clsx("mb-2 text-md")}>
+              {expectation}
+            </li>
           ))}
         </ul>
       </div>

@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, ButtonGroup } from "@nextui-org/react";
 import React from "react";
 export interface IChatHeader {
   onEndChat?: (e?: any) => void;
@@ -15,13 +15,15 @@ const ChatHeader = ({
   return (
     <>
       {!isReadOnlyMode && (
-        <div className="action-container flex gap-5">
-          <Button onClick={resetChat} disabled={isChatLoading}>
-            Reset Chat
-          </Button>
-          <Button onClick={() => onEndChat?.()} disabled={isChatLoading}>
-            End Chat
-          </Button>
+        <div className="action-container mb-4">
+          <ButtonGroup
+            isDisabled={isChatLoading}
+            variant="bordered"
+            className="w-full justify-end"
+          >
+            <Button onClick={resetChat}>Reset Chat</Button>
+            <Button onClick={() => onEndChat?.()}>End Chat</Button>
+          </ButtonGroup>
         </div>
       )}
     </>

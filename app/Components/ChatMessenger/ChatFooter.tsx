@@ -1,4 +1,5 @@
-import { Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { IoMdSend } from "react-icons/io";
 
 export interface IChatFooterProps {
   isDisabled?: boolean;
@@ -23,13 +24,27 @@ const ChatFooter = ({
         onChange={(e) => {
           onChange(e.target.value);
         }}
+        placeholder="Respond to the customer"
         value={currentValue}
         isDisabled={isDisabled}
+        classNames={{
+          inputWrapper: "bg-white text-black h-5",
+        }}
+        endContent={
+          <>
+            <button
+              type="submit"
+              className="text-[#398AB9]"
+              disabled={isDisabled}
+            >
+              <IoMdSend />
+            </button>
+          </>
+        }
+        maxLength={400}
+        isRequired
         required
       />
-      <Button type="submit" disabled={isDisabled || !currentValue}>
-        Send
-      </Button>
     </form>
   );
 };

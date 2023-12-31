@@ -6,6 +6,7 @@ import PracticeSolution from "./PracticeSolution";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import SubHeader from "@/app/Components/SubHeader";
 import BreadCrumb from "@/app/Components/BreadCrumb";
+import clsx from "clsx";
 
 const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
   const practiceDetailsContent = practiceDetails[params.id];
@@ -28,9 +29,16 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
       <SubHeader>
         <BreadCrumb crumbs={crumbs} />
       </SubHeader>
-      <section className="layout">
-        <PracticeDescription {...practiceDetailsContent} />
-        <PracticeSolution {...practiceDetailsContent} practiceId={params.id} />
+      <section className={clsx("layout", "flex justify-between gap-10")}>
+        <article className={clsx("flex-1")}>
+          <PracticeDescription {...practiceDetailsContent} />
+        </article>
+        <article className={clsx("flex-1")}>
+          <PracticeSolution
+            {...practiceDetailsContent}
+            practiceId={params.id}
+          />
+        </article>
       </section>
     </>
   );
