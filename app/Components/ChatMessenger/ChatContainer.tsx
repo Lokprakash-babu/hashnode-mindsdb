@@ -1,3 +1,8 @@
+import { useEffect, useRef } from "react";
+import Bot from "./Bubble/Bot";
+import User from "./Bubble/User";
+import { ScrollShadow } from "@nextui-org/react";
+
 export type MessagePersona = "user" | "bot";
 export interface IChatMessages {
   type: MessagePersona;
@@ -8,16 +13,49 @@ export interface IChatContainer {
   chatMessages: IChatMessages[];
 }
 const ChatContainer = ({ chatMessages }: IChatContainer) => {
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+  const totalChatMessages = chatMessages.length;
+
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView();
+    }
+  }, [lastMessageRef, chatMessages]);
   return (
-    <div>
-      {chatMessages.map((chatMessage, idx) => {
-        const isBotMessage = chatMessage.type === "bot";
-        if (isBotMessage) {
-          return <h2 key={idx}>{chatMessage.message}</h2>;
-        }
-        return <p key={idx}>{chatMessage.message}</p>;
-      })}
-    </div>
+    <ScrollShadow className="h-[50vh] overflow-y-auto mb-5">
+      <div className="flex flex-col gap-3">
+        {chatMessages.map((chatMessage, idx) => {
+          const isBotMessage = chatMessage.type === "bot";
+          const isLastMessage = totalChatMessages === idx + 1;
+          if (isBotMessage) {
+            return (
+              <div
+                key={idx}
+                {...(isLastMessage
+                  ? {
+                      ref: lastMessageRef,
+                    }
+                  : {})}
+              >
+                <Bot message={chatMessage.message} />
+              </div>
+            );
+          }
+          return (
+            <div
+              key={idx}
+              {...(isLastMessage
+                ? {
+                    ref: lastMessageRef,
+                  }
+                : {})}
+            >
+              <User message={chatMessage.message} />
+            </div>
+          );
+        })}
+      </div>
+    </ScrollShadow>
   );
 };
 

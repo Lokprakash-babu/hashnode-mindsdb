@@ -100,15 +100,17 @@ const ChatMessenger = ({
         resetChat={resetChat}
         onEndChat={endChat}
       />
-      <ChatContainer chatMessages={chatMessages.toBeRenderedMessages} />
-      {!isReadOnly && (
-        <ChatFooter
-          currentValue={latestMessage}
-          onChange={setLatestMessage}
-          onSubmit={postMessage}
-          isDisabled={isLoading}
-        />
-      )}
+      <div className="bg-[#EEF5FF] overflow-y-auto p-5 rounded-xl">
+        <ChatContainer chatMessages={chatMessages.toBeRenderedMessages} />
+        {!isReadOnly && (
+          <ChatFooter
+            currentValue={latestMessage}
+            onChange={setLatestMessage}
+            onSubmit={postMessage}
+            isDisabled={isLoading}
+          />
+        )}
+      </div>
     </>
   );
 };

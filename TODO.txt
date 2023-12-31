@@ -1,12 +1,16 @@
 1. Clear all the TODO flag
 2. Move all the dates to moment
+
+
+HIGH:
 3. Timer
 4. Auto save
-
 5. Practice details style
 6. Submission details style
 7. Sidebar style
 8. Contest attempt page style
+
+
 9. 404 page style
 10. Error dialog
 
