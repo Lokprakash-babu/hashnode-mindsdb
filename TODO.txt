@@ -5,12 +5,8 @@
 HIGH:
 3. Timer
 4. Auto save
-5. Practice details style - done
-6. Submission details style - done
-7. Sidebar style
-8. Contest attempt page style
-9: Uniform contest submission and Practice submission format
+5: Uniform contest submission and Practice submission format
 
-10. 404 page style
-11. Error dialog
+6. 404 page style
+7. Error dialog
 
