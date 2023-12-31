@@ -90,12 +90,27 @@ export async function POST(req: NextRequest) {
 
       const isContestEnded = currentTime >= contestEndTime;
       const isUserCrossedTheTimeLimit = currentTime >= endTime;
-      console.log("contest time", currentTime, contestEndTime);
-
+      console.log("contest time", currentTime, contestEndTime, feedback);
+      console.log(
+        "conditions",
+        !feedback,
+        !isContestEnded,
+        !isUserCrossedTheTimeLimit,
+        !feedback || !isContestEnded || !isUserCrossedTheTimeLimit
+      );
       //If feedback is available, user already ended the contest
       //If feedback is not available, check if the contest end date is < current time -> contest expiry.
       //If endTime of candidate is lesser than current time, which means user exceeded the time limit/time over.
-      if (!feedback || !isContestEnded || !isUserCrossedTheTimeLimit) {
+      if (feedback || isContestEnded || isUserCrossedTheTimeLimit) {
+        return NextResponse.json(
+          {
+            message: "Contest is done already!",
+          },
+          {
+            status: 400,
+          }
+        );
+      } else {
         return NextResponse.json({
           message: {
             startTime,
@@ -105,15 +120,6 @@ export async function POST(req: NextRequest) {
             },
           },
         });
-      } else {
-        return NextResponse.json(
-          {
-            message: "Contest is done already!",
-          },
-          {
-            status: 400,
-          }
-        );
       }
     } else {
       //Create submission record

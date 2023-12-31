@@ -1,6 +1,15 @@
 "use client";
-import Toast from "@/app/Components/Toasts/Toast";
+import Button from "@/app/Components/Buttons";
 import { requestWrapper } from "@/lib/requestWrapper";
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
+} from "@nextui-org/react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   createContext,
@@ -9,7 +18,6 @@ import {
   useEffect,
   useState,
 } from "react";
-
 const AnswerContext = createContext({
   answers: {},
   setAnswer: (index) => {},
@@ -65,6 +73,7 @@ const AnswerContextProvider = ({ children }) => {
     },
     [answer]
   );
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onContestEndHandler = useCallback(
     (onContestEndNotification?: (response: any) => void) => {
@@ -72,12 +81,13 @@ const AnswerContextProvider = ({ children }) => {
         contestId: param.id,
         answers: answer,
       };
-      requestWrapper("/contest/save", {
+      requestWrapper("/contest/end", {
         method: "POST",
         body: JSON.stringify(requestBody),
       })
         .then((response) => {
           onContestEndNotification?.(response);
+          onOpen();
         })
         .catch((err) => {
           console.log("error in answer context", err);
@@ -119,6 +129,33 @@ const AnswerContextProvider = ({ children }) => {
       }}
     >
       {children}
+      <Modal
+        isDismissable={false}
+        size={"lg"}
+        isOpen={isOpen}
+        onClose={onClose}
+        closeButton={<></>}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Hurray!</ModalHeader>
+              <ModalBody>
+                <p className="text-md">
+                  You have successfully completed the contest
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Link href={"/contests"}>
+                  <Button color="primary" onPress={onClose}>
+                    Go to contests
+                  </Button>
+                </Link>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </AnswerContext.Provider>
   );
 };

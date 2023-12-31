@@ -1,4 +1,9 @@
+import { generateFeedback } from "@/app/MindsdbHandlers/FeedbackGenerator";
+import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
+import connect from "@/lib/mindsdb-connection";
 import { mysqlConnection } from "@/lib/mysql-connection";
+import MindsDB from "mindsdb-js-sdk";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -26,6 +31,7 @@ const updateFeedbackRecord = (candidateId, contestId) => {
 
 export async function POST(req: NextRequest) {
   try {
+    await connect();
     const data = await req.json();
     //TODO: Get the userId from session
     const userId = "test_user_lok";
@@ -60,15 +66,34 @@ export async function POST(req: NextRequest) {
     ]);
 
     //Generate feedback
+    const individualAnswers = Object.keys(data.answers)
+      .map((questionKey) => {
+        const answerValue = data.answers[questionKey].value;
+        const isChatType = answerValue?.toBeRenderedMessages instanceof Array;
+        console.log("answer value", answerValue);
+        if (isChatType) {
+          //@ts-ignore
+          return answerValue.toBeRenderedMessages;
+        } else {
+          return removeHtmlTags(answerValue);
+        }
+      })
+      .join("\n\n");
 
-    const score = "10";
-    const feedback = JSON.stringify({
-      language_feedback: "test",
-    });
+    const feedback = await MindsDB.SQL.runQuery(
+      generateFeedback(individualAnswers)
+    );
+    const feedbackObject = feedback.rows?.[0]?.response;
+    const extractJson = await MindsDB.SQL.runQuery(
+      JsonExtractor(feedbackObject)
+    );
+    console.log("feedback object", feedbackObject);
+    console.log("extracted json", extractJson?.rows?.[0]?.json);
+
     const currentTime = Date.now();
     await mysql.query(updateFeedbackRecord(userId, data.contestId), [
-      score,
-      feedback,
+      extractJson?.rows?.[0]?.json.score,
+      JSON.stringify(extractJson?.rows?.[0]?.json),
       currentTime,
     ]);
     return NextResponse.json({

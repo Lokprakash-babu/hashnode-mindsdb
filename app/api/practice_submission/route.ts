@@ -3,9 +3,11 @@ import MindsDB from "mindsdb-js-sdk";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import connect from "@/lib/mindsdb-connection";
 import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
+import { generateFeedback } from "@/app/MindsdbHandlers/FeedbackGenerator";
+import moment from "moment";
 
 const submissionIdGenerator = () => {
-  const epoch = Date.now();
+  const epoch = moment().unix();
   return `submission_${epoch}`;
 };
 const getSubmissionQuery = (args: { userId: string; practiceId: string }) => {
@@ -29,25 +31,6 @@ const updateSubmissionRecord = () => {
   UPDATE ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission
 SET answer = ?
 WHERE id=?;
-  `;
-};
-
-const generateFeedback = (answers) => {
-  console.log("answers in generateFeedback", answers);
-  const answerString =
-    answers instanceof Array
-      ? answers
-          .filter((answer) => {
-            return answer.type === "user";
-          })
-          .map((filterAnswer) => {
-            return `User: ${filterAnswer.message}`;
-          })
-          .join(",")
-      : answers;
-  return `
-  SELECT response FROM evaluator_model
-  WHERE answer="${answerString}"
   `;
 };
 
