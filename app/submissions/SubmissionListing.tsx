@@ -35,7 +35,7 @@ const tableColumn = [
 const renderCell = (item, columnKey: string) => {
   switch (columnKey) {
     case "feedback":
-      const parsedFeedback = JSON.parse(item[columnKey]);
+      const parsedFeedback = item[columnKey];
       //TODO: Add truncated feedback
       // const feedbackLength = item[columnKey].length;
       return <p>{parsedFeedback?.overall_feedback || ""}</p>;

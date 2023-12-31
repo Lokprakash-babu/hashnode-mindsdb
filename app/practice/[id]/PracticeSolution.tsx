@@ -3,6 +3,7 @@ import Button from "@/app/Components/Buttons";
 import ChatMessenger, { IChatMessenger } from "@/app/Components/ChatMessenger";
 import EmailEditor, { IEmailEditor } from "@/app/Components/EmailEditor";
 import { PracticeCategory } from "@/app/constants/practice";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Link from "next/link";
 import { useState } from "react";
@@ -45,22 +46,19 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
       userId: "test_user_123",
       practiceId: props.practiceId,
       answer: chatMessages,
+      feedbackAnswer: chatMessages,
     };
     createSubmission(requestBody);
   };
   const submitForFeedbackEmail = (emailText) => {
     console.log("email", emailText);
-    // const requestBody = {
-    //   userId: "test_user_123",
-    //   practiceId: props.practiceId,
-    //   answer: [
-    //     {
-    //       type: "user",
-    //       message: emailText,
-    //     },
-    //   ],
-    // };
-    // createSubmission(emailText);
+    const requestBody = {
+      userId: "test_user_123",
+      practiceId: props.practiceId,
+      answer: emailText,
+      feedbackAnswer: removeHtmlTags(emailText.unFormattedContent),
+    };
+    createSubmission(requestBody);
   };
 
   if (submissionId) {

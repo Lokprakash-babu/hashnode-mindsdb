@@ -28,9 +28,7 @@ const SubmissionDetails = ({
     score,
     toneFeedback,
   });
-  const isChatType = parsedAnswer?.answer?.filter((answer) => {
-    return answer.type === "bot";
-  })?.length;
+  const isChatType = parsedAnswer?.answer instanceof Array;
   return (
     <div className="flex justify-between gap-5">
       <div className="feedback-section flex-1">
@@ -59,7 +57,7 @@ const SubmissionDetails = ({
           <ChatMessenger chatHistory={parsedAnswer.answer} isReadOnly />
         )}
         {!isChatType && (
-          <EmailEditor initialValue={parsedAnswer[0].message} isReadOnly />
+          <EmailEditor initialValue={parsedAnswer?.answer} isReadOnly />
         )}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import SubmissionDetails from "./SubmissionDetails";
 
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";

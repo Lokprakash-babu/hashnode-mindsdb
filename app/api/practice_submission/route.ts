@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import connect from "@/lib/mindsdb-connection";
+import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
 
 const submissionIdGenerator = () => {
   const epoch = Date.now();
@@ -9,34 +10,21 @@ const submissionIdGenerator = () => {
 };
 const getSubmissionQuery = (args: { userId: string; practiceId: string }) => {
   return `
-    SELECT id FROM ${process.env.DB_NAME}.Submission WHERE entity_id="${args.practiceId}" AND candidate_id="${args.userId}";
+    SELECT id FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission WHERE entity_id="${args.practiceId}" AND candidate_id="${args.userId}";
   `;
 };
 
-const createSubmissionRecord = (userId, practiceId, answer) => {
+const createSubmissionRecord = () => {
   const submissionId = submissionIdGenerator();
-  const answerString = JSON.stringify({
-    answer,
-  });
-  console.log("answer string", answerString.replaceAll("'", "&apos;"));
   return {
     idGenerated: submissionId,
     query: `
-    INSERT INTO ${
-      process.env.DB_NAME
-    }.Submission ('candidate_id', 'entity_id', 'answer', 'id') VALUES ("${userId}", "${practiceId}", '${answerString.replaceAll(
-      "'",
-      "&apos;"
-    )}', "${submissionId}")
+    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission (candidate_id, entity_id, answer, id) VALUES (?, ?, ?, ?)
   `,
   };
 };
 
-const updateSubmissionRecord = (submissionId, answer) => {
-  const answerString = JSON.stringify({
-    answer,
-  });
-  console.log("answer string", answerString);
+const updateSubmissionRecord = () => {
   return `
   UPDATE ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission
 SET answer = ?
@@ -45,14 +33,18 @@ WHERE id=?;
 };
 
 const generateFeedback = (answers) => {
-  const answerString = answers
-    .filter((answer) => {
-      return answer.type === "user";
-    })
-    .map((filterAnswer) => {
-      return `User: ${filterAnswer.message}`;
-    })
-    .join(",");
+  console.log("answers in generateFeedback", answers);
+  const answerString =
+    answers instanceof Array
+      ? answers
+          .filter((answer) => {
+            return answer.type === "user";
+          })
+          .map((filterAnswer) => {
+            return `User: ${filterAnswer.message}`;
+          })
+          .join(",")
+      : answers;
   return `
   SELECT response FROM evaluator_model
   WHERE answer="${answerString}"
@@ -67,7 +59,7 @@ const createEntryInFeedbackTable = ({
   score,
 }) => {
   return `
-    INSERT INTO ${process.env.DB_NAME}.Feedback ('candidate_id', 'entity_id', 'score', 'feedback', 'submission_id') VALUES ("${userId}", "${practiceId}", '${score}', '${feedback}', "${submissionId}")
+    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback (candidate_id, entity_id, score, feedback, submission_id) VALUES ("${userId}", "${practiceId}", '${score}', '${feedback}', "${submissionId}")
   `;
 };
 
@@ -79,11 +71,12 @@ const updateEntryInFeedbackTable = ({
   score,
 }) => {
   return `
-  UPDATE ${process.env.DB_NAME}.Feedback
+  UPDATE ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback
   SET score="${score}", feedback='${feedback}'
   WHERE candidate_id="${userId}" AND entity_id="${practiceId}" AND submission_id="${submissionId}"
   `;
 };
+
 /**
  * For practice submission
  * 1. Create an entry in the submission table against a practice id for an user if the candidate didn't attempt the problem. Else, override the existing submission.
@@ -95,7 +88,7 @@ export async function POST(req: NextRequest) {
     await connect();
     const data = await req.json();
     const { practiceId, userId, answer } = data;
-    if (!practiceId || !userId || !answer) {
+    if (!practiceId || !userId || !answer || !data.feedbackAnswer) {
       return NextResponse.json(
         {
           message: "Bad request",
@@ -106,75 +99,79 @@ export async function POST(req: NextRequest) {
       );
     }
     //Check if a submission exist for this user against this practise ID
-    const getSubmissionRecord = await MindsDB.SQL.runQuery(
+    const [getSubmissionRecord] = await mysql.query(
       getSubmissionQuery({
         practiceId,
         userId,
       })
     );
-    if (getSubmissionRecord.error_message) {
-      throw getSubmissionRecord.error_message;
-    }
     console.log("submission record", getSubmissionRecord);
-    let submissionId = getSubmissionRecord.rows?.[0]?.id;
+    let submissionId = getSubmissionRecord?.[0]?.id;
     let isCreateFlowHappened = false;
     console.log(">>Submission ID", submissionId);
     //If submission exist, update the existing submission record, parallely create feedback and score to store it in feedback table
     if (submissionId) {
-      const updateQuery = await mysql.query(
-        updateSubmissionRecord(submissionId, answer),
-        [JSON.stringify({ answer }), submissionId]
-      );
-      console.log("udpate query", updateQuery);
+      await mysql.query(updateSubmissionRecord(), [
+        JSON.stringify({ answer }),
+        submissionId,
+      ]);
       console.log("record updated");
     }
     //If submission doesn't exist, create submission, get the submission ID, generate feedback and store it in feedback table
     else {
-      const { idGenerated, query } = createSubmissionRecord(
+      const { idGenerated, query } = createSubmissionRecord();
+
+      await mysql.query(query, [
         userId,
         practiceId,
-        answer
-      );
-
-      const createRecord = await MindsDB.SQL.runQuery(query);
-      if (createRecord.error_message) {
-        throw createRecord.error_message;
-      }
+        JSON.stringify({
+          answer,
+        }),
+        idGenerated,
+      ]);
       submissionId = idGenerated;
       console.log("Record created");
       isCreateFlowHappened = true;
     }
-    const feedback = await MindsDB.SQL.runQuery(generateFeedback(answer));
-    const feedbackObject = JSON.parse(feedback.rows?.[0]?.response);
-    console.log("feedback object", feedbackObject);
 
+    //MINDS DB for generating feedback
+    const feedbackRequestedFor = data.feedbackAnswer;
+    console.log(
+      ">>>Generating feedback for",
+      JSON.stringify({
+        feedbackRequestedFor,
+      })
+    );
+    const feedback = await MindsDB.SQL.runQuery(
+      generateFeedback(feedbackRequestedFor)
+    );
+    const feedbackObject = feedback.rows?.[0]?.response;
+    const extractJson = await MindsDB.SQL.runQuery(
+      JsonExtractor(feedbackObject)
+    );
+    console.log("feedback object", feedbackObject);
+    console.log("extracted json", extractJson?.rows?.[0]?.json);
     //create entry in feedback table
     if (!isCreateFlowHappened) {
-      const updateFeedbackTable = await MindsDB.SQL.runQuery(
+      await mysql.query(
         updateEntryInFeedbackTable({
           userId,
           practiceId,
-          feedback: feedback.rows?.[0]?.response,
-          score: feedbackObject.score,
+          feedback: JSON.stringify(extractJson?.rows?.[0]?.json),
+          score: extractJson?.rows?.[0]?.json.score,
           submissionId,
         })
       );
-      if (updateFeedbackTable.error_message) {
-        throw updateFeedbackTable.error_message;
-      }
     } else {
-      const createFeedback = await MindsDB.SQL.runQuery(
+      await mysql.query(
         createEntryInFeedbackTable({
           userId,
           practiceId,
           submissionId,
-          feedback: feedback.rows?.[0]?.response,
-          score: feedbackObject.score,
+          feedback: JSON.stringify(extractJson?.rows?.[0]?.json),
+          score: extractJson?.rows?.[0]?.json.score,
         })
       );
-      if (createFeedback.error_message) {
-        throw createFeedback.error_message;
-      }
     }
 
     return NextResponse.json({
