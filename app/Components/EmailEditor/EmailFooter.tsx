@@ -1,4 +1,6 @@
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import Button from "../Buttons";
+import { IoMdSend } from "react-icons/io";
 
 export interface IEmailFooter {
   onClick: () => any;
@@ -7,9 +9,17 @@ export interface IEmailFooter {
 
 const EmailFooter = (props: IEmailFooter) => {
   return (
-    <div>
-      <div>Number of Characters: {props.textContent.length}</div>
-      <Button onClick={props.onClick}>Send</Button>
+    <div className="flex justify-between items-center">
+      <p className="text-md">
+        Number of Characters: {removeHtmlTags(props.textContent).length}
+      </p>
+      <Button
+        onClick={props.onClick}
+        endContent={<IoMdSend />}
+        className="text-md"
+      >
+        Send
+      </Button>
     </div>
   );
 };
