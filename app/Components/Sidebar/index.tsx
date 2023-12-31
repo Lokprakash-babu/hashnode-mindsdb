@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import Sms from "../Icons/Sms";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 const candidateSidebarOption = [
   {
@@ -51,6 +51,16 @@ const SidebarOption = ({ link, label, icon }) => {
   );
 };
 const Sidebar = () => {
+  const pathName = usePathname();
+  const params = useParams();
+  //Hide side bar if the candidate is attending a contest
+  if (
+    pathName.includes("attempt") &&
+    pathName.includes("contest") &&
+    params.id
+  ) {
+    return null;
+  }
   return (
     <aside
       className={clsx(

@@ -29,11 +29,13 @@ const ContestSolutionWidget = () => {
       );
     default:
       return (
-        <ChatSolutionWidget
-          questionDetails={questionDetails}
-          onChange={onChangeOfAnswer}
-          questionKey={currentSelectedQuestion}
-        />
+        <div className="bg-[#EEF5FF] overflow-y-auto p-5 rounded-xl">
+          <ChatSolutionWidget
+            questionDetails={questionDetails}
+            onChange={onChangeOfAnswer}
+            questionKey={currentSelectedQuestion}
+          />
+        </div>
       );
   }
 };

@@ -2,6 +2,7 @@
 
 import Markdown from "react-markdown";
 import { useContestDetailsContext } from "./ContestDetailsContext";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 
 const ContestProblemDescription = () => {
   const { currentSelectedQuestion, questions } = useContestDetailsContext();
@@ -9,7 +10,7 @@ const ContestProblemDescription = () => {
 
   return (
     <div>
-      <Markdown>{questionDetails.content}</Markdown>
+      <Markdown>{removeHtmlTags(questionDetails.content)}</Markdown>
     </div>
   );
 };
