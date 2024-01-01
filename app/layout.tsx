@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextUiProvider } from "./Components/NextUiProvider";
 import UserContextProvider from "./Providers/UserContextProvider";
-import Sidebar from "./Components/Sidebar";
+import { ClerkProvider } from "@clerk/nextjs";
 import Applayout from "./Components/Applayout.tsx";
 import clsx from "clsx";
 const inter = Inter({ subsets: ["latin"] });
@@ -19,19 +19,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={clsx(
-          inter.className,
-          "h-screen overflow-hidden text-[#27313b]"
-        )}
-      >
-        <UserContextProvider>
-          <NextUiProvider>
-            <Applayout>{children}</Applayout>
-          </NextUiProvider>
-        </UserContextProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={clsx(
+            inter.className,
+            "h-screen overflow-hidden text-[#27313b]"
+          )}
+        >
+          <UserContextProvider>
+            <NextUiProvider>
+              <Applayout>{children}</Applayout>
+            </NextUiProvider>
+          </UserContextProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
