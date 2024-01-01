@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { mysqlConnection } from "@/lib/mysql-connection";
+import { currentUser } from "@clerk/nextjs";
 
 //TODO: Add user id to the query
 const getUsersSubmission = () => {
@@ -10,6 +11,9 @@ const getUsersSubmission = () => {
     `;
 };
 export async function GET(req: NextRequest) {
+  const user = await currentUser();
+  const userId = user?.id;
+  console.log(">>>USER ID", userId);
   try {
     //TODO: Get the user Id from cookie/headers
     // const userId =
