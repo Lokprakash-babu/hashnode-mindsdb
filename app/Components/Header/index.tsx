@@ -1,6 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { useHeaderContext } from "./HeaderContextProvider";
+import { UserButton } from "@clerk/nextjs";
 
 const Header = () => {
   const { headerTitle } = useHeaderContext();
@@ -13,7 +14,9 @@ const Header = () => {
       <div className="page-name-container">
         <h1 className={clsx("header-1-600")}>{headerTitle}</h1>
       </div>
-      <div className="user-icon-container flex gap-2"></div>
+      <div className="user-icon-container flex gap-2">
+        <UserButton afterSignOutUrl="/" />
+      </div>
     </header>
   );
 };
