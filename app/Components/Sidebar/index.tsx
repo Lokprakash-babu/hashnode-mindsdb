@@ -8,6 +8,7 @@ import { FaUserGraduate } from "react-icons/fa6";
 import { MdOutlineTimer } from "react-icons/md";
 import { BsDatabase } from "react-icons/bs";
 import { GiChampions } from "react-icons/gi";
+import useAccountContext from "@/app/hooks/useAccountContext";
 
 const candidateSidebarOption = [
   {
@@ -62,6 +63,7 @@ const SidebarOption = ({ link, label, icon, withoutActive = false }) => {
 const Sidebar = () => {
   const pathName = usePathname();
   const params = useParams();
+  const { account_type } = useAccountContext();
   //Hide side bar if the candidate is attending a contest
   if (
     pathName.includes("attempt") &&
@@ -70,6 +72,10 @@ const Sidebar = () => {
   ) {
     return null;
   }
+  const options =
+    account_type === "candidate"
+      ? candidateSidebarOption
+      : hiringManagerSidebarOptions;
   return (
     <aside
       className={clsx(
@@ -92,7 +98,7 @@ const Sidebar = () => {
         </div>
       </Link>
       <div className="mt-[60px]">
-        {candidateSidebarOption.map((sidebarOption) => {
+        {options.map((sidebarOption) => {
           return <SidebarOption {...sidebarOption} key={sidebarOption.label} />;
         })}
       </div>

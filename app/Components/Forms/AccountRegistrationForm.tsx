@@ -7,6 +7,7 @@ import { CountryList } from "@/app/constants/countries";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Button from "../Buttons";
+import { useUser } from "@clerk/nextjs";
 
 const AccountRegistrationForm = ({
   accountId,
@@ -17,6 +18,9 @@ const AccountRegistrationForm = ({
   const { register, handleSubmit } = useForm({
     mode: "onSubmit",
   });
+  const { user } = useUser();
+  const email = user?.primaryEmailAddress?.emailAddress;
+  const userName = user?.fullName;
   const isCandidate = type === "candidate";
   const router = useRouter();
   const onSubmitHandler = (data) => {
@@ -25,17 +29,22 @@ const AccountRegistrationForm = ({
       account_type: type,
       organisation_id: currentOrg,
       document_url: resumeFileUrl,
+      email,
+      name: userName,
+      id: accountId,
     };
     requestWrapper(`account/${accountId}`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(updateData),
     }).then(
       () => {
-        router.refresh();
         toast.success("Information updated successfuly");
+        setTimeout(() => {
+          window?.location?.reload();
+        }, 600);
       },
       () => {
         toast.error("Unable to update the information");

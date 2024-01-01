@@ -6,6 +6,7 @@ import UserContextProvider from "./Providers/UserContextProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Applayout from "./Components/Applayout.tsx";
 import clsx from "clsx";
+import RouteWhitelister from "./Components/RouteWhitelister";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,7 +30,9 @@ export default function RootLayout({
         >
           <UserContextProvider>
             <NextUiProvider>
-              <Applayout>{children}</Applayout>
+              <RouteWhitelister>
+                <Applayout>{children}</Applayout>
+              </RouteWhitelister>
             </NextUiProvider>
           </UserContextProvider>
         </body>

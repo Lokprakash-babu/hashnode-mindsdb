@@ -12,7 +12,8 @@ const FlowPath = ({ setPathComponent }) => {
       <div className="text-content-wrapper flex flex-col gap-y-2">
         <h2 className="header-1-600">Join Us!</h2>
         <p className="line-clamp-2 max-w-[400px] text-[#8692A6]">
-          To being this journey, tell us what type of account you'd be opening
+          To being this journey, tell us what type of account you&apos;d be
+          opening
         </p>
       </div>
       <div className="path-wrapper flex flex-col gap-y-4">
@@ -69,10 +70,16 @@ const RegisterPath = ({ accountId }) => {
           <FlowPath setPathComponent={setPathComponent} />
         )}
         {pathComponent === "candidate" && (
-          <CandidateRegistration accountId={accountId} setPathComponent={setPathComponent} />
+          <CandidateRegistration
+            accountId={accountId}
+            setPathComponent={setPathComponent}
+          />
         )}
         {pathComponent === "organization" && (
-          <OrganizationRegistration accountId={accountId} setPathComponent={setPathComponent} />
+          <OrganizationRegistration
+            accountId={accountId}
+            setPathComponent={setPathComponent}
+          />
         )}
       </div>
     </div>
