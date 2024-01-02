@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   apiRoutes: ["/(api|trpc)(.*)"], // Per `matcher` - `publicRoutes` override this
   publicRoutes: ["/sign-in", "/sign-up"],
-  afterAuth(auth, req, evt) {
-    console.log("MIDDLEWARE HIT", auth);
+  afterAuth(auth, req) {
     // Allow matched api/public requests
     if (auth.isApiRoute || auth.isPublicRoute) {
       return NextResponse.next();

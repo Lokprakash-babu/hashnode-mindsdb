@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   try {
     const mysql = await mysqlConnection();
     const [data] = await mysql.query(
-      findUser(request.nextUrl.searchParams.get("email"), "email")
+      findUser(request.nextUrl.searchParams.get("id"), "id")
     );
     return NextResponse.json(data?.[0] || {});
   } catch (err) {

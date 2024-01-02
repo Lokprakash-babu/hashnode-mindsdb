@@ -1,26 +1,24 @@
-import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
-import MindsDB from "mindsdb-js-sdk";
+import { mysqlConnection } from "@/lib/mysql-connection";
 
 // Fetch candidates for that contest
 const CONTEST_CANDIDATE_QUERY = (
   entity_id
-) => `SELECT ${process.env.DB_NAME}.Account.*,${process.env.DB_NAME}.Feedback.*
-FROM ${process.env.DB_NAME}.Feedback
-JOIN ${process.env.DB_NAME}.Account ON ${process.env.DB_NAME}.Feedback.candidate_id = ${process.env.DB_NAME}.Account.id
-WHERE planetscale_datasource.Feedback.entity_id = '${entity_id}';`;
+) => `SELECT ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account.*,${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback.*
+FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback
+JOIN ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account ON ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback.candidate_id = ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account.id
+WHERE ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback.entity_id = '${entity_id}';`;
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    await connect();
-    console.log(">>> Minds db connected");
+    const mysql = await mysqlConnection();
     const QUERY = CONTEST_CANDIDATE_QUERY(params.id);
-    const contestDetails = await MindsDB.SQL.runQuery(QUERY);
+    const [contestDetails] = await mysql.query(QUERY);
     return NextResponse.json(
       {
-        data: contestDetails.rows,
+        data: contestDetails,
       },
       {
         status: 200,
