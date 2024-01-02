@@ -1,3 +1,4 @@
+"use client";
 import { requestWrapper } from "@/lib/requestWrapper";
 import {
   Modal,

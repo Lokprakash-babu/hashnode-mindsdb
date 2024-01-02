@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useAuth, useUser } from "@clerk/nextjs";
 import useAccountContext from "../hooks/useAccountContext";
 import RegisterPath from "./Onboarding/RegisterPath";
 import { usePathname, useRouter } from "next/navigation";
@@ -38,10 +38,11 @@ const hiringManagerRoutes = [
 ];
 const RouteWhitelister = ({ children }) => {
   const { account_type } = useAccountContext();
-  const { user } = useUser();
+  console.log("Route lister", account_type);
+  const { userId } = useAuth();
   const pathName = usePathname();
   const router = useRouter();
-  const accountId = user?.id;
+  const accountId = userId;
   if (!account_type) {
     //Mount register component
     return <RegisterPath accountId={accountId} />;

@@ -1,15 +1,13 @@
-import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import LessonDetails from "./LessonDetails";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import BreadCrumb from "@/app/Components/BreadCrumb";
 import SubHeader from "@/app/Components/SubHeader";
+import { getLessonDetails } from "@/app/db-handlers/lessons/getLessonDetails";
 
 const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
   try {
-    console.log("params", params);
-    const lessonDetails = await requestWrapper(`/lessons/${params.id}`);
-    console.log("lesson details", lessonDetails.message);
+    const lessonDetails = await getLessonDetails(params.id);
     const crumbs = [
       {
         label: "Learn",
@@ -20,6 +18,9 @@ const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
         href: `/learn/${params.id}`,
       },
     ];
+    if (!lessonDetails) {
+      return notFound();
+    }
     return (
       <>
         <HeaderSetter title={`Lesson`} />
@@ -27,7 +28,7 @@ const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
           <BreadCrumb crumbs={crumbs} />
         </SubHeader>
         <section className="layout">
-          <LessonDetails chapters={lessonDetails.message} />
+          <LessonDetails chapters={lessonDetails} />
         </section>
       </>
     );

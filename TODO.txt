@@ -1,13 +1,8 @@
 1. Clear all the TODO flag
-2. Move all the dates to moment
-
-
-HIGH:
-4. Uniform contest submission and Practice submission format
-5. Duplicate contest id checker
-
-
-
-6. 404 page style
-7. Error dialog
+2. Contest details page - persona based rendering and status based functionality.
+3. Submission listing - UI revamp
+    - Add practice and contest submission tab
+    - Show the submissions for corresponding to the user.
+    - Hiring manager should be able to get the list of submissions against a contest.
+4. AI model refinement
 
