@@ -46,7 +46,7 @@ const FileUpload = ({
         disabled={disabled}
         credits={false}
         allowReorder={true}
-        allowMultiple={true}
+        allowMultiple={false}
         onupdatefiles={(data) => {
           !disabled && create(data, setFileUrl);
           // @ts-ignore

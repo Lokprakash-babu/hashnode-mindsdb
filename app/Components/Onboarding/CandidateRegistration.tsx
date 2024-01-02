@@ -8,7 +8,7 @@ import Button from "../Buttons";
 const CandidateRegistration = ({ setPathComponent, accountId }) => {
   const [resumeFileUrl, setResumeFileUrl] = useState("");
   return (
-    <div className="p-10 flex flex-col gap-y-10">
+    <div className="p-10 flex flex-col gap-y-10 h-[100vh] overflow-y-auto">
       <div className="header-wrapper">
         <Button
           variant="light"
@@ -18,7 +18,7 @@ const CandidateRegistration = ({ setPathComponent, accountId }) => {
           <BackArrow /> Back
         </Button>
       </div>
-      <div className="form-wrapper m-auto flex flex-col gap-y-6">
+      <div className="form-wrapper m-auto flex flex-col gap-y-6 ">
         <div className="wrapper flex flex-col gap-y-2">
           <h1 className="header-1-400">Register Individual Account!</h1>
           <p className="text-[#8692A6] line-clamp-2">

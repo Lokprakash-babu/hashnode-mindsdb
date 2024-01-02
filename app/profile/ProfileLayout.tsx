@@ -6,7 +6,7 @@ import useAccountContext from "../hooks/useAccountContext";
 const ProfileLayout = () => {
   const { account_type, ...user } = useAccountContext();
   const profileComponent =
-    account_type === "candidate" ? (
+    account_type === "hiring_manager" ? (
       <CandidateProfile user={user} />
     ) : (
       <ManagerProfile user={user} />
