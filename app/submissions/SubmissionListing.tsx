@@ -1,4 +1,5 @@
 "use client";
+import { requestWrapper } from "@/lib/requestWrapper";
 import {
   Table,
   TableHeader,
@@ -8,6 +9,7 @@ import {
   TableCell,
 } from "@nextui-org/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const tableColumn = [
   {
@@ -18,7 +20,7 @@ const tableColumn = [
   {
     key: "problem_id",
     uid: "problem_id",
-    label: "Practice Problem",
+    label: "Contest/Practice(#)",
   },
   {
     key: "score",
@@ -32,7 +34,7 @@ const tableColumn = [
   },
 ];
 
-const renderCell = (item, columnKey: string) => {
+const renderCell = (item, columnKey: string, pageType: string) => {
   switch (columnKey) {
     case "feedback":
       const parsedFeedback = item[columnKey];
@@ -46,7 +48,14 @@ const renderCell = (item, columnKey: string) => {
       const link =
         columnKey === "submission_id"
           ? { text: "View Submission", href: `/submissions/${item[columnKey]}` }
-          : { text: "View Problem", href: `/practice/${item[columnKey]}` };
+          : {
+              text: "View Problem",
+
+              href:
+                pageType === "practice"
+                  ? `/practice/${item[columnKey]}`
+                  : `/contests/${item[columnKey]}`,
+            };
       return (
         <Link href={link.href} className="text-blue underline">
           {link.text}
@@ -55,25 +64,58 @@ const renderCell = (item, columnKey: string) => {
   }
 };
 
-const SubmissionList = ({ submissions }) => {
+const SubmissionList = ({ type }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [submissions, setSubmission] = useState<{
+    id: string;
+    entity_id: string;
+    score: string;
+    feedback: string;
+    //@ts-ignore
+  }>([]);
+  useEffect(() => {
+    setIsLoading(true);
+    requestWrapper(`submissions?type=${type}`)
+      .then((submission) => {
+        console.log("submission", submission.message);
+        setSubmission(submission.message);
+      })
+      .catch((err) => {
+        console.log("error in getting submissions", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [type]);
+  const modifiedSubmissionList =
+    //@ts-ignore
+    submissions.map((submission) => {
+      return {
+        submission_id: submission.id,
+        problem_id: submission.entity_id,
+        score: submission.score,
+        feedback: submission.feedback,
+      };
+    }) || [];
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
-    <Table
-      isHeaderSticky
-      isStriped
-      aria-label="Submissions table"
-      className="mt-8"
-    >
+    <Table isHeaderSticky isStriped aria-label="Submissions table">
       <TableHeader columns={tableColumn}>
         {(column) => {
           return <TableColumn key={column.key}>{column.label}</TableColumn>;
         }}
       </TableHeader>
-      <TableBody items={submissions} emptyContent="No Practice problems found">
+      <TableBody
+        items={modifiedSubmissionList}
+        emptyContent="No Submissions found"
+      >
         {(item: any) => {
           return (
             <TableRow key={item.problem_id}>
               {(columnKey: any) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+                <TableCell>{renderCell(item, columnKey, type)}</TableCell>
               )}
             </TableRow>
           );

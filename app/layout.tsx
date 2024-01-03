@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NextUiProvider } from "./Components/NextUiProvider";
 import UserContextProvider from "./Providers/UserContextProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Applayout from "./Components/Applayout.tsx";
 import clsx from "clsx";
 import RouteWhitelister from "./Components/RouteWhitelister";
+import NextUiProviderWrapper from "./Providers/NextUiProviderWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,11 +29,11 @@ export default function RootLayout({
           )}
         >
           <UserContextProvider>
-            <NextUiProvider>
+            <NextUiProviderWrapper>
               <RouteWhitelister>
                 <Applayout>{children}</Applayout>
               </RouteWhitelister>
-            </NextUiProvider>
+            </NextUiProviderWrapper>
           </UserContextProvider>
         </body>
       </html>

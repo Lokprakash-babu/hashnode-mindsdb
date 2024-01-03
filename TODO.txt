@@ -1,8 +1,9 @@
 1. Clear all the TODO flag
 2. Contest details page - persona based rendering and status based functionality.
-3. Submission listing - UI revamp
-    - Add practice and contest submission tab
-    - Show the submissions for corresponding to the user.
-    - Hiring manager should be able to get the list of submissions against a contest.
-4. AI model refinement
+3. Contest attempt functionality verification and completion
+4. Submission listing - UI revamp
+    - Add practice and contest submission tab - done
+    - Show the submissions for corresponding to the user. - done
+    - Hiring manager should be able to get the list of submissions against a contest. - done
+5. AI model refinement
 

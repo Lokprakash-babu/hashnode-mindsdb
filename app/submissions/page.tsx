@@ -1,33 +1,15 @@
-import { requestWrapper } from "@/lib/requestWrapper";
-import { notFound, redirect } from "next/navigation";
-import SubmissionList from "./SubmissionListing";
-
 import HeaderSetter from "../Components/Header/HeaderSetter";
+import SubmissionListingTab from "./SubmissionListingTabs";
 
-const SubmissionListing = async () => {
-  try {
-    const submissionList = await requestWrapper("submissions?type=practice", {
-      cache: "no-store",
-    });
-    const modifiedSubmissionList =
-      submissionList?.message?.map((submission) => {
-        return {
-          submission_id: submission.id,
-          problem_id: submission.entity_id,
-          score: submission.score,
-          feedback: submission.feedback,
-        };
-      }) || [];
-
-    return (
-      <section className="layout">
-        <HeaderSetter title="Submissions" />
-        <SubmissionList submissions={modifiedSubmissionList} />
-      </section>
-    );
-  } catch (err) {
-    return notFound();
-  }
+const Submissions = async () => {
+  return (
+    <section>
+      <HeaderSetter title={"Submissions"} />
+      <div className="layout">
+        <SubmissionListingTab />
+      </div>
+    </section>
+  );
 };
 
-export default SubmissionListing;
+export default Submissions;

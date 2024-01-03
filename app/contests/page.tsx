@@ -6,12 +6,13 @@ import { getContestListHandler } from "../db-handlers/contests/getContests";
 import LinkButton from "../Components/Buttons/LinkButton";
 import PlusIcon from "../Components/Icons/PlusIcon";
 import ContestCard from "./Components/ContestCard";
-import { getUserPersona } from "../utils/getUserPersona";
 
 const Contests = async () => {
   try {
     const { userId } = auth();
-    const userPersona = await getUserPersona();
+    const accountDetails = await getAccountDetails(userId || "");
+    const userPersona = accountDetails.account_type;
+
     if (!userPersona) {
       throw new Error("Account details not available");
     }
@@ -31,7 +32,8 @@ const Contests = async () => {
         </section>
       );
     }
-    const contests = (await getContestListHandler(userId || "")) as [];
+    const orgId = accountDetails?.organisation_id;
+    const contests = (await getContestListHandler(orgId || "")) as [];
     return (
       <section className="layout">
         <HeaderSetter title={"Contests"} />
