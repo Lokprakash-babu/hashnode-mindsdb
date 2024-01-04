@@ -1,4 +1,5 @@
 import { mysqlConnection } from "@/lib/mysql-connection";
+import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -22,8 +23,17 @@ const updateSubmissionRecord = (candidateId, contestId) => {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    //TODO: Get the userId from session
-    const userId = "test_user_lok";
+    const { userId } = auth();
+    if (!userId) {
+      return NextResponse.json(
+        {
+          message: "Unauthenticated",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
     if (!data.answers || !data.contestId) {
       return NextResponse.json(
         {
