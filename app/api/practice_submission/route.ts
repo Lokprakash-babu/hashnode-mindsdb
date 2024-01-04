@@ -21,7 +21,7 @@ const createSubmissionRecord = () => {
   return {
     idGenerated: submissionId,
     query: `
-    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission (candidate_id, entity_id, answer, id) VALUES (?, ?, ?, ?)
+    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission (candidate_id, entity_id, answer, id, type) VALUES (?, ?, ?, ?, "practice")
   `,
   };
 };

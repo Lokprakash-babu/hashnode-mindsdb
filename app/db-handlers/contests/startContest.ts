@@ -1,15 +1,6 @@
 import { mysqlConnection } from "@/lib/mysql-connection";
-import { NextRequest, NextResponse } from "next/server";
-import moment from "moment";
 import { auth } from "@clerk/nextjs";
-
-//Start contest flow
-//Create a dummy submission entry in the submission table, if there is no submission entry.
-//If there is a submission entry, don't do anything.
-//Retrive the submissionId associated with the user.
-//Create an entry in the feedback table with startTime, contest ID, user Id and submission Id.
-//If an entry is already there, return the startTime.
-//Else, return the already available startTime.
+import moment from "moment";
 
 const db = process.env.NEXT_PLANETSCALE_DB_NAME;
 const fetchSubmissionRecord = (candidateId, contestId) => {
@@ -41,40 +32,20 @@ const createFeedbackRecord = (
     `;
 };
 
-export async function POST(req: NextRequest) {
-  // if (!session || !session.user) {
-  //   return new NextResponse("UNAUTHENTICATED", { status: 401 });
-  // }
+export const startContest = async (contestId) => {
   const mysql = await mysqlConnection();
   try {
-    const data = await req.json();
     const { userId } = auth();
-    if (!data.contestId) {
-      return NextResponse.json(
-        {
-          message: "Invalid value for contestId",
-        },
-        {
-          status: 400,
-        }
-      );
-    }
+
     console.log("USER ID", userId);
-    const [contestDetails] = await mysql.query(
-      fetchContestDetails(data.contestId)
-    );
+    const [contestDetails] = await mysql.query(fetchContestDetails(contestId));
     if (Array(contestDetails).length === 0) {
-      return NextResponse.json(
-        {
-          message: "Contest not found",
-        },
-        {
-          status: 404,
-        }
-      );
+      return {
+        message: "Contest not found",
+      };
     }
     const [submissionRecordData] = await mysql.query(
-      fetchSubmissionRecord(userId, data.contestId)
+      fetchSubmissionRecord(userId, contestId)
     );
     const submissionId = submissionRecordData?.[0]?.id;
     if (submissionId) {
@@ -104,16 +75,11 @@ export async function POST(req: NextRequest) {
       //If feedback is not available, check if the contest end date is < current time -> contest expiry.
       //If endTime of candidate is lesser than current time, which means user exceeded the time limit/time over.
       if (feedback || isContestEnded || isUserCrossedTheTimeLimit) {
-        return NextResponse.json(
-          {
-            message: "Contest is done already!",
-          },
-          {
-            status: 400,
-          }
-        );
+        return {
+          message: "Contest is done already!",
+        };
       } else {
-        return NextResponse.json({
+        return {
           message: {
             startTime,
             endTime,
@@ -121,18 +87,14 @@ export async function POST(req: NextRequest) {
               ...contestDetails[0],
             },
           },
-        });
+        };
       }
     } else {
       //Create submission record
       const toBeGeneratedSubmissionId = `submission_${Date.now()}`;
       console.log("contest details else block", contestDetails);
       await mysql.query(
-        createSubmissionRecord(
-          userId,
-          data.contestId,
-          toBeGeneratedSubmissionId
-        )
+        createSubmissionRecord(userId, contestId, toBeGeneratedSubmissionId)
       );
       //Create an entry in the feedback table.
       const currentTime = moment().unix();
@@ -140,24 +102,24 @@ export async function POST(req: NextRequest) {
       await mysql.query(
         createFeedbackRecord(
           userId,
-          data.contestId,
+          contestId,
           toBeGeneratedSubmissionId,
           currentTime,
           endTime
         )
       );
 
-      return NextResponse.json({
+      return {
         message: {
           startTime: currentTime,
           endTime,
           contestDetails: { ...contestDetails[0] },
         },
-      });
+      };
     }
   } catch (err) {
     console.log("err in start contest", err);
     await mysql.query("ROLLBACK");
-    return NextResponse.json({ message: "Internal error" }, { status: 500 });
+    return { message: "Internal error" };
   }
-}
+};

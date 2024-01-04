@@ -12,18 +12,15 @@ import AutoSave from "./AutoSave";
 import Timer from "./Timer";
 import Button from "@/app/Components/Buttons";
 import Link from "next/link";
+import { startContest } from "@/app/db-handlers/contests/startContest";
 
 //This page is accessible only for Candidates
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
   try {
-    const contestDetail = await requestWrapper(`/contest/start`, {
-      method: "POST",
-      body: JSON.stringify({
-        contestId: params.id,
-      }),
-      cache: "no-store",
-    });
-    console.log("contest details", contestDetail);
+    const startContestDetails = await startContest(params.id);
+    console.log("start contest details", startContestDetails);
+    //@ts-ignore
+    const contestDetail = startContestDetails.message.contestDetails;
     const isContestAlreadyEnded =
       contestDetail?.message === "Contest is done already!";
     //TODO: Contest ended page
@@ -49,16 +46,15 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
         <HeaderSetter title={`Contest: ${params.id}`} />
         <section className="px-[90px] pt-[50px]">
           {/* <FullScreenChecker /> */}
-          <ContestDetailsProvider
-            contestDetails={contestDetail.message.contestDetails}
-          >
+          <ContestDetailsProvider contestDetails={contestDetail}>
             <AnswerContextProvider>
               <div className="flex justify-between w-full items-center">
                 <div>
                   <ContestHeader />
                 </div>
                 <div className="flex gap-1 items-center">
-                  <Timer endTime={contestDetail?.message?.endTime} />
+                  {/*@ts-ignore*/}
+                  <Timer endTime={startContestDetails?.message?.endTime} />
 
                   <AutoSave />
                 </div>
