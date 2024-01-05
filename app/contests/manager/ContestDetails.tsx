@@ -1,6 +1,6 @@
 "use client";
 import Trophy from "@/app/Components/Icons/Trophy";
-import { HIRING_MANAGER_TABS } from "../[id]/constants";
+import { CANDIDATE_TABS, HIRING_MANAGER_TABS } from "../[id]/constants";
 import {
   Tabs,
   Tab,
@@ -30,6 +30,7 @@ import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
 import StartContestBtn from "../[id]/attempt/StartContestBtn";
+import { useAuth } from "@clerk/nextjs";
 
 const TYPE_MAPPING = {
   bot_conversation: "Bot Conversation",
@@ -54,7 +55,7 @@ const DescriptionCard = ({ title, content }) => {
   );
 };
 
-const DetailsSection = ({ details }) => {
+const DetailsSection = ({ details, userType }) => {
   const questions = details.questions;
   const [editForm, showEditForm] = useState(false);
   return (
@@ -64,99 +65,101 @@ const DetailsSection = ({ details }) => {
         title="Job Description"
         content={details.job_description}
       />
-      <div className="questions-wrapper flex flex-col gap-y-3">
-        <div className="heading-wrapper flex justify-between items-center px-4">
-          <h3 className="underline">Contest Questions</h3>
-          <Dropdown>
-            <DropdownTrigger>
-              <button>
-                <ActionMenu />
-              </button>
-            </DropdownTrigger>
-            <DropdownMenu
-              variant="faded"
-              aria-label="Dropdown menu with description"
-            >
-              {!editForm ? (
-                <DropdownItem
-                  onClick={() => showEditForm(true)}
-                  className="text-black"
-                  key="edit"
-                  startContent={<EditPen />}
-                >
-                  Edit
-                </DropdownItem>
-              ) : (
-                <DropdownItem
-                  onClick={() => showEditForm(false)}
-                  className="text-black"
-                  key="edit"
-                  startContent={<BackArrow />}
-                >
-                  Back
-                </DropdownItem>
-              )}
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-        {!editForm ? (
-          <Accordion variant="splitted">
-            {Object.keys(questions).map((question: any) => {
-              return (
-                <AccordionItem
-                  className="!shadow-none !bg-[#FDEBE0]"
-                  indicator={<RightArrow />}
-                  key={question}
-                  aria-label="Accordion 1"
-                  title={
-                    <div className="w-full px-1">
-                      <div className="wrapper flex justify-between items-center">
-                        <h1 className="header-2-400">
-                          {questions[question].title}
-                        </h1>
+      {userType === "hiring_manager" && (
+        <div className="questions-wrapper flex flex-col gap-y-3">
+          <div className="heading-wrapper flex justify-between items-center px-4">
+            <h3 className="underline">Contest Questions</h3>
+            <Dropdown>
+              <DropdownTrigger>
+                <button>
+                  <ActionMenu />
+                </button>
+              </DropdownTrigger>
+              <DropdownMenu
+                variant="faded"
+                aria-label="Dropdown menu with description"
+              >
+                {!editForm ? (
+                  <DropdownItem
+                    onClick={() => showEditForm(true)}
+                    className="text-black"
+                    key="edit"
+                    startContent={<EditPen />}
+                  >
+                    Edit
+                  </DropdownItem>
+                ) : (
+                  <DropdownItem
+                    onClick={() => showEditForm(false)}
+                    className="text-black"
+                    key="edit"
+                    startContent={<BackArrow />}
+                  >
+                    Back
+                  </DropdownItem>
+                )}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          {!editForm ? (
+            <Accordion variant="splitted">
+              {Object.keys(questions).map((question: any) => {
+                return (
+                  <AccordionItem
+                    className="!shadow-none !bg-[#FDEBE0]"
+                    indicator={<RightArrow />}
+                    key={question}
+                    aria-label="Accordion 1"
+                    title={
+                      <div className="w-full px-1">
+                        <div className="wrapper flex justify-between items-center">
+                          <h1 className="header-2-400">
+                            {questions[question].title}
+                          </h1>
 
-                        <div className="pill-info flex gap-x-2">
-                          {questions[question].tone && (
+                          <div className="pill-info flex gap-x-2">
+                            {questions[question].tone && (
+                              <Chip
+                                variant="flat"
+                                color="secondary"
+                                className="capitalize rounded-full"
+                              >
+                                {questions[question].tone}
+                              </Chip>
+                            )}
                             <Chip
                               variant="flat"
-                              color="secondary"
+                              color="primary"
                               className="capitalize rounded-full"
                             >
-                              {questions[question].tone}
+                              {TYPE_MAPPING[questions[question].type]}
                             </Chip>
-                          )}
-                          <Chip
-                            variant="flat"
-                            color="primary"
-                            className="capitalize rounded-full"
-                          >
-                            {TYPE_MAPPING[questions[question].type]}
-                          </Chip>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  }
-                >
-                  {questions[question].type === "bot_conversation" && (
-                    <ChatBubble
-                      messageContent={questions[question].initial_text}
-                    />
-                  )}
-                  <Markdown className="p-2">
-                    {removeHtmlTags(questions[question].content)}
-                  </Markdown>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
-        ) : (
-          <QuestionsEditForm
-            questions={questions}
-            id={details.id}
-            showEditForm={showEditForm}
-          />
-        )}
-      </div>
+                    }
+                  >
+                    {questions[question].type === "bot_conversation" && (
+                      <ChatBubble
+                        messageContent={questions[question].initial_text}
+                      />
+                    )}
+                    <Markdown className="p-2">
+                      {removeHtmlTags(questions[question].content)}
+                    </Markdown>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          ) : (
+            <QuestionsEditForm
+              questions={questions}
+              id={details.id}
+              showEditForm={showEditForm}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -166,7 +169,7 @@ const TAB_MAPPING = {
   leaderBoard: LeaderBoard,
 };
 
-const ContestDetails = ({ details }) => {
+const ContestDetails = ({ details, userType }) => {
   const [candidates, setCandidates] = useState([]);
   const [tab, setTab] = useState(HIRING_MANAGER_TABS[0].key);
   const [currentCandidate, setCurrentCandidate] = useState({});
@@ -178,8 +181,6 @@ const ContestDetails = ({ details }) => {
     });
   }, [details.id]);
 
-  //TODO: Retrive proper account type
-  const accountType = "user";
   return (
     <div className="contest-details-wrapper flex text-black">
       <div className="details-pane  min-h-[100vh]  flex-1">
@@ -196,7 +197,9 @@ const ContestDetails = ({ details }) => {
                 </h3>
               </div>
             </div>
-            {accountType === "user" && <StartContestBtn />}
+            {userType === "candidate" && details.status === "in-progress" && (
+              <StartContestBtn />
+            )}
           </div>
           <Tabs
             onSelectionChange={(key: any) => {
@@ -205,20 +208,35 @@ const ContestDetails = ({ details }) => {
             variant="underlined"
             aria-label="Tabs variants"
           >
-            {HIRING_MANAGER_TABS.map((tab) => (
-              <Tab {...tab} key={tab.key} className="cursor-pointer">
-                {TAB_MAPPING[tab.key]({
-                  details,
-                  candidates,
-                  setCurrentCandidate,
-                })}
-              </Tab>
-            ))}
+            {userType === "hiring_manager" &&
+              HIRING_MANAGER_TABS.map((tab) => (
+                <Tab {...tab} key={tab.key} className="cursor-pointer">
+                  {TAB_MAPPING[tab.key]({
+                    details,
+                    candidates,
+                    setCurrentCandidate,
+                    userType,
+                  })}
+                </Tab>
+              ))}
+            {userType === "candidate" &&
+              CANDIDATE_TABS.map((tab) => (
+                <Tab {...tab} key={tab.key} className="cursor-pointer">
+                  {TAB_MAPPING[tab.key]({
+                    details,
+                    candidates,
+                    setCurrentCandidate,
+                    userType,
+                  })}
+                </Tab>
+              ))}
           </Tabs>
         </div>
       </div>
       <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
-        {tab === "details" && <SideDetailsPane details={details} />}
+        {tab === "details" && (
+          <SideDetailsPane details={details} userType={userType} />
+        )}
         {tab === "leaderBoard" && (
           <CandidatesInfoPane candidate={currentCandidate} />
         )}

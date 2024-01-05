@@ -1,6 +1,5 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { RoleChip, StatusChip } from "../Components/ContestCard";
-import DateFormatter from "@/app/utils/dateFormatter";
 import EditContestForm from "@/app/Components/Forms/EditContestForm";
 import moment from "moment";
 
@@ -49,11 +48,11 @@ const EditForm = ({ details }) => {
     </Card>
   );
 };
-const SideDetailsPane = ({ details }) => {
+const SideDetailsPane = ({ details, userType }) => {
   return (
     <>
       <InfoCard details={details} />
-      <EditForm details={details} />
+      {userType === "hiring_manager" && <EditForm details={details} />}
     </>
   );
 };

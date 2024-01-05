@@ -11,29 +11,17 @@ import {
 } from "@nextui-org/react";
 
 export const CONTEST_STATUS_MAPPING = {
-  yet_to_start: {
+  upcoming: {
     color: "warning",
     label: "Yet to start",
   },
-  active: {
+  "in-progress": {
     color: "primary",
     label: "Active",
   },
   completed: {
     color: "success",
     label: "Completed",
-  },
-  pending: {
-    color: "default",
-    label: "Pending",
-  },
-  hold: {
-    color: "secondary",
-    label: "Hold",
-  },
-  cancelled: {
-    color: "danger",
-    label: "Cancelled",
   },
 };
 
@@ -46,12 +34,6 @@ export const RoleChip = ({ children }) => {
 };
 
 export const StatusChip = ({ status }) => {
-  //TODO: Implement proper chip
-  return (
-    <Chip radius="sm" variant="bordered">
-      TODO Chip
-    </Chip>
-  );
   return (
     <Chip
       radius="sm"
