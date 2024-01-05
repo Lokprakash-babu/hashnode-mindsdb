@@ -84,14 +84,36 @@ const ContestCard = ({ contest }) => {
         </CardBody>
         <CardFooter>
           <div className="footer wrapper flex  justify-between w-full">
-            <Button
-              href={`/contests/${contest.id}`}
-              as={Link}
-              className="rounded-md"
-              color="primary"
-            >
-              View Challenge
-            </Button>
+            {contest.status === "in-progress" && (
+              <Button
+                href={`/contests/${contest.id}`}
+                as={Link}
+                className="rounded-md"
+                color="primary"
+              >
+                View Challenge
+              </Button>
+            )}
+            {contest.status === "completed" && (
+              <Button
+                className="rounded-md !cursor-not-allowed"
+                color="secondary"
+                isDisabled
+                disabled
+              >
+                Contest Ended
+              </Button>
+            )}
+            {contest.status === "upcoming" && (
+              <Button
+                className="rounded-md !cursor-not-allowed"
+                color="secondary"
+                disabled
+                isDisabled
+              >
+                Yet to start!
+              </Button>
+            )}
           </div>
         </CardFooter>
       </Card>
