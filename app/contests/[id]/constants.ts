@@ -9,6 +9,12 @@ export const HIRING_MANAGER_TABS = [
   },
 ];
 
+export const CANDIDATE_TABS = [
+  {
+    key: "details",
+    title: "Details",
+  },
+];
 export const TABLE_HEADERS = [
   { name: "NAME", uid: "name" },
   { name: "CONTEST STATUS", uid: "contest_status" },
