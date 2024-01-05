@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     "app/api/health/route.ts",
     "app/api/health/route.tsx"
-  ],
+, "app/recommendations"  ],
   "exclude": ["node_modules"]
 }

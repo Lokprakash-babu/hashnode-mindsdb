@@ -34,6 +34,11 @@ const candidateSidebarOption = [
 ];
 const hiringManagerSidebarOptions = [
   {
+    link: "/recommendations",
+    label: "Recommendations",
+    icon: <FaUserGraduate size={25} />,
+  },
+  {
     link: "/contest",
     label: "Contests",
     icon: <MdOutlineTimer size={25} />,

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const routeRegex = {
   learn: /\/learn/,
+  recommendations: /\/recommendations/,
   lessonDetails: /\/learn\/[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/\\|~-]+\//,
   practice: /\/practice/,
   practiceDetails: /\/practice\/[A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?\/\\|~-]+\//,
@@ -35,6 +36,7 @@ const hiringManagerRoutes = [
   routeRegex.contests,
   routeRegex.contestDetails,
   routeRegex.profile,
+  routeRegex.recommendations,
 ];
 const RouteWhitelister = ({ children }) => {
   const { account_type } = useAccountContext();
