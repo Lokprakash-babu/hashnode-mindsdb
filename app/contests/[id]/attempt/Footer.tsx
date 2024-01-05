@@ -16,6 +16,7 @@ const Footer = () => {
   return (
     <div className="flex justify-between">
       <Button
+        color="secondary"
         isDisabled={questionIndex === 0}
         onClick={(e) => {
           e.stopPropagation();
@@ -30,6 +31,7 @@ const Footer = () => {
         Previous
       </Button>
       <Button
+        color="primary"
         onClick={(e) => {
           e.stopPropagation();
           if (isSaveAndNext) {

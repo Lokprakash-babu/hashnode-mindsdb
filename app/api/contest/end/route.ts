@@ -3,6 +3,7 @@ import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
 import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import connect from "@/lib/mindsdb-connection";
 import { mysqlConnection } from "@/lib/mysql-connection";
+import { auth } from "@clerk/nextjs";
 import MindsDB from "mindsdb-js-sdk";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -33,8 +34,17 @@ export async function POST(req: NextRequest) {
   try {
     await connect();
     const data = await req.json();
-    //TODO: Get the userId from session
-    const userId = "test_user_lok";
+    const { userId } = auth();
+    if (!userId) {
+      return NextResponse.json(
+        {
+          message: "Unauthenticated",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
     if (!data.answers || !data.contestId) {
       return NextResponse.json(
         {

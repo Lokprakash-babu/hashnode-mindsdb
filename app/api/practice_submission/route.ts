@@ -5,6 +5,7 @@ import connect from "@/lib/mindsdb-connection";
 import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
 import { generateFeedback } from "@/app/MindsdbHandlers/FeedbackGenerator";
 import moment from "moment";
+import { auth } from "@clerk/nextjs";
 
 const submissionIdGenerator = () => {
   const epoch = moment().unix();
@@ -21,7 +22,7 @@ const createSubmissionRecord = () => {
   return {
     idGenerated: submissionId,
     query: `
-    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission (candidate_id, entity_id, answer, id) VALUES (?, ?, ?, ?)
+    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Submission (candidate_id, entity_id, answer, id, type) VALUES (?, ?, ?, ?, "practice")
   `,
   };
 };
@@ -70,7 +71,8 @@ export async function POST(req: NextRequest) {
     const mysql = await mysqlConnection();
     await connect();
     const data = await req.json();
-    const { practiceId, userId, answer } = data;
+    const { practiceId, answer } = data;
+    const { userId } = auth();
     if (!practiceId || !userId || !answer || !data.feedbackAnswer) {
       return NextResponse.json(
         {

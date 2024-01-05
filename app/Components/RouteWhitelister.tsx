@@ -38,7 +38,6 @@ const hiringManagerRoutes = [
 ];
 const RouteWhitelister = ({ children }) => {
   const { account_type } = useAccountContext();
-  console.log("Route lister", account_type);
   const { userId } = useAuth();
   const pathName = usePathname();
   const router = useRouter();

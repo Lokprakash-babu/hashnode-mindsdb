@@ -1,17 +1,16 @@
-import ChatMessenger from "@/app/Components/ChatMessenger";
-import EmailEditor from "@/app/Components/EmailEditor";
-import SubmissionFeedback from "./SubmissionFeedback";
+import SubmissionFeedback from "../SubmissionFeedback";
 import Link from "next/link";
+import QuestionsTab from "./QuestionsTab";
 
 interface ISubmissionDetails {
   languageFeedback: string;
   toneFeedback: string;
   overallFeedback: string;
   problemId: string;
-  answer: any;
+  answer: string;
   score: string;
 }
-const SubmissionDetails = ({
+const ContestSubmissionDetails = ({
   answer,
   languageFeedback,
   overallFeedback,
@@ -21,14 +20,13 @@ const SubmissionDetails = ({
 }: ISubmissionDetails) => {
   const parsedAnswer = answer;
   console.log("parsed answer", {
-    parsedAnswer: parsedAnswer.answer,
+    answer,
     languageFeedback,
     overallFeedback,
     problemId,
     score,
     toneFeedback,
   });
-  const isChatType = Array.isArray(parsedAnswer?.answer);
   return (
     <div className="flex justify-between gap-5">
       <div className="feedback-section flex-1">
@@ -38,7 +36,7 @@ const SubmissionDetails = ({
           </h2>
           <div>
             <Link
-              href={`/practice/${problemId}`}
+              href={`/contests/${problemId}`}
               className="text-blue underline"
               target="_blank"
             >
@@ -53,15 +51,10 @@ const SubmissionDetails = ({
         />
       </div>
       <div className="submitted-answer flex-1">
-        {isChatType && (
-          <ChatMessenger chatHistory={parsedAnswer.answer} isReadOnly />
-        )}
-        {!isChatType && (
-          <EmailEditor initialValue={parsedAnswer?.answer} isReadOnly />
-        )}
+        <QuestionsTab questions={answer} />
       </div>
     </div>
   );
 };
 
-export default SubmissionDetails;
+export default ContestSubmissionDetails;
