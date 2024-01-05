@@ -16,6 +16,8 @@ const AdditionalInfo = ({ title, value, Icon = <Sms /> }) => {
   );
 };
 const CandidateInfo = ({ candidate }) => {
+  const { feedback } = candidate;
+  console.log(feedback);
   return (
     <div className="flex flex-col gap-y-12">
       <Card
@@ -52,6 +54,39 @@ const CandidateInfo = ({ candidate }) => {
               Icon={<Phone />}
             />
           </div>
+          {feedback && (
+            <div className="feedback">
+              <h3 className="header-1-600 underline mb-4">Overall Feedback</h3>
+              <div className="flex flex-col gap-y-4 mb-4">
+                <div className="sections">
+                  <h3 className="header-2-600 text-[#3B4854]">
+                    Overall Score:<span className="ml-2">{feedback.score}</span>
+                  </h3>
+                </div>
+                <div className="sections">
+                  <h3 className="header-2-600 text-[#3B4854]">
+                    Language Proficiency:
+                    <span className="ml-2">
+                      'Test,,ejfkefjkejfkejkejkjkejgkje'||{" "}
+                      {feedback.language_proficiency}
+                    </span>
+                  </h3>
+                </div>
+                <div className="sections">
+                  <h3 className="header-2-600 text-[#3B4854]">
+                    Tone Feedback:
+                    <span className="ml-2">{feedback.tone_feedback}</span>
+                  </h3>
+                </div>
+                <div className="sections">
+                  <h3 className="header-2-600 text-[#3B4854]">
+                    Overall Feedback:
+                    <span className="ml-2">{feedback.overall_feedback}</span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          )}
         </CardBody>
       </Card>
     </div>
