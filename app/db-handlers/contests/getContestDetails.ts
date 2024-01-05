@@ -15,11 +15,5 @@ export const getContestDetails = async (
   const [contestDetails] = await mysql.query(
     getContestDetailsQuery(contestId, params)
   );
-  if (
-    accountType === "candidate" ||
-    contestDetails?.[0]?.created_by === accountId
-  ) {
-    return contestDetails[0];
-  }
-  return {};
+  return contestDetails[0];
 };

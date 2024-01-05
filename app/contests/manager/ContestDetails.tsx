@@ -101,7 +101,7 @@ const DetailsSection = ({ details }) => {
         </div>
         {!editForm ? (
           <Accordion variant="splitted">
-            {Object.keys(questions).map((question: any) => {
+            {Object.keys(questions)?.map((question: any) => {
               return (
                 <AccordionItem
                   className="!shadow-none !bg-[#FDEBE0]"
