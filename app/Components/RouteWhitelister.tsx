@@ -38,14 +38,8 @@ const hiringManagerRoutes = [
 ];
 const RouteWhitelister = ({ children }) => {
   const { account_type } = useAccountContext();
-  const { userId } = useAuth();
   const pathName = usePathname();
   const router = useRouter();
-  const accountId = userId;
-  if (!account_type) {
-    //Mount register component
-    return <RegisterPath accountId={accountId} />;
-  }
 
   if (account_type === "candidate") {
     const isRouteMatching = candidateRoutes.some((route) => {
