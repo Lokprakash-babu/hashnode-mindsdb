@@ -2,6 +2,7 @@
 import { createContext, useEffect, useState } from "react";
 import { requestWrapper } from "@/lib/requestWrapper";
 import { useAuth } from "@clerk/nextjs";
+import RegisterPath from "../Components/Onboarding/RegisterPath";
 export const UserContext = createContext<any>(null);
 const UserContextProvider = ({ children }) => {
   const [userContextData, setUserContextData] = useState({});
@@ -22,6 +23,10 @@ const UserContextProvider = ({ children }) => {
 
   if (!userId || isAccountContextLoading) {
     return <p>Loading...</p>;
+  }
+  //@ts-ignore
+  if (!userContextData.id && !!userId) {
+    return <RegisterPath accountId={userId} />;
   }
   return (
     <>
