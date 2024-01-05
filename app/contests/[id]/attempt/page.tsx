@@ -1,4 +1,3 @@
-import { requestWrapper } from "@/lib/requestWrapper";
 import { notFound } from "next/navigation";
 import ContestDetailsProvider from "./ContestDetailsContext";
 import ContestHeader from "./ContestHeader";
@@ -19,11 +18,8 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
   try {
     const startContestDetails = await startContest(params.id);
     console.log("start contest details", startContestDetails);
-    //@ts-ignore
-    const contestDetail = startContestDetails.message.contestDetails;
     const isContestAlreadyEnded =
-      contestDetail?.message === "Contest is done already!";
-    //TODO: Contest ended page
+      startContestDetails?.message === "Contest is done already!";
     if (isContestAlreadyEnded) {
       console.log("contest ended");
       return (
@@ -41,11 +37,19 @@ const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
         </>
       );
     }
+    //@ts-ignore
+    const contestDetail = startContestDetails.message.contestDetails;
+
+    //TODO: Contest ended page
+
+    if (!contestDetail) {
+      return null;
+    }
     return (
       <>
         <HeaderSetter title={`Contest: ${params.id}`} />
         <section className="px-[90px] pt-[50px]">
-          {/* <FullScreenChecker /> */}
+          <FullScreenChecker />
           <ContestDetailsProvider contestDetails={contestDetail}>
             <AnswerContextProvider>
               <div className="flex justify-between w-full items-center">

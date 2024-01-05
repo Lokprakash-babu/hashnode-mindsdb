@@ -20,7 +20,7 @@ const AutoSave = () => {
           }, 1500);
         });
       }
-    }, 20000);
+    }, 10000);
     return () => clearTimeout(autoSaveHandlerTimeout);
   }, [answers]);
 

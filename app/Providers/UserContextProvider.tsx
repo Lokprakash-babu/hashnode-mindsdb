@@ -8,7 +8,6 @@ const UserContextProvider = ({ children }) => {
   const [isAccountContextLoading, setIsAccountContextLoading] = useState(false);
   const { userId } = useAuth();
   useEffect(() => {
-    console.log("use effect user context", userId);
     if (userId) {
       setIsAccountContextLoading(true);
       requestWrapper(`account?id=${userId}`)

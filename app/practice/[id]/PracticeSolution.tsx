@@ -43,7 +43,6 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
   };
   const submitForFeedbackChat = (chatMessages) => {
     const requestBody = {
-      userId: "test_user_123",
       practiceId: props.practiceId,
       answer: chatMessages,
       feedbackAnswer: chatMessages,
@@ -53,7 +52,6 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
   const submitForFeedbackEmail = (emailText) => {
     console.log("email", emailText);
     const requestBody = {
-      userId: "test_user_123",
       practiceId: props.practiceId,
       answer: emailText,
       feedbackAnswer: removeHtmlTags(emailText.unFormattedContent),

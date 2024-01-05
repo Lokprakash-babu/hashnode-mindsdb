@@ -1,19 +1,21 @@
-import { requestWrapper } from "@/lib/requestWrapper";
 import { notFound } from "next/navigation";
 import SubmissionDetails from "./SubmissionDetails";
 
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import SubHeader from "@/app/Components/SubHeader";
 import BreadCrumb from "@/app/Components/BreadCrumb";
+import { getSubmissionDetails } from "@/app/db-handlers/submissions/getSubmissionDetails";
+import ContestSubmissionDetails from "./ContestSubmissionDetails/ContestSubmissionDetails";
 
 const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
   try {
-    const getSubmissionDetails = await requestWrapper(
-      `/submissions/${params.id}`
-    );
-    const submissionDetails = getSubmissionDetails.message;
+    const submissionDetails = await getSubmissionDetails(params.id);
+    if (!submissionDetails) {
+      return notFound();
+    }
     const { language_proficiency, overall_feedback, tone_feedback, score } =
-      JSON.parse(submissionDetails.feedback);
+      submissionDetails.feedback;
+
     const crumbs = [
       {
         label: "Submissions",
@@ -24,6 +26,8 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
         href: `/submissions/${params.id}`,
       },
     ];
+    const isContestType = submissionDetails.type === "contest";
+
     return (
       <>
         <HeaderSetter title={`Submission: ${params.id}`} />
@@ -31,14 +35,26 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
           <BreadCrumb crumbs={crumbs} />
         </SubHeader>
         <section className="layout">
-          <SubmissionDetails
-            languageFeedback={language_proficiency}
-            overallFeedback={overall_feedback}
-            toneFeedback={tone_feedback}
-            problemId={submissionDetails.entity_id}
-            answer={submissionDetails.answer}
-            score={score}
-          />
+          {isContestType && (
+            <ContestSubmissionDetails
+              languageFeedback={language_proficiency}
+              overallFeedback={overall_feedback}
+              toneFeedback={tone_feedback}
+              problemId={submissionDetails.entity_id}
+              answer={submissionDetails.answer.answer}
+              score={score}
+            />
+          )}
+          {!isContestType && (
+            <SubmissionDetails
+              languageFeedback={language_proficiency}
+              overallFeedback={overall_feedback}
+              toneFeedback={tone_feedback}
+              problemId={submissionDetails.entity_id}
+              answer={submissionDetails.answer}
+              score={score}
+            />
+          )}
         </section>
       </>
     );
