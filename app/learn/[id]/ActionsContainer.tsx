@@ -95,12 +95,12 @@ const Summarize = ({ content }) => {
   );
 };
 
-const ActionsContainer = ({ content, chapterId }) => {
+const ActionsContainer = ({ content, lessonId }) => {
   return (
     <div>
       <div className="sticky right-0 top-5 flex flex-col gap-2">
         <Summarize content={content} />
-        <AskAI chapterId={chapterId} />
+        <AskAI lessonId={lessonId} />
       </div>
     </div>
   );

@@ -4,17 +4,17 @@ import { notFound } from "next/navigation";
 import LessonsListing from "./LessonsListing";
 
 import HeaderSetter from "../Components/Header/HeaderSetter";
-import { getLessonsQueryHandler } from "../db-handlers/lessons/getLessons";
+import { lessons } from "../constants/lessons";
 
 // This page contains list of categories and recommended chapters.
-const Learn = async () => {
+const Learn = () => {
   try {
-    const lessons = await getLessonsQueryHandler();
-    console.log("lessons", lessons);
+    const lessonsList = Object.keys(lessons);
+    console.log("lessons", lessonsList);
     return (
       <section className="layout">
         <HeaderSetter title="Learn" />
-        <LessonsListing lessons={lessons} />
+        <LessonsListing lessonIds={lessonsList} />
       </section>
     );
   } catch (err) {
