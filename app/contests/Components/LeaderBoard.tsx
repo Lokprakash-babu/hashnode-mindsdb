@@ -38,7 +38,7 @@ export const LeaderBoard = ({
       case "role":
         return <div className="flex flex-col"></div>;
       case "document_url":
-        return <Link href={cellValue} target="_blank">{cellValue}</Link>;
+        return <Link href={cellValue} target="_blank">View Resume</Link>;
       case "contest_status":
         return (
           <Chip

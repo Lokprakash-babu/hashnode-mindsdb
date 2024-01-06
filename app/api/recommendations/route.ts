@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const userList = ["user_2aXZK9r2CiEID4J45rA24qGEYyk"];
+    const userList = [];
     await connect();
     const QUERY = `SELECT b.*
     FROM practice_recommendations AS b

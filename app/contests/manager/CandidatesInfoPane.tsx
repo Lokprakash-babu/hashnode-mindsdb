@@ -17,7 +17,6 @@ const AdditionalInfo = ({ title, value, Icon = <Sms /> }) => {
 };
 const CandidateInfo = ({ candidate }) => {
   const { feedback } = candidate;
-  console.log(feedback);
   return (
     <div className="flex flex-col gap-y-12">
       <Card
