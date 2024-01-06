@@ -1,7 +1,6 @@
 "use client";
 import Trophy from "@/app/Components/Icons/Trophy";
 import moment from "moment";
-import { HIRING_MANAGER_TABS } from "../[id]/constants";
 import { CANDIDATE_TABS, HIRING_MANAGER_TABS } from "../[id]/constants";
 import {
   Tabs,
