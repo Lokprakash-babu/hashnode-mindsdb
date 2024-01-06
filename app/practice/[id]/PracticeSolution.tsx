@@ -5,6 +5,7 @@ import EmailEditor, { IEmailEditor } from "@/app/Components/EmailEditor";
 import { PracticeCategory } from "@/app/constants/practice";
 import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import { requestWrapper } from "@/lib/requestWrapper";
+import { Spinner } from "@nextui-org/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -27,8 +28,9 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
   const solutionType = props.type;
   const isReadOnly = props.isReadOnly || false;
   const [submissionId, setSubmissionId] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const createSubmission = (requestBody) => {
+    setIsLoading(true);
     requestWrapper("/practice_submission", {
       method: "POST",
       body: JSON.stringify(requestBody),
@@ -39,6 +41,9 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
       })
       .catch((err) => {
         console.log("error in practice solution", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   const submitForFeedbackChat = (chatMessages) => {
@@ -50,7 +55,6 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
     createSubmission(requestBody);
   };
   const submitForFeedbackEmail = (emailText) => {
-    console.log("email", emailText);
     const requestBody = {
       practiceId: props.practiceId,
       answer: emailText,
@@ -61,9 +65,25 @@ const PracticeSolution = (props: PracticeSolutionProps) => {
 
   if (submissionId) {
     return (
-      <Link href={`/submissions/${submissionId}`}>
-        <Button>View your feedback</Button>
-      </Link>
+      <div className="w-full h-full flex flex-col gap-3 justify-center items-center">
+        <div className="text-md-500">
+          Your answers are evaluated successfully! 😀
+        </div>
+        <Link href={`/submissions/${submissionId}`}>
+          <Button>View your feedback</Button>
+        </Link>
+      </div>
+    );
+  }
+  if (isLoading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <Spinner
+          label="We are evaluating your answer! This might take some time 😀"
+          color="primary"
+          labelColor="primary"
+        />
+      </div>
     );
   }
   switch (solutionType) {

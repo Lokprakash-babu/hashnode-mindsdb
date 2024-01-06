@@ -13,6 +13,7 @@ const FormPane = ({
   formTitle,
   submitHandler,
   form,
+  isLoading,
 }: {
   formTitle: string;
   submitHandler: (data: any) => void;
@@ -21,6 +22,7 @@ const FormPane = ({
     control: any,
     getValues: any
   ) => JSX.Element;
+  isLoading: boolean;
 }) => {
   const methods = useForm({
     mode: "onSubmit",
@@ -43,10 +45,16 @@ const FormPane = ({
                 }}
                 color="secondary"
                 type="button"
+                isDisabled={isLoading}
               >
                 Cancel
               </Button>
-              <Button type="submit" color="primary">
+              <Button
+                type="submit"
+                color="primary"
+                isLoading={isLoading}
+                isDisabled={isLoading}
+              >
                 Submit
               </Button>
             </footer>
@@ -71,6 +79,7 @@ const FormLayout = ({
   infoContent,
   formTitle,
   submitHandler,
+  isLoading,
 }: {
   form: (
     register: UseFormRegister<FieldValues>,
@@ -80,6 +89,7 @@ const FormLayout = ({
   infoContent: ReactNode;
   formTitle: string;
   submitHandler: (data: any) => void;
+  isLoading: boolean;
 }) => {
   return (
     <FormWrapper>
@@ -87,6 +97,7 @@ const FormLayout = ({
         formTitle={formTitle}
         submitHandler={submitHandler}
         form={form}
+        isLoading={isLoading}
       />
       <FormWrapper.InfoPane>
         <div className="pl-4 pt-4">{infoContent}</div>

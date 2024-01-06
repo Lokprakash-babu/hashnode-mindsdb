@@ -180,7 +180,6 @@ const ContestDetails = ({ details, userType }) => {
   const [candidates, setCandidates] = useState([]);
   const [tab, setTab] = useState(HIRING_MANAGER_TABS[0].key);
   const [currentCandidate, setCurrentCandidate] = useState({});
-  const { account_type } = useAccountContext();
 
   useEffect(() => {
     requestWrapper(`contest/${details.id}/candidates`).then((response) => {

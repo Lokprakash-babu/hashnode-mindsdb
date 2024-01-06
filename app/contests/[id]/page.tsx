@@ -9,7 +9,6 @@ import { getContestDetails } from "@/app/db-handlers/contests/getContestDetails"
 
 const ContestDetailsPage = async ({ params }: { params: { id: string } }) => {
   const { userId } = auth();
-  console.log("COntest details ", userId);
   if (!userId) {
     return new Response("Unauthorized", { status: 401 });
   }
@@ -22,7 +21,6 @@ const ContestDetailsPage = async ({ params }: { params: { id: string } }) => {
     [],
     organisation_id
   );
-  console.log("Contest details page", contestDetails);
   const crumbs = [
     {
       label: "Contests",
