@@ -11,29 +11,17 @@ import {
 } from "@nextui-org/react";
 
 export const CONTEST_STATUS_MAPPING = {
-  yet_to_start: {
+  upcoming: {
     color: "warning",
     label: "Yet to start",
   },
-  active: {
+  "in-progress": {
     color: "primary",
     label: "Active",
   },
   completed: {
     color: "success",
     label: "Completed",
-  },
-  pending: {
-    color: "default",
-    label: "Pending",
-  },
-  hold: {
-    color: "secondary",
-    label: "Hold",
-  },
-  cancelled: {
-    color: "danger",
-    label: "Cancelled",
   },
 };
 
@@ -46,12 +34,6 @@ export const RoleChip = ({ children }) => {
 };
 
 export const StatusChip = ({ status }) => {
-  //TODO: Implement proper chip
-  return (
-    <Chip radius="sm" variant="bordered">
-      TODO Chip
-    </Chip>
-  );
   return (
     <Chip
       radius="sm"
@@ -84,14 +66,36 @@ const ContestCard = ({ contest }) => {
         </CardBody>
         <CardFooter>
           <div className="footer wrapper flex  justify-between w-full">
-            <Button
-              href={`/contests/${contest.id}`}
-              as={Link}
-              className="rounded-md"
-              color="primary"
-            >
-              View Challenge
-            </Button>
+            {contest.status === "in-progress" && (
+              <Button
+                href={`/contests/${contest.id}`}
+                as={Link}
+                className="rounded-md"
+                color="primary"
+              >
+                View Challenge
+              </Button>
+            )}
+            {contest.status === "completed" && (
+              <Button
+                className="rounded-md !cursor-not-allowed"
+                color="secondary"
+                isDisabled
+                disabled
+              >
+                Contest Ended
+              </Button>
+            )}
+            {contest.status === "upcoming" && (
+              <Button
+                className="rounded-md !cursor-not-allowed"
+                color="secondary"
+                disabled
+                isDisabled
+              >
+                Yet to start!
+              </Button>
+            )}
           </div>
         </CardFooter>
       </Card>

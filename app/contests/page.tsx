@@ -6,6 +6,7 @@ import { getContestListHandler } from "../db-handlers/contests/getContests";
 import LinkButton from "../Components/Buttons/LinkButton";
 import PlusIcon from "../Components/Icons/PlusIcon";
 import ContestCard from "./Components/ContestCard";
+import ContestGroup from "./ContestGroup";
 
 const Contests = async () => {
   try {
@@ -20,15 +21,36 @@ const Contests = async () => {
     if (userPersona === "candidate") {
       //Fetch all the contests
       const contests = (await getContestListHandler()) as [];
+      const groupingBasedContest = contests.reduce((prev, curr) => {
+        console.log("REDUCE");
+        //@ts-ignore
+        const currentStatus = curr.status;
+        if (prev[currentStatus]) {
+          prev[currentStatus].push(curr);
+        } else {
+          prev[currentStatus] = [curr];
+        }
+        return {
+          ...prev,
+        };
+      }, {});
+      console.log("Grouping contest", groupingBasedContest);
       return (
-        <section className="layout">
+        <section className="layout mt-8">
           <HeaderSetter title={"Contests"} />
-          <div className="contest-card-wrapper grid grid-cols-3 gap-x-4 gap-y-8 w-full py-8">
-            {contests.map((contestDetail, index) => {
-              console.log("CONTEST", contestDetail);
-              return <ContestCard contest={contestDetail} key={index} />;
-            })}
-          </div>
+
+          <ContestGroup
+            header={"On Going contests"}
+            contests={groupingBasedContest["in-progress"]}
+          />
+          <ContestGroup
+            header={"Upcoming contests"}
+            contests={groupingBasedContest["upcoming"]}
+          />
+          <ContestGroup
+            header={"Ended contests"}
+            contests={groupingBasedContest["completed"]}
+          />
         </section>
       );
     }

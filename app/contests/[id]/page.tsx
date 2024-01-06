@@ -38,7 +38,7 @@ const ContestDetailsPage = async ({ params }: { params: { id: string } }) => {
         <BreadCrumb crumbs={crumbs} />
       </SubHeader>
       <section className="layout">
-        <ContestDetails details={contestDetails} />
+        <ContestDetails details={contestDetails} userType={accountPersona} />
       </section>
     </>
   );

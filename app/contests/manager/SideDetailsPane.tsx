@@ -51,11 +51,11 @@ const EditForm = ({ details }) => {
     </Card>
   );
 };
-const SideDetailsPane = ({ details }) => {
+const SideDetailsPane = ({ details, userType }) => {
   return (
     <>
       <InfoCard details={details} />
-      <EditForm details={details} />
+      {userType === "hiring_manager" && <EditForm details={details} />}
     </>
   );
 };
