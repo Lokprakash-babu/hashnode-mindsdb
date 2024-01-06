@@ -182,8 +182,10 @@ const QuestionsEditForm = ({ questions, id, showEditForm }) => {
             <div className="footer-wrapper w-full flex flex-end justify-end">
               <div className="action-wrapper flex gap-x-3">
                 <Button
-                  isDisabled={questions.length > 2}
-                  className={clsx(questions.length > 2 && "cursor-no-drop")}
+                  isDisabled={
+                    methods.getValues(`questions`) &&
+                    Object.keys(methods.getValues(`questions`)).length > 1
+                  }
                   type="button"
                   onClick={() =>
                     setQuestions((prev) => {

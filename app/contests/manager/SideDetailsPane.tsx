@@ -1,6 +1,5 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { RoleChip, StatusChip } from "../Components/ContestCard";
-import DateFormatter from "@/app/utils/dateFormatter";
 import EditContestForm from "@/app/Components/Forms/EditContestForm";
 import moment from "moment";
 
@@ -38,13 +37,16 @@ const InfoCard = ({ details }) => {
 };
 
 const EditForm = ({ details }) => {
+  const isContestStarted = moment(details.start_date).isBefore(
+    moment(new Date()).unix()
+  );
   return (
     <Card isBlurred shadow="sm" className="border-none p-3 w-full" radius="sm">
       <CardHeader>
         <h1 className="header-1-600">Properties</h1>
       </CardHeader>
       <CardBody className="flex flex-col gap-y-4">
-        <EditContestForm details={details} />
+        <EditContestForm details={details} disableForm={isContestStarted}/>
       </CardBody>
     </Card>
   );

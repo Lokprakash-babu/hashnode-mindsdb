@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import Button from "../Buttons";
 import moment from "moment";
 
-const EditContestForm = ({ details }) => {
+const EditContestForm = ({ details, disableForm = false }) => {
   const methods = useForm({
     mode: "onSubmit",
   });
@@ -43,6 +43,7 @@ const EditContestForm = ({ details }) => {
     <form onSubmit={methods.handleSubmit(onSubmitHandler)}>
       <div className="form-wrapper flex flex-col gap-y-8">
         <Input
+          isDisabled={disableForm}
           isRequired
           {...methods.register("title", {
             required: true,
@@ -56,6 +57,7 @@ const EditContestForm = ({ details }) => {
           labelPlacement="outside"
         />
         <SingleSelect
+          isDisabled={disableForm}
           isRequired={true}
           register={methods.register("role", {
             required: true,
@@ -69,6 +71,7 @@ const EditContestForm = ({ details }) => {
 
         <Input
           isRequired
+          isDisabled={disableForm}
           type="date"
           {...methods.register("start_date", {
             required: true,
@@ -83,6 +86,7 @@ const EditContestForm = ({ details }) => {
         />
 
         <Input
+          isDisabled={disableForm}
           {...methods.register("end_date", {
             required: true,
           })}
@@ -97,7 +101,9 @@ const EditContestForm = ({ details }) => {
           labelPlacement="outside"
         />
 
-        <Button type="submit">Update</Button>
+        <Button isDisabled={disableForm} type="submit">
+          Update
+        </Button>
       </div>
     </form>
   );
