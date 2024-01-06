@@ -10,7 +10,13 @@ const ContestGroup = ({ header, contests }) => {
       <h1 className="header-1-600 mb-3 underline">{header}</h1>
       <div className="contest-card-wrapper grid grid-cols-3 gap-x-4 gap-y-8 w-full">
         {contests.map((contestDetail, index) => {
-          return <ContestCard contest={contestDetail} key={index} />;
+          return (
+            <ContestCard
+              contest={contestDetail}
+              key={index}
+              isCandidate={true}
+            />
+          );
         })}
       </div>
     </div>

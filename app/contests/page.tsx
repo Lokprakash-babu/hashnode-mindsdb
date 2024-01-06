@@ -74,7 +74,6 @@ const Contests = async () => {
               <ContestCard
                 contest={contest}
                 key={index}
-                isCandidate={userPersona === "candidate"}
               />
             ))}
           </div>
