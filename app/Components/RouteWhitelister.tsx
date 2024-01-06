@@ -1,9 +1,7 @@
 "use client";
 
-import { useAuth, useUser } from "@clerk/nextjs";
-import useAccountContext from "../hooks/useAccountContext";
-import RegisterPath from "./Onboarding/RegisterPath";
 import { usePathname, useRouter } from "next/navigation";
+import useAccountContext from "../hooks/useAccountContext";
 
 const routeRegex = {
   learn: /\/learn/,

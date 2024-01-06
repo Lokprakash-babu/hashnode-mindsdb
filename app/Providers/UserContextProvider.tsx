@@ -5,34 +5,55 @@ import { useAuth } from "@clerk/nextjs";
 import RegisterPath from "../Components/Onboarding/RegisterPath";
 export const UserContext = createContext<any>(null);
 const UserContextProvider = ({ children }) => {
-  const [userContextData, setUserContextData] = useState({});
-  const [isAccountContextLoading, setIsAccountContextLoading] = useState(false);
-  const { userId } = useAuth();
+  const [userContextData, setUserContextData] = useState({
+    data: null,
+    loading: null,
+    err: null,
+  });
+  const { userId, isLoaded } = useAuth();
   useEffect(() => {
     if (userId) {
-      setIsAccountContextLoading(true);
+      setUserContextData({
+        ...userContextData,
+        loading: true,
+      });
       requestWrapper(`account?id=${userId}`)
         .then((account) => {
-          setUserContextData(account);
+          setUserContextData({
+            data: account,
+            loading: false,
+            err: null,
+          });
         })
-        .finally(() => {
-          setIsAccountContextLoading(false);
+        .catch((err) => {
+          console.log("error", err);
+          setUserContextData({
+            ...userContextData,
+            err: err,
+            loading: false,
+          });
         });
     }
   }, [userId]);
 
-  if (!userId || isAccountContextLoading) {
+  if (!userId || userContextData.loading || !isLoaded) {
     return <p>Loading...</p>;
   }
+
   //@ts-ignore
-  if (!userContextData.id && !!userId) {
+  if (
+    !userContextData?.data?.id &&
+    userId &&
+    isLoaded &&
+    userContextData.loading !== null
+  ) {
     return <RegisterPath accountId={userId} />;
   }
   return (
     <>
       {/**@ts-ignore */}
-      {userContextData.id && (
-        <UserContext.Provider value={userContextData}>
+      {userContextData?.data?.id && (
+        <UserContext.Provider value={userContextData.data}>
           {children}
         </UserContext.Provider>
       )}
