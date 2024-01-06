@@ -10,7 +10,8 @@ export const getContestDetails = async (
   contestId: string,
   accountId: string,
   accountType: string,
-  params?: string[]
+  params?: string[],
+  OrgId?: string
 ) => {
   const mysql = await mysqlConnection();
   const [contestDetails] = await mysql.query(
@@ -18,7 +19,7 @@ export const getContestDetails = async (
   );
   if (
     accountType === "candidate" ||
-    contestDetails?.[0]?.created_by === accountId
+    contestDetails?.[0]?.organisation_id === OrgId
   ) {
     const today = moment().unix();
 

@@ -74,37 +74,39 @@ const DetailsSection = ({ details, userType }) => {
         <div className="questions-wrapper flex flex-col gap-y-3">
           <div className="heading-wrapper flex justify-between items-center px-4">
             <h3 className="underline">Contest Questions</h3>
-            <Dropdown>
-              <DropdownTrigger>
-                <button>
-                  <ActionMenu />
-                </button>
-              </DropdownTrigger>
-              <DropdownMenu
-                variant="faded"
-                aria-label="Dropdown menu with description"
-              >
-                {!editForm ? (
-                  <DropdownItem
-                    onClick={() => showEditForm(true)}
-                    className="text-black"
-                    key="edit"
-                    startContent={<EditPen />}
-                  >
-                    Edit
-                  </DropdownItem>
-                ) : (
-                  <DropdownItem
-                    onClick={() => showEditForm(false)}
-                    className="text-black"
-                    key="edit"
-                    startContent={<BackArrow />}
-                  >
-                    Back
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </Dropdown>
+            {!isContestStarted && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <button>
+                    <ActionMenu />
+                  </button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  variant="faded"
+                  aria-label="Dropdown menu with description"
+                >
+                  {!editForm ? (
+                    <DropdownItem
+                      onClick={() => showEditForm(true)}
+                      className="text-black"
+                      key="edit"
+                      startContent={<EditPen />}
+                    >
+                      Edit
+                    </DropdownItem>
+                  ) : (
+                    <DropdownItem
+                      onClick={() => showEditForm(false)}
+                      className="text-black"
+                      key="edit"
+                      startContent={<BackArrow />}
+                    >
+                      Back
+                    </DropdownItem>
+                  )}
+                </DropdownMenu>
+              </Dropdown>
+            )}
           </div>
           {!editForm ? (
             <Accordion variant="splitted">
@@ -240,14 +242,16 @@ const ContestDetails = ({ details, userType }) => {
           </Tabs>
         </div>
       </div>
-      <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
-        {tab === "details" && (
+      {tab === "details" && (
+        <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
           <SideDetailsPane details={details} userType={userType} />
-        )}
-        {tab === "leaderBoard" && (
+        </div>
+      )}
+      {tab === "leaderBoard" && candidates.length > 0 && (
+        <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
           <CandidatesInfoPane candidate={currentCandidate} />
-        )}
-      </div>
+        </div>
+      )}
       <Toast />
     </div>
   );

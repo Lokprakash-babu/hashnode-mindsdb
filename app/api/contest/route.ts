@@ -4,7 +4,7 @@ import moment from "moment";
 import { auth } from "@clerk/nextjs";
 
 const CreateContestQuery = () => {
-  return `INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Contest (id, title, description, start_date, end_date, questions, organisation_id, job_description, role, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  return `INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Contest (id, title, description, start_date, end_date, questions, organisation_id, job_description, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 };
 export async function POST(req: NextRequest) {
   try {

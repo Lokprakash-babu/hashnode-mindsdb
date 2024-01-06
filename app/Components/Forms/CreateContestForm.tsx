@@ -312,7 +312,7 @@ const CreateContestForm = () => {
         formTitle=""
         submitHandler={onSubmitHandler}
         form={ContestForm}
-        infoContent={<>Test2</>}
+        infoContent={<></>}
       />
       <Toast />
     </>

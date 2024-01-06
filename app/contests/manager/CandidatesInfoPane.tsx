@@ -16,7 +16,7 @@ const AdditionalInfo = ({ title, value, Icon = <Sms /> }) => {
   );
 };
 const CandidateInfo = ({ candidate }) => {
-  const { feedback } = candidate;
+  const { feedback } = candidate || {};
   return (
     <div className="flex flex-col gap-y-12">
       <Card
