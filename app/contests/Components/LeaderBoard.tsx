@@ -10,8 +10,13 @@ import {
 } from "@nextui-org/react";
 import { STATUS_COLOR_MAPPING, TABLE_HEADERS } from "../[id]/constants";
 import { useCallback } from "react";
+import Link from "next/link";
 
-export const LeaderBoard = ({ candidates, setCurrentCandidate }) => {
+export const LeaderBoard = ({
+  candidates,
+  setCurrentCandidate,
+  headers = TABLE_HEADERS,
+}) => {
   const deriveStatus = useCallback((user) => {
     if (!user.start_time_candidate) return "pending";
     if (user.start_time_candidate && !user.feedback) return "in_progress";
@@ -32,6 +37,8 @@ export const LeaderBoard = ({ candidates, setCurrentCandidate }) => {
         );
       case "role":
         return <div className="flex flex-col"></div>;
+      case "document_url":
+        return <Link href={cellValue} target="_blank">View Resume</Link>;
       case "contest_status":
         return (
           <Chip
@@ -60,7 +67,7 @@ export const LeaderBoard = ({ candidates, setCurrentCandidate }) => {
         );
       }}
     >
-      <TableHeader columns={TABLE_HEADERS}>
+      <TableHeader columns={headers || TABLE_HEADERS}>
         {(column) => (
           <TableColumn
             key={column.uid}

@@ -13,12 +13,14 @@ const ContestDetailsPage = async ({ params }: { params: { id: string } }) => {
   if (!userId) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const accountPersona = await getUserPersona();
-  console.log("account persona", accountPersona);
+  const { account_type: accountPersona, organisation_id } =
+    await getUserPersona();
   const contestDetails = await getContestDetails(
     params.id,
     userId,
-    accountPersona
+    accountPersona,
+    [],
+    organisation_id
   );
   console.log("Contest details page", contestDetails);
   const crumbs = [

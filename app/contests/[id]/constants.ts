@@ -22,6 +22,12 @@ export const TABLE_HEADERS = [
   { name: "SCORE", uid: "score" },
 ];
 
+export const RECOMMENDATION_TABLE_HEADERS = [
+  { name: "NAME", uid: "name" },
+  { name: "Resume Link", uid: "document_url" },
+  { name: "EXPERIENCE IN YRS", uid: "experience" },
+];
+
 export const STATUS_COLOR_MAPPING = {
   pending: { type: "warning", label: "Pending" },
   in_progress: { type: "primary", label: "In Progress" },

@@ -45,7 +45,7 @@ export const StatusChip = ({ status }) => {
   );
 };
 
-const ContestCard = ({ contest }) => {
+const ContestCard = ({ contest, isCandidate = false }) => {
   return (
     <div>
       <Card className="!rounded-lg bg-[#fff] h-full">
@@ -65,8 +65,8 @@ const ContestCard = ({ contest }) => {
           <Divider className="my-3 bg-[#EBEFF3]" />
         </CardBody>
         <CardFooter>
-          <div className="footer wrapper flex  justify-between w-full">
-            {contest.status === "in-progress" && (
+          <div className="footer wrapper flex  justify-end w-full">
+            {!isCandidate && (
               <Button
                 href={`/contests/${contest.id}`}
                 as={Link}
@@ -76,7 +76,17 @@ const ContestCard = ({ contest }) => {
                 View Challenge
               </Button>
             )}
-            {contest.status === "completed" && (
+            {contest.status === "in-progress" && isCandidate && (
+              <Button
+                href={`/contests/${contest.id}`}
+                as={Link}
+                className="rounded-md"
+                color="primary"
+              >
+                View Challenge
+              </Button>
+            )}
+            {contest.status === "completed" && isCandidate && (
               <Button
                 className="rounded-md !cursor-not-allowed"
                 color="secondary"
@@ -86,7 +96,7 @@ const ContestCard = ({ contest }) => {
                 Contest Ended
               </Button>
             )}
-            {contest.status === "upcoming" && (
+            {contest.status === "upcoming" && isCandidate && (
               <Button
                 className="rounded-md !cursor-not-allowed"
                 color="secondary"

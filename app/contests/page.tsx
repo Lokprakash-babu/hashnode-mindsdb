@@ -71,7 +71,11 @@ const Contests = async () => {
           </div>
           <div className="contest-card-wrapper grid grid-cols-3 gap-x-4 gap-y-8 w-full py-8">
             {contests.map((contest, index) => (
-              <ContestCard contest={contest} key={index} />
+              <ContestCard
+                contest={contest}
+                key={index}
+                isCandidate={userPersona === "candidate"}
+              />
             ))}
           </div>
         </div>

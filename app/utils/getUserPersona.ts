@@ -8,6 +8,7 @@ export const getUserPersona = async () => {
   }
   const accountDetails = await getAccountDetails(userId || "", [
     "account_type",
+    "organisation_id",
   ]);
-  return accountDetails.account_type;
+  return accountDetails;
 };

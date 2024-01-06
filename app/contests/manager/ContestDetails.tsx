@@ -1,5 +1,6 @@
 "use client";
 import Trophy from "@/app/Components/Icons/Trophy";
+import moment from "moment";
 import { CANDIDATE_TABS, HIRING_MANAGER_TABS } from "../[id]/constants";
 import {
   Tabs,
@@ -30,6 +31,7 @@ import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
 import StartContestBtn from "../[id]/attempt/StartContestBtn";
+import useAccountContext from "@/app/hooks/useAccountContext";
 import { useAuth } from "@clerk/nextjs";
 
 const TYPE_MAPPING = {
@@ -58,6 +60,9 @@ const DescriptionCard = ({ title, content }) => {
 const DetailsSection = ({ details, userType }) => {
   const questions = details.questions;
   const [editForm, showEditForm] = useState(false);
+  const isContestStarted = moment(details.start_date).isBefore(
+    moment(new Date()).unix()
+  );
   return (
     <div className="pr-12 flex flex-col gap-y-12">
       <DescriptionCard title="Description" content={details.description} />
@@ -69,37 +74,39 @@ const DetailsSection = ({ details, userType }) => {
         <div className="questions-wrapper flex flex-col gap-y-3">
           <div className="heading-wrapper flex justify-between items-center px-4">
             <h3 className="underline">Contest Questions</h3>
-            <Dropdown>
-              <DropdownTrigger>
-                <button>
-                  <ActionMenu />
-                </button>
-              </DropdownTrigger>
-              <DropdownMenu
-                variant="faded"
-                aria-label="Dropdown menu with description"
-              >
-                {!editForm ? (
-                  <DropdownItem
-                    onClick={() => showEditForm(true)}
-                    className="text-black"
-                    key="edit"
-                    startContent={<EditPen />}
-                  >
-                    Edit
-                  </DropdownItem>
-                ) : (
-                  <DropdownItem
-                    onClick={() => showEditForm(false)}
-                    className="text-black"
-                    key="edit"
-                    startContent={<BackArrow />}
-                  >
-                    Back
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </Dropdown>
+            {!isContestStarted && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <button>
+                    <ActionMenu />
+                  </button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  variant="faded"
+                  aria-label="Dropdown menu with description"
+                >
+                  {!editForm ? (
+                    <DropdownItem
+                      onClick={() => showEditForm(true)}
+                      className="text-black"
+                      key="edit"
+                      startContent={<EditPen />}
+                    >
+                      Edit
+                    </DropdownItem>
+                  ) : (
+                    <DropdownItem
+                      onClick={() => showEditForm(false)}
+                      className="text-black"
+                      key="edit"
+                      startContent={<BackArrow />}
+                    >
+                      Back
+                    </DropdownItem>
+                  )}
+                </DropdownMenu>
+              </Dropdown>
+            )}
           </div>
           {!editForm ? (
             <Accordion variant="splitted">
@@ -173,6 +180,7 @@ const ContestDetails = ({ details, userType }) => {
   const [candidates, setCandidates] = useState([]);
   const [tab, setTab] = useState(HIRING_MANAGER_TABS[0].key);
   const [currentCandidate, setCurrentCandidate] = useState({});
+  const { account_type } = useAccountContext();
 
   useEffect(() => {
     requestWrapper(`contest/${details.id}/candidates`).then((response) => {
@@ -181,6 +189,7 @@ const ContestDetails = ({ details, userType }) => {
     });
   }, [details.id]);
 
+  //TODO: Retrive proper account type --> Done
   return (
     <div className="contest-details-wrapper flex text-black">
       <div className="details-pane  min-h-[100vh]  flex-1">
@@ -233,14 +242,16 @@ const ContestDetails = ({ details, userType }) => {
           </Tabs>
         </div>
       </div>
-      <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
-        {tab === "details" && (
+      {tab === "details" && (
+        <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
           <SideDetailsPane details={details} userType={userType} />
-        )}
-        {tab === "leaderBoard" && (
+        </div>
+      )}
+      {tab === "leaderBoard" && candidates.length > 0 && (
+        <div className="edit-form-pane bg-[#EAEEF2] min-h-[100vh] w-[450px] p-[17px] flex flex-col gap-y-6">
           <CandidatesInfoPane candidate={currentCandidate} />
-        )}
-      </div>
+        </div>
+      )}
       <Toast />
     </div>
   );
