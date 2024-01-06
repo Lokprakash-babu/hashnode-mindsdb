@@ -3,6 +3,7 @@ import { createContext, useEffect, useState } from "react";
 import { requestWrapper } from "@/lib/requestWrapper";
 import { useAuth } from "@clerk/nextjs";
 import RegisterPath from "../Components/Onboarding/RegisterPath";
+import UserContextLoader from "../Components/UserContextLoader";
 export const UserContext = createContext<any>(null);
 const UserContextProvider = ({ children }) => {
   const [userContextData, setUserContextData] = useState({
@@ -37,7 +38,7 @@ const UserContextProvider = ({ children }) => {
   }, [userId]);
 
   if (!userId || userContextData.loading || !isLoaded) {
-    return <p>Loading...</p>;
+    return <UserContextLoader />;
   }
 
   //@ts-ignore

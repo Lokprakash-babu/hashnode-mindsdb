@@ -15,6 +15,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Spinner,
 } from "@nextui-org/react";
 import { TONE_TYPES } from "../Editor/constants";
 import Mic from "../Icons/Mic";
@@ -290,9 +291,10 @@ const ContestForm = (
   );
 };
 const CreateContestForm = () => {
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmitHandler = async (data: any) => {
     try {
+      setIsLoading(true);
       await requestWrapper("contest", {
         method: "POST",
         headers: {
@@ -301,11 +303,14 @@ const CreateContestForm = () => {
         body: JSON.stringify(data),
       });
       toast.success("Contest created successfuly");
+      setIsLoading(false);
       // router.push("/contests");
     } catch {
+      setIsLoading(false);
       toast.error("Unable to create Contest!");
     }
   };
+
   return (
     <>
       <FormLayout
@@ -313,6 +318,7 @@ const CreateContestForm = () => {
         submitHandler={onSubmitHandler}
         form={ContestForm}
         infoContent={<></>}
+        isLoading={isLoading}
       />
       <Toast />
     </>
