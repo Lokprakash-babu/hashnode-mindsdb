@@ -18,7 +18,7 @@ import { IoMdSend } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { FaRobot } from "react-icons/fa6";
 
-const AskAI = ({ chapterId }) => {
+const AskAI = ({ lessonId }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [chatContext, setChatContext] = useState<IChatMessages[]>([]);
   const [httpRequest, setHttpRequest] = useState({
@@ -42,10 +42,14 @@ const AskAI = ({ chapterId }) => {
       error: "",
     });
     setCurrentQuestion("");
-
-    requestWrapper(
-      `/lessons/askai?chapterId=${chapterId}&question=${currentQuestion}`
-    )
+    console.log("lesson id", lessonId);
+    requestWrapper(`/lessons/askai`, {
+      method: "POST",
+      body: JSON.stringify({
+        question: currentQuestion,
+        lessonId: lessonId,
+      }),
+    })
       .then((response) => {
         setHttpRequest({
           data: response.message,
@@ -70,7 +74,6 @@ const AskAI = ({ chapterId }) => {
         });
       });
   };
-  console.log("http request", httpRequest);
   return (
     <>
       <Tooltip content="Ask AI" placement="left">

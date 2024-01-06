@@ -15,6 +15,7 @@ import {
   categoriesLabelMap,
 } from "../constants/categories";
 import clsx from "clsx";
+import { lessons } from "../constants/lessons";
 
 const tableColumn = [
   {
@@ -23,9 +24,9 @@ const tableColumn = [
     label: "Title",
   },
   {
-    key: "chapters",
-    uid: "chapters",
-    label: "Chapters",
+    key: "about",
+    uid: "about",
+    label: "About",
   },
   {
     key: "category",
@@ -70,24 +71,15 @@ const renderCell = (
   }
 };
 
-const LessonsListing = ({ lessons }) => {
-  const rows = lessons.reduce(
-    (
-      prev: any,
-      curr: { id: any; title: any; chapter_count: any; category: any }
-    ) => {
-      return [
-        ...prev,
-        {
-          id: curr.id,
-          title: curr.title,
-          chapters: curr.chapter_count,
-          category: curr.category,
-        },
-      ];
-    },
-    []
-  );
+const LessonsListing = ({ lessonIds }) => {
+  const rows = lessonIds.map((lessonId) => {
+    return {
+      id: lessonId,
+      title: lessons[lessonId].title,
+      category: lessons[lessonId].category,
+      about: lessons[lessonId].about,
+    };
+  });
   return (
     <Table
       isStriped

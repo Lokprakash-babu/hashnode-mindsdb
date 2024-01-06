@@ -5,21 +5,24 @@ export interface IChapters {
   title: string;
   id: string;
   about: string;
-  chapter_content: string;
+  content: string;
 }
 
-const LessonDetails = ({ chapters }: { chapters: IChapters }) => {
+const LessonDetails = ({
+  chapters,
+  lessonId,
+}: {
+  chapters: IChapters;
+  lessonId: string;
+}) => {
   return (
     <section className="flex justify-between">
       {/* <ChaptersContainer chapters={chapters} /> */}
       <ChaptersContent
-        content={chapters.chapter_content}
+        content={chapters.content}
         // maxChapter={chapters.length}
       />
-      <ActionsContainer
-        content={chapters.chapter_content}
-        chapterId={chapters.id}
-      />
+      <ActionsContainer content={chapters.content} lessonId={lessonId} />
     </section>
   );
 };

@@ -3,11 +3,11 @@ import LessonDetails from "./LessonDetails";
 import HeaderSetter from "@/app/Components/Header/HeaderSetter";
 import BreadCrumb from "@/app/Components/BreadCrumb";
 import SubHeader from "@/app/Components/SubHeader";
-import { getLessonDetails } from "@/app/db-handlers/lessons/getLessonDetails";
+import { lessons } from "@/app/constants/lessons";
 
-const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
+const LessonDetailsPage = ({ params }: { params: { id: string } }) => {
   try {
-    const lessonDetails = await getLessonDetails(params.id);
+    const lessonDetails = lessons[params.id];
     const crumbs = [
       {
         label: "Learn",
@@ -28,7 +28,7 @@ const LessonDetailsPage = async ({ params }: { params: { id: string } }) => {
           <BreadCrumb crumbs={crumbs} />
         </SubHeader>
         <section className="layout">
-          <LessonDetails chapters={lessonDetails} />
+          <LessonDetails chapters={lessonDetails} lessonId={params.id} />
         </section>
       </>
     );
