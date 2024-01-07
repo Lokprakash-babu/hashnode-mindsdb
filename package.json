@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.0.10",
     "@clerk/nextjs": "^4.29.1",
     "@nextui-org/react": "^2.2.9",
+    "aws-amplify": "^6.0.10",
     "cloudinary": "^1.41.1",
     "clsx": "^2.0.0",
     "date-fns": "^3.0.6",
