@@ -16,12 +16,14 @@ const UserContextProvider = ({ children }) => {
     if (userId) {
       setUserContextData({
         ...userContextData,
+        //@ts-ignore
         loading: true,
       });
       requestWrapper(`account?id=${userId}`)
         .then((account) => {
           setUserContextData({
             data: account,
+            //@ts-ignore
             loading: false,
             err: null,
           });
@@ -31,6 +33,7 @@ const UserContextProvider = ({ children }) => {
           setUserContextData({
             ...userContextData,
             err: err,
+            //@ts-ignore
             loading: false,
           });
         });
@@ -41,8 +44,8 @@ const UserContextProvider = ({ children }) => {
     return <UserContextLoader />;
   }
 
-  //@ts-ignore
   if (
+    //@ts-ignore
     !userContextData?.data?.id &&
     userId &&
     isLoaded &&

@@ -1,3 +1,3 @@
-export const findUser = (userEmail) => {
-  return `SELECT * FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account where email='${userEmail}'`;
+export const findUser = (userEmail, key = "email") => {
+  return `SELECT * FROM ${process.env.NEXT_PLANETSCALE_DB_NAME}.Account where ${key}='${userEmail}'`;
 };

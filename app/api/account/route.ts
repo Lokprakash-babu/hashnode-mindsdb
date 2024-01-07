@@ -1,6 +1,6 @@
+import { findUser } from "@/app/utils/queries";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import { NextRequest, NextResponse } from "next/server";
-import { findUser } from "./[id]/route";
 
 export async function GET(request: NextRequest) {
   try {

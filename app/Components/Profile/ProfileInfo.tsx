@@ -73,7 +73,7 @@ export default function ProfileInfo({ user }) {
               <PrimaryButton
                 onClick={updateResume}
                 className="max-w-[45px] flex flex-end self-end"
-                variant="primary"
+                color="primary"
               >
                 Save
               </PrimaryButton>

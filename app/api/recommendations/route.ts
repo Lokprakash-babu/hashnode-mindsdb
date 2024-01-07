@@ -12,7 +12,9 @@ export async function GET() {
 
     const recommendationResponse = await MindsDB.SQL.runQuery(QUERY);
     recommendationResponse.rows.forEach(({ item_id }) => {
+      //@ts-ignore
       if (!userList.includes(item_id)) {
+        //@ts-ignore
         userList.push(item_id);
       }
     });

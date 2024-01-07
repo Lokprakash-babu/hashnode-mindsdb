@@ -66,7 +66,6 @@ const CandidateInfo = ({ candidate }) => {
                   <h3 className="header-2-600 text-[#3B4854]">
                     Language Proficiency:
                     <span className="ml-2">
-                      'Test,,ejfkefjkejfkejkejkjkejgkje'||{" "}
                       {feedback.language_proficiency}
                     </span>
                   </h3>

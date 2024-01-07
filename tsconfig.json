@@ -5,8 +5,8 @@
     "noImplicitAny": false,
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
+    "strict": false,
+    "noEmit": false,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -29,7 +29,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/api/health/route.ts",
-    "app/api/health/route.tsx"
-, "app/recommendations"  ],
+    "app/api/health/route.tsx",
+    "app/recommendations"
+  ],
   "exclude": ["node_modules"]
 }

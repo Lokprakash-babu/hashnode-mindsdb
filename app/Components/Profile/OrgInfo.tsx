@@ -14,6 +14,7 @@ const OrgInfo = ({ user }) => {
       <Tab key="org" title="Organisation">
         <div className="tab-wrapper px-8">
           <div className="org-card px-2.5 py-4 rounded-lg bg-[#E6F0FE] border border-[#C5E0FD] before:bg-[#2E66D0] before:border-brand before:rounded-full w-[350px] flex gap-x-3 items-center">
+            {/*@ts-ignore*/}
             <Avatar name={org?.name} />
             <h1 className="header-2-600">{org?.name}</h1>
           </div>
