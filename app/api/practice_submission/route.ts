@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import connect from "@/lib/mindsdb-connection";
-import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
 import { generateFeedback } from "@/app/MindsdbHandlers/FeedbackGenerator";
 import moment from "moment";
 import { auth } from "@clerk/nextjs";
+import { model } from "@/app/constants/models";
 
 const submissionIdGenerator = () => {
   const epoch = moment().unix();
@@ -35,29 +35,17 @@ WHERE id=?;
   `;
 };
 
-const createEntryInFeedbackTable = ({
-  userId,
-  submissionId,
-  practiceId,
-  feedback,
-  score,
-}) => {
+const createEntryInFeedbackTable = () => {
   return `
-    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback (candidate_id, entity_id, score, feedback, submission_id) VALUES ("${userId}", "${practiceId}", '${score}', '${feedback}', "${submissionId}")
+    INSERT INTO ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback (candidate_id, entity_id, score, feedback, submission_id) VALUES (?, ?, ?, ?, ?)
   `;
 };
 
-const updateEntryInFeedbackTable = ({
-  userId,
-  practiceId,
-  submissionId,
-  feedback,
-  score,
-}) => {
+const updateEntryInFeedbackTable = () => {
   return `
   UPDATE ${process.env.NEXT_PLANETSCALE_DB_NAME}.Feedback
-  SET score="${score}", feedback='${feedback}'
-  WHERE candidate_id="${userId}" AND entity_id="${practiceId}" AND submission_id="${submissionId}"
+  SET score=?, feedback= ?
+  WHERE candidate_id=? AND entity_id=? AND submission_id=?
   `;
 };
 
@@ -127,38 +115,60 @@ export async function POST(req: NextRequest) {
         feedbackRequestedFor,
       })
     );
-    const feedback = await MindsDB.SQL.runQuery(
-      generateFeedback(feedbackRequestedFor)
-    );
-    const feedbackObject = feedback.rows?.[0]?.response;
-    const extractJson = await MindsDB.SQL.runQuery(
-      JsonExtractor(feedbackObject)
-    );
-    console.log("feedback object", feedbackObject);
-    console.log("extracted json", extractJson?.rows?.[0]?.json);
+
+    const [language, tone, score] = await Promise.all([
+      MindsDB.SQL.runQuery(
+        generateFeedback(feedbackRequestedFor, model.langugageModel)
+      ),
+      MindsDB.SQL.runQuery(
+        generateFeedback(feedbackRequestedFor, model.toneModel)
+      ),
+      MindsDB.SQL.runQuery(
+        generateFeedback(feedbackRequestedFor, model.scoreModel)
+      ),
+    ]);
+    const [language_proficiency, tone_feedback, scoreVal] = [
+      language.rows?.[0]?.response,
+      tone.rows?.[0]?.response,
+      score.rows?.[0]?.response,
+    ];
+    // const feedback = await MindsDB.SQL.runQuery(
+    //   generateFeedback(feedbackRequestedFor)
+    // );
+    // const feedbackObject = feedback.rows?.[0]?.response;
+    console.log("Feedback", {
+      language_proficiency,
+      tone_feedback,
+      scoreVal,
+    });
+
+    const feedbackObject = {
+      language_proficiency,
+      tone_feedback,
+      scoreVal,
+    };
     //create entry in feedback table
     if (!isCreateFlowHappened) {
-      await mysql.query(
-        updateEntryInFeedbackTable({
-          userId,
-          practiceId,
-          feedback: JSON.stringify(extractJson?.rows?.[0]?.json),
-          score: extractJson?.rows?.[0]?.json.score,
-          submissionId,
-        })
-      );
+      console.log("Update flow feedback", submissionId);
+      await mysql.query(updateEntryInFeedbackTable(), [
+        scoreVal,
+        JSON.stringify(feedbackObject),
+        userId,
+        practiceId,
+        submissionId,
+      ]);
     } else {
-      await mysql.query(
-        createEntryInFeedbackTable({
-          userId,
-          practiceId,
-          submissionId,
-          feedback: JSON.stringify(extractJson?.rows?.[0]?.json),
-          score: extractJson?.rows?.[0]?.json.score,
-        })
-      );
-    }
+      console.log("Create flow feedback", submissionId);
 
+      await mysql.query(createEntryInFeedbackTable(), [
+        userId,
+        practiceId,
+        scoreVal,
+        JSON.stringify(feedbackObject),
+        submissionId,
+      ]);
+    }
+    console.log("Feedback submitted");
     return NextResponse.json({
       message: {
         submissionId,

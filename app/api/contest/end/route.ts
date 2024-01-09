@@ -1,5 +1,5 @@
 import { generateFeedback } from "@/app/MindsdbHandlers/FeedbackGenerator";
-import { JsonExtractor } from "@/app/MindsdbHandlers/JsonExtractor";
+import { model } from "@/app/constants/models";
 import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import connect from "@/lib/mindsdb-connection";
 import { mysqlConnection } from "@/lib/mysql-connection";
@@ -90,20 +90,43 @@ export async function POST(req: NextRequest) {
       })
       .join("\n\n");
 
-    const feedback = await MindsDB.SQL.runQuery(
-      generateFeedback(individualAnswers)
-    );
-    const feedbackObject = feedback.rows?.[0]?.response;
-    const extractJson = await MindsDB.SQL.runQuery(
-      JsonExtractor(feedbackObject)
-    );
-    console.log("feedback object", feedbackObject);
-    console.log("extracted json", extractJson?.rows?.[0]?.json);
+    const [language, tone, score] = await Promise.all([
+      MindsDB.SQL.runQuery(
+        generateFeedback(individualAnswers, model.langugageModel)
+      ),
+      MindsDB.SQL.runQuery(
+        generateFeedback(individualAnswers, model.toneModel)
+      ),
+      MindsDB.SQL.runQuery(
+        generateFeedback(individualAnswers, model.scoreModel)
+      ),
+    ]);
+
+    const [language_proficiency, tone_feedback, scoreVal] = [
+      language.rows?.[0]?.response,
+      tone.rows?.[0]?.response,
+      score.rows?.[0]?.response,
+    ];
+    // const feedback = await MindsDB.SQL.runQuery(
+    //   generateFeedback(feedbackRequestedFor)
+    // );
+    // const feedbackObject = feedback.rows?.[0]?.response;
+    console.log("Feedback", {
+      language_proficiency,
+      tone_feedback,
+      scoreVal,
+    });
+
+    const feedbackObject = {
+      language_proficiency,
+      tone_feedback,
+      scoreVal,
+    };
 
     const currentTime = Date.now();
     await mysql.query(updateFeedbackRecord(userId, data.contestId), [
-      extractJson?.rows?.[0]?.json.score,
-      JSON.stringify(extractJson?.rows?.[0]?.json),
+      scoreVal,
+      feedbackObject,
       currentTime,
     ]);
     return NextResponse.json({

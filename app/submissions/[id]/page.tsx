@@ -13,8 +13,11 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
     if (!submissionDetails) {
       return notFound();
     }
-    const { language_proficiency, overall_feedback, tone_feedback, score } =
-      submissionDetails.feedback;
+    const {
+      language_proficiency,
+      tone_feedback,
+      scoreVal: score,
+    } = submissionDetails.feedback;
 
     const crumbs = [
       {
@@ -38,7 +41,6 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
           {isContestType && (
             <ContestSubmissionDetails
               languageFeedback={language_proficiency}
-              overallFeedback={overall_feedback}
               toneFeedback={tone_feedback}
               problemId={submissionDetails.entity_id}
               answer={submissionDetails.answer.answer}
@@ -48,7 +50,6 @@ const PracticeDetailsPage = async ({ params }: { params: { id: string } }) => {
           {!isContestType && (
             <SubmissionDetails
               languageFeedback={language_proficiency}
-              overallFeedback={overall_feedback}
               toneFeedback={tone_feedback}
               problemId={submissionDetails.entity_id}
               answer={submissionDetails.answer}

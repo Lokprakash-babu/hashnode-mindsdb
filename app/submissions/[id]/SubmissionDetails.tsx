@@ -6,7 +6,6 @@ import Link from "next/link";
 interface ISubmissionDetails {
   languageFeedback: string;
   toneFeedback: string;
-  overallFeedback: string;
   problemId: string;
   answer: any;
   score: string;
@@ -14,20 +13,12 @@ interface ISubmissionDetails {
 const SubmissionDetails = ({
   answer,
   languageFeedback,
-  overallFeedback,
   problemId,
   score,
   toneFeedback,
 }: ISubmissionDetails) => {
   const parsedAnswer = answer;
-  console.log("parsed answer", {
-    parsedAnswer: parsedAnswer.answer,
-    languageFeedback,
-    overallFeedback,
-    problemId,
-    score,
-    toneFeedback,
-  });
+
   const isChatType = Array.isArray(parsedAnswer?.answer);
   return (
     <div className="flex justify-between gap-5">
@@ -49,7 +40,6 @@ const SubmissionDetails = ({
         <SubmissionFeedback
           languageFeedback={languageFeedback}
           toneFeedback={toneFeedback}
-          overallFeedback={overallFeedback}
         />
       </div>
       <div className="submitted-answer flex-1">

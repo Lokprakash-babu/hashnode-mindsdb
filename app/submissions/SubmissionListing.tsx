@@ -40,7 +40,7 @@ const renderCell = (item, columnKey: string, pageType: string) => {
       const parsedFeedback = item[columnKey];
       //TODO: Add truncated feedback
       // const feedbackLength = item[columnKey].length;
-      return <p>{parsedFeedback?.overall_feedback || ""}</p>;
+      return <p>{parsedFeedback?.tone_feedback || ""}</p>;
     case "score":
       return <p>{item[columnKey]}</p>;
     case "submission_id":

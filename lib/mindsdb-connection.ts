@@ -3,7 +3,7 @@ import MindsDB from "mindsdb-js-sdk";
 const connect = async () => {
   try {
     await MindsDB.connect({
-      host: "http://127.0.0.1:47334",
+      host: process.env.NEXT_MINDSDB_URL,
       user: "",
       password: "",
     });

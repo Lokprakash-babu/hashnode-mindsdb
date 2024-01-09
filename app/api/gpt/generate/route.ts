@@ -1,6 +1,8 @@
+import { model } from "@/app/constants/models";
 import connect from "@/lib/mindsdb-connection";
-import MindsDB from "mindsdb-js-sdk";
 import { NextRequest, NextResponse } from "next/server";
+import MindsDB from "mindsdb-js-sdk";
+
 const TYPE_MAPPING = {
   email: "like a email conversation based scenario in markdown format",
   bot_conversation:
@@ -50,11 +52,11 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const { question, type, conversation_tone, context } = data;
     const QUERY = `SELECT article_title,conversation_tone, question, answer
-FROM ${process.env.MODEL_NAME}
+FROM ${model.lessonAskAiModel}
 WHERE question = '${question} ${TYPE_MAPPING[type] || ""}'
 AND conversation_tone = '${conversation_tone}' AND article_title = '${context}';`;
-    const promptResponse = TYPE_RESPONSE_MAPPING[type];
-    // const promptResponse = await MindsDB.SQL.runQuery(QUERY);
+
+    const promptResponse = await MindsDB.SQL.runQuery(QUERY);
     return NextResponse.json(promptResponse);
   } catch (err) {
     console.log("err", err);
