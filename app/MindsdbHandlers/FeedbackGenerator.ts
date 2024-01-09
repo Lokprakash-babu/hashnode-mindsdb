@@ -1,18 +1,17 @@
-export const generateFeedback = (answers) => {
-  console.log("answers in generateFeedback", answers);
-  const answerString =
-    answers instanceof Array
-      ? answers
-          .filter((answer) => {
-            return answer.type === "user";
-          })
-          .map((filterAnswer) => {
-            return `User: ${filterAnswer.message}`;
-          })
-          .join(",")
-      : answers;
+export const generateFeedback = (answers, model) => {
+  const answerString = Array.isArray(answers)
+    ? answers
+        .filter((answer) => {
+          return answer.type === "user";
+        })
+        .map((filterAnswer) => {
+          return `User: ${filterAnswer.message}`;
+        })
+        .join(",")
+    : answers;
+  console.log("answer string", answerString);
   return `
-    SELECT response FROM evaluator_model
+    SELECT response FROM ${model}
     WHERE answer="${answerString}"
     `;
 };

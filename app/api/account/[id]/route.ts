@@ -31,10 +31,7 @@ export async function GET(
   }
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest) {
   try {
     const mysql = await mysqlConnection();
     const data = await req.json();

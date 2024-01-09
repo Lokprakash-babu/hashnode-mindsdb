@@ -76,12 +76,6 @@ const CandidateInfo = ({ candidate }) => {
                     <span className="ml-2">{feedback.tone_feedback}</span>
                   </h3>
                 </div>
-                <div className="sections">
-                  <h3 className="header-2-600 text-[#3B4854]">
-                    Overall Feedback:
-                    <span className="ml-2">{feedback.overall_feedback}</span>
-                  </h3>
-                </div>
               </div>
             </div>
           )}

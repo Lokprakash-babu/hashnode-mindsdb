@@ -5,7 +5,6 @@ import QuestionsTab from "./QuestionsTab";
 interface ISubmissionDetails {
   languageFeedback: string;
   toneFeedback: string;
-  overallFeedback: string;
   problemId: string;
   answer: string;
   score: string;
@@ -13,7 +12,6 @@ interface ISubmissionDetails {
 const ContestSubmissionDetails = ({
   answer,
   languageFeedback,
-  overallFeedback,
   problemId,
   score,
   toneFeedback,
@@ -22,7 +20,6 @@ const ContestSubmissionDetails = ({
   console.log("parsed answer", {
     answer,
     languageFeedback,
-    overallFeedback,
     problemId,
     score,
     toneFeedback,
@@ -47,7 +44,6 @@ const ContestSubmissionDetails = ({
         <SubmissionFeedback
           languageFeedback={languageFeedback}
           toneFeedback={toneFeedback}
-          overallFeedback={overallFeedback}
         />
       </div>
       <div className="submitted-answer flex-1">

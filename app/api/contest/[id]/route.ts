@@ -1,6 +1,4 @@
-import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
-import MindsDB from "mindsdb-js-sdk";
 import { generateUpdateQuery, selectAllQuery } from "@/app/utils/generateQuery";
 import { mysqlConnection } from "@/lib/mysql-connection";
 
@@ -10,7 +8,6 @@ export async function GET(
 ) {
   try {
     const mysql = await mysqlConnection();
-    console.log(">>> Minds db connected");
     const QUERY = selectAllQuery(
       "Contest",
       `id='${params.id}'`,

@@ -2,13 +2,14 @@ import connect from "@/lib/mindsdb-connection";
 import { NextRequest, NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
 import { lessons } from "@/app/constants/lessons";
+import { model } from "@/app/constants/models";
 
 const generateAnswerQuery = (about, question) => {
   return `
-    SELECT about, question, answer
-FROM question_answering_model
+    SELECT answer
+FROM ${model.lessonAskAiModel}
 WHERE question = "${question}?"
-AND about = "${about}";
+AND article_title = "${about}";
     `;
 };
 export async function POST(req: NextRequest) {

@@ -1,6 +1,7 @@
 import connect from "@/lib/mindsdb-connection";
 import { NextResponse } from "next/server";
 import MindsDB from "mindsdb-js-sdk";
+import { model } from "@/app/constants/models";
 const generateChatQuery = (
   previousMessages: { type: "user" | "bot"; message: string }[],
   latestMessage: string,
@@ -16,7 +17,7 @@ const generateChatQuery = (
     .join(",");
   return `
 SELECT response
-FROM conversational_model
+FROM ${model.conversationalModel}
 WHERE previous_messages = "${previousMessagesString}"
 AND latest_message = "${latestMessage}" AND context="${context}"`;
 };
