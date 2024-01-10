@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
     const currentTime = Date.now();
     await mysql.query(updateFeedbackRecord(userId, data.contestId), [
       scoreVal,
-      feedbackObject,
+      JSON.stringify(feedbackObject),
       currentTime,
     ]);
     return NextResponse.json({
