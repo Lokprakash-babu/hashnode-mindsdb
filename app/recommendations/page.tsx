@@ -1,11 +1,10 @@
-import { requestWrapper } from "@/lib/requestWrapper";
+
 import HeaderSetter from "../Components/Header/HeaderSetter";
 import RecommendationTable from "./RecommendationTable";
+import { getRecommendations } from "../db-handlers/recommendations/getRecommendations";
 
 const page = async () => {
-  const recommendations = await requestWrapper("recommendations", {
-    cache: "no-store",
-  });
+  const recommendations = await getRecommendations();
   console.log("Recom", recommendations);
   return (
     <>
