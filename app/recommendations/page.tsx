@@ -3,7 +3,7 @@ import HeaderSetter from "../Components/Header/HeaderSetter";
 import RecommendationTable from "./RecommendationTable";
 
 const page = async () => {
-  const recommendations = await requestWrapper("/recommendations", {
+  const recommendations = await requestWrapper("recommendations", {
     cache: "no-store",
   });
   console.log("Recom", recommendations);
