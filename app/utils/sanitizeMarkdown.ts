@@ -1,3 +1,3 @@
 export const removeHtmlTags = (content) => {
-  return content?.replace(/<[^>]*>/g, ""); // This regex will remove HTML tags
+  return content?.replace(/<[^>]*>/g, "").toString(); // This regex will remove HTML tags
 };
