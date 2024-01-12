@@ -42,7 +42,6 @@ const AskAI = ({ lessonId }) => {
       error: "",
     });
     setCurrentQuestion("");
-    console.log("lesson id", lessonId);
     requestWrapper(`/lessons/askai`, {
       method: "POST",
       body: JSON.stringify({

@@ -1,9 +1,11 @@
 "use client";
 import { requestWrapper } from "@/lib/requestWrapper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChatHeader from "./ChatHeader";
 import ChatFooter from "./ChatFooter";
 import ChatContainer, { IChatMessages, MessagePersona } from "./ChatContainer";
+import Toast from "../Toasts/Toast";
+import { toast } from "react-toastify";
 
 export interface IChatMessenger {
   initialMessage?: string;
@@ -17,11 +19,9 @@ export interface IChatMessenger {
 const ChatMessenger = ({
   initialMessage,
   context,
-  chatMessageLimit = 5,
   isReadOnly = false,
   chatHistory = [],
   onEndChat,
-  onSave,
 }: IChatMessenger) => {
   const initialState = !chatHistory.length
     ? [
@@ -82,15 +82,25 @@ const ChatMessenger = ({
         });
         setIsLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setIsLoading(false);
-        console.log("error", err);
+        toast.error("Something went wrong in our end, we are checking it");
       });
   };
 
   const endChat = () => {
-    //Post the messages for feedback
-    onEndChat?.(chatMessages.previousMessages as IChatMessages[]);
+    const totalCandidateMessages = chatMessages.previousMessages.filter(
+      (message) => message.type === "user"
+    ).length;
+    if (totalCandidateMessages >= 3 && totalCandidateMessages < 10) {
+      onEndChat?.(chatMessages.previousMessages as IChatMessages[]);
+    } else if (totalCandidateMessages < 3) {
+      toast.error("More than 3 messages should be entered");
+    } else {
+      toast.error(
+        "Less than 10 messages should be entered, reset the chat and start from first 😀"
+      );
+    }
   };
   return (
     <>
@@ -101,7 +111,10 @@ const ChatMessenger = ({
         onEndChat={endChat}
       />
       <div className="bg-[#EEF5FF] overflow-y-auto p-5 rounded-xl">
-        <ChatContainer chatMessages={chatMessages.toBeRenderedMessages} />
+        <ChatContainer
+          chatMessages={chatMessages.toBeRenderedMessages}
+          isLoading={isLoading}
+        />
         {!isReadOnly && (
           <ChatFooter
             currentValue={latestMessage}
@@ -111,6 +124,7 @@ const ChatMessenger = ({
           />
         )}
       </div>
+      <Toast />
     </>
   );
 };

@@ -1,4 +1,5 @@
 import Button from "@/app/Components/Buttons";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import {
   Card,
   CardBody,
@@ -6,9 +7,9 @@ import {
   Chip,
   Divider,
   CardFooter,
-  Avatar,
   Link,
 } from "@nextui-org/react";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 
 export const CONTEST_STATUS_MAPPING = {
   upcoming: {
@@ -61,7 +62,7 @@ const ContestCard = ({ contest, isCandidate = false }) => {
           </div>
         </CardHeader>
         <CardBody>
-          <article className="line-clamp-5">{contest.job_description}</article>
+          <article className="line-clamp-5">{removeHtmlTags(contest.job_description)}</article>
           <Divider className="my-3 bg-[#EBEFF3]" />
         </CardBody>
         <CardFooter>

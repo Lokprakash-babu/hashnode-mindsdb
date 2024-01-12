@@ -1,17 +1,15 @@
-import { requestWrapper } from "@/lib/requestWrapper";
+
 import HeaderSetter from "../Components/Header/HeaderSetter";
 import RecommendationTable from "./RecommendationTable";
+import { getRecommendations } from "../db-handlers/recommendations/getRecommendations";
 
 const page = async () => {
-  const recommendations = await requestWrapper("/recommendations", {
-    cache: "no-store",
-  });
-  console.log("Recom", recommendations);
+  const recommendations = await getRecommendations();
   return (
     <>
       <HeaderSetter title={"Recommendations"} />
       <section className="layout">
-        <RecommendationTable candidates={recommendations}/>
+        <RecommendationTable candidates={recommendations} />
       </section>
     </>
   );

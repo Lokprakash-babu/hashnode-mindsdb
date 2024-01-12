@@ -10,7 +10,6 @@ import { lessons } from "../constants/lessons";
 const Learn = () => {
   try {
     const lessonsList = Object.keys(lessons);
-    console.log("lessons", lessonsList);
     return (
       <section className="layout">
         <HeaderSetter title="Learn" />

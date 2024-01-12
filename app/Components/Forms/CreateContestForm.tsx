@@ -1,12 +1,12 @@
 "use client";
 import FormLayout from "./FormLayout";
+import useAccountContext from "@/app/hooks/useAccountContext";
 import { Controller, FieldValues, UseFormRegister } from "react-hook-form";
 import SingleSelect from "./Fields/SingleSelect";
 import InputField from "./Fields/InputField";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Toast from "../Toasts/Toast";
-import { useRouter } from "next/navigation";
 import RichTextEditor from "../Editor/RichTextEditor";
 import {
   Accordion,
@@ -15,7 +15,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Spinner,
 } from "@nextui-org/react";
 import { TONE_TYPES } from "../Editor/constants";
 import Mic from "../Icons/Mic";
@@ -58,6 +57,7 @@ const ContestForm = (
   getValues: any
 ) => {
   const [questions, setQuestion] = useState([Date.now()]);
+  const { organisation_id } = useAccountContext();
   return (
     <div className="form-wrapper flex flex-col gap-y-8">
       <InputField
@@ -147,7 +147,7 @@ const ContestForm = (
         isRequired={true}
         type="text"
         label="Organisation"
-        value={"1"}
+        value={organisation_id}
         placeholder="Enter your organisation id"
       />
 
@@ -303,8 +303,7 @@ const CreateContestForm = () => {
         body: JSON.stringify(data),
       });
       toast.success("Contest created successfuly");
-      setIsLoading(false);
-      // router.push("/contests");
+      setIsLoading(false)
     } catch {
       setIsLoading(false);
       toast.error("Unable to create Contest!");

@@ -20,7 +20,6 @@ const StartContestBtn = () => {
       document.documentElement.requestFullscreen();
       router.replace(`${pathName}/attempt`);
     } else if (document.exitFullscreen) {
-      console.log("exiting full screen");
       document.exitFullscreen();
     }
   };
