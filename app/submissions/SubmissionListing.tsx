@@ -77,7 +77,6 @@ const SubmissionList = ({ type }) => {
     setIsLoading(true);
     requestWrapper(`submissions?type=${type}`)
       .then((submission) => {
-        console.log("submission", submission.message);
         setSubmission(submission.message);
       })
       .catch((err) => {

@@ -11,7 +11,6 @@ export interface IBreadCrumb {
 }
 
 const BreadCrumb = ({ crumbs, variant = "bordered" }: IBreadCrumb) => {
-  console.log("crumbs", crumbs);
   return (
     <Breadcrumbs variant={variant} color="primary" underline="always">
       {crumbs.map((crumb) => {

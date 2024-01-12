@@ -22,7 +22,6 @@ const Contests = async () => {
       //Fetch all the contests
       const contests = (await getContestListHandler()) as [];
       const groupingBasedContest = contests.reduce((prev, curr) => {
-        console.log("REDUCE");
         //@ts-ignore
         const currentStatus = curr.status;
         if (prev[currentStatus]) {
@@ -34,7 +33,6 @@ const Contests = async () => {
           ...prev,
         };
       }, {});
-      console.log("Grouping contest", groupingBasedContest);
       return (
         <section className="layout mt-8">
           <HeaderSetter title={"Contests"} />
@@ -71,10 +69,7 @@ const Contests = async () => {
           </div>
           <div className="contest-card-wrapper grid grid-cols-3 gap-x-4 gap-y-8 w-full py-8">
             {contests.map((contest, index) => (
-              <ContestCard
-                contest={contest}
-                key={index}
-              />
+              <ContestCard contest={contest} key={index} />
             ))}
           </div>
         </div>

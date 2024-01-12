@@ -7,7 +7,6 @@ import InputField from "./Fields/InputField";
 import { toast } from "react-toastify";
 import { requestWrapper } from "@/lib/requestWrapper";
 import Toast from "../Toasts/Toast";
-import { useRouter } from "next/navigation";
 import RichTextEditor from "../Editor/RichTextEditor";
 import {
   Accordion,
@@ -16,7 +15,6 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Spinner,
 } from "@nextui-org/react";
 import { TONE_TYPES } from "../Editor/constants";
 import Mic from "../Icons/Mic";

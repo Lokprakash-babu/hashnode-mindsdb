@@ -17,11 +17,9 @@ import { startContest } from "@/app/db-handlers/contests/startContest";
 const ContestPageAttempt = async ({ params }: { params: { id: string } }) => {
   try {
     const startContestDetails = await startContest(params.id);
-    console.log("start contest details", startContestDetails);
     const isContestAlreadyEnded =
       startContestDetails?.message === "Contest is done already!";
     if (isContestAlreadyEnded) {
-      console.log("contest ended");
       return (
         <>
           <HeaderSetter title={`Contest: ${params.id}`} />

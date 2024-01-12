@@ -2,7 +2,6 @@
 import { Spinner } from "@nextui-org/react";
 
 const Loading = () => {
-  console.log("Loading comp");
   return (
     <div className="bg-white layout flex justify-center items-center w-full h-full">
       <div>

@@ -5,12 +5,11 @@ import { getRecommendations } from "../db-handlers/recommendations/getRecommenda
 
 const page = async () => {
   const recommendations = await getRecommendations();
-  console.log("Recom", recommendations);
   return (
     <>
       <HeaderSetter title={"Recommendations"} />
       <section className="layout">
-        <RecommendationTable candidates={recommendations}/>
+        <RecommendationTable candidates={recommendations} />
       </section>
     </>
   );

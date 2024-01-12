@@ -11,7 +11,6 @@ const RecommendationTable = ({ candidates }) => {
     candidates?.[0] || []
   );
   const refreshRecommendations = () => {
-    console.log("Rfresh");
     requestWrapper("/recommendations/refresh", {
       method: "POST",
     }).then(() => {

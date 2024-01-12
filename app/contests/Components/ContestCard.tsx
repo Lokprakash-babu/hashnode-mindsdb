@@ -1,4 +1,5 @@
 import Button from "@/app/Components/Buttons";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import {
   Card,
   CardBody,

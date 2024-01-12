@@ -71,7 +71,7 @@ const RichTextEditor = (props) => {
         model={props?.field?.value || model || props?.initialValue}
         onModelChange={(e) => {
           setModel(e?.target?.value);
-          props?.field?.onChange(e);
+          props?.field?.onChange(e.replace("powered by Froala Editor", ""));
         }}
         config={OPTIONS}
       />

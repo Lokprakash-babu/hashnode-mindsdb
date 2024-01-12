@@ -13,10 +13,6 @@ export default function SubmissionListingTab() {
   const [selected, setSelected] = useState("Practice");
 
   useEffect(() => {
-    console.log("page type", {
-      pathname,
-      pageType,
-    });
     if (!pageType || (pageType !== "practice" && pageType !== "contest")) {
       router.push(`${pathname}?type=practice`);
     }
