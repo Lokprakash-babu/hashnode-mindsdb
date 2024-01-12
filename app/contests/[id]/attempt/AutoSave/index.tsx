@@ -13,7 +13,6 @@ const AutoSave = () => {
       const isHavingAnswers = Object.keys(answers).length;
       if (isHavingAnswers) {
         onSaveHandler(() => {
-          console.log("Auto save use effect");
           setIsSaveHappened(true);
           setTimeout(() => {
             setIsSaveHappened(false);

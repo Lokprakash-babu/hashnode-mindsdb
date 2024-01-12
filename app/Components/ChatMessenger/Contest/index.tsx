@@ -1,6 +1,9 @@
 "use client";
 import ChatFooter from "../ChatFooter";
 import ChatContainer, { IChatMessages } from "../ChatContainer";
+import { useEffect } from "react";
+import Toast from "../../Toasts/Toast";
+import { toast } from "react-toastify";
 
 export interface IContestChatMessenger {
   isLoading?: boolean;
@@ -16,15 +19,28 @@ const ContestChatMessenger = ({
   userEnteredMessage,
   setUserEnteredMessage,
 }: IContestChatMessenger) => {
+  const totalChatMessageByCandidate = chatMessages.filter((chatMessage) => {
+    return chatMessage.type !== "bot";
+  }).length;
+  useEffect(() => {
+    if (totalChatMessageByCandidate >= 6) {
+      toast.error(
+        "You have entered more than 6 messages. Either End Chat or Reset the chat"
+      );
+    }
+  }, [totalChatMessageByCandidate]);
   return (
     <>
       <ChatContainer chatMessages={chatMessages} />
-      <ChatFooter
-        currentValue={userEnteredMessage}
-        onChange={setUserEnteredMessage}
-        onSubmit={onPostMessage}
-        isDisabled={isLoading}
-      />
+      {totalChatMessageByCandidate < 6 && (
+        <ChatFooter
+          currentValue={userEnteredMessage}
+          onChange={setUserEnteredMessage}
+          onSubmit={onPostMessage}
+          isDisabled={isLoading}
+        />
+      )}
+      <Toast />
     </>
   );
 };

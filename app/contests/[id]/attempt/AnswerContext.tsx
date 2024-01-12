@@ -54,7 +54,6 @@ const AnswerContextProvider = ({ children }) => {
   const param = useParams();
   const onSaveHandler = useCallback(
     async (onSaveNotification?: (response: any) => void) => {
-      console.log("param get", param.id);
       const requestBody = {
         contestId: param.id,
         answers: answer,
@@ -67,7 +66,6 @@ const AnswerContextProvider = ({ children }) => {
           onSaveNotification?.(response);
         })
         .catch((err) => {
-          console.log("error in answer context", err);
           throw new Error("Error in answer context");
         });
     },
@@ -103,7 +101,6 @@ const AnswerContextProvider = ({ children }) => {
       cache: "no-store",
     })
       .then((response) => {
-        console.log("client", response.message.answer);
         setAnswer(response.message.answer || {});
       })
       .catch(() => {

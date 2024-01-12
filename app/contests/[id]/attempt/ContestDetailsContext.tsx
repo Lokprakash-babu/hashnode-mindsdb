@@ -36,7 +36,6 @@ export const useContestDetailsContext = () => {
   };
 };
 const ContestDetailsProvider = ({ contestDetails, children }) => {
-  console.log("contestDetails", contestDetails);
   const [currentSelectedQuestion, setCurrentSelectedQuestion] =
     useState<string>(Object.keys(contestDetails.questions)[0]);
   const questionKeys = Object.keys(contestDetails.questions);

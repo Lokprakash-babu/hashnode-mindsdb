@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Bot from "./Bubble/Bot";
 import User from "./Bubble/User";
-import { ScrollShadow } from "@nextui-org/react";
+import { ScrollShadow, Spinner } from "@nextui-org/react";
 
 export type MessagePersona = "user" | "bot";
 export interface IChatMessages {
@@ -11,8 +11,9 @@ export interface IChatMessages {
 
 export interface IChatContainer {
   chatMessages: IChatMessages[];
+  isLoading?: boolean;
 }
-const ChatContainer = ({ chatMessages }: IChatContainer) => {
+const ChatContainer = ({ chatMessages, isLoading = false }: IChatContainer) => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
   const totalChatMessages = chatMessages.length;
 
@@ -55,6 +56,7 @@ const ChatContainer = ({ chatMessages }: IChatContainer) => {
           );
         })}
       </div>
+      {isLoading && <Spinner size="sm" color="primary" />}
     </ScrollShadow>
   );
 };

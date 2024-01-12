@@ -20,7 +20,6 @@ const FullScreenChecker = () => {
     }
   };
   const fullScreenEventListener = (e) => {
-    console.log("event listener", e);
     checkAndOpenFullScreenModal();
   };
   useEffect(() => {
@@ -34,7 +33,6 @@ const FullScreenChecker = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
     } else if (document.exitFullscreen) {
-      console.log("exiting full screen");
       document.exitFullscreen();
     }
   };

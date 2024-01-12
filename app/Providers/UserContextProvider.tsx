@@ -29,7 +29,6 @@ const UserContextProvider = ({ children }) => {
           });
         })
         .catch((err) => {
-          console.log("error", err);
           setUserContextData({
             ...userContextData,
             err: err,

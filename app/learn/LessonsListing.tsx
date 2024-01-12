@@ -50,7 +50,6 @@ const renderCell = (
   },
   columnKey: string
 ) => {
-  console.log("item", { item, columnKey });
   switch (columnKey) {
     case "title":
       return (

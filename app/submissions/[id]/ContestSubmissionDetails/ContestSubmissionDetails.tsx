@@ -16,14 +16,6 @@ const ContestSubmissionDetails = ({
   score,
   toneFeedback,
 }: ISubmissionDetails) => {
-  const parsedAnswer = answer;
-  console.log("parsed answer", {
-    answer,
-    languageFeedback,
-    problemId,
-    score,
-    toneFeedback,
-  });
   return (
     <div className="flex justify-between gap-5">
       <div className="feedback-section flex-1">

@@ -11,7 +11,6 @@ export interface IProblemSection {
 
 const PracticeDescription = (props: IProblemSection) => {
   const { type, difficulty } = props;
-  console.log("type", type);
   return (
     <>
       <div className={clsx("flex items-center gap-2 mb-5")}>
