@@ -1,5 +1,4 @@
 import Button from "@/app/Components/Buttons";
-import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import {
   Card,
   CardBody,
@@ -62,7 +61,9 @@ const ContestCard = ({ contest, isCandidate = false }) => {
           </div>
         </CardHeader>
         <CardBody>
-          <article className="line-clamp-5">{removeHtmlTags(contest.job_description)}</article>
+          <article className="line-clamp-5">
+            {removeHtmlTags(contest.job_description)}
+          </article>
           <Divider className="my-3 bg-[#EBEFF3]" />
         </CardBody>
         <CardFooter>
