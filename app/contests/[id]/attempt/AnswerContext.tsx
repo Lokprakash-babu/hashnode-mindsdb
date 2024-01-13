@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/app/Components/Buttons";
+import Toast from "@/app/Components/Toasts/Toast";
 import { requestWrapper } from "@/lib/requestWrapper";
 import {
   Modal,
@@ -18,6 +19,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "react-toastify";
 const AnswerContext = createContext({
   answers: {},
   setAnswer: (index) => {},
@@ -52,12 +54,14 @@ const AnswerContextProvider = ({ children }) => {
   const [answer, setAnswer] = useState({});
   const [isInitialAnswerFetching, setIsInitialAnswerFetching] = useState(false);
   const param = useParams();
+  const [submitted, setSubmitted] = useState(false);
   const onSaveHandler = useCallback(
     async (onSaveNotification?: (response: any) => void) => {
       const requestBody = {
         contestId: param.id,
         answers: answer,
       };
+
       requestWrapper("/contest/save", {
         method: "POST",
         body: JSON.stringify(requestBody),
@@ -67,6 +71,9 @@ const AnswerContextProvider = ({ children }) => {
         })
         .catch((err) => {
           throw new Error("Error in answer context");
+        })
+        .finally(() => {
+          setSubmitted(true);
         });
     },
     [answer]
@@ -79,15 +86,18 @@ const AnswerContextProvider = ({ children }) => {
         contestId: param.id,
         answers: answer,
       };
+      onOpen();
       requestWrapper("/contest/end", {
         method: "POST",
         body: JSON.stringify(requestBody),
       })
         .then((response) => {
           onContestEndNotification?.(response);
-          onOpen();
         })
         .catch((err) => {
+          toast.error(
+            "Something went wrong, don't worry your answers are safe with us!"
+          );
           console.log("error in answer context", err);
           throw new Error("Error in answer context");
         });
@@ -138,13 +148,22 @@ const AnswerContextProvider = ({ children }) => {
             <>
               <ModalHeader className="flex flex-col gap-1">Hurray!</ModalHeader>
               <ModalBody>
-                <p className="text-md">
-                  You have successfully completed the contest
-                </p>
+                {submitted ? (
+                  <p className="text-md">
+                    You have successfully completed the contest
+                  </p>
+                ) : (
+                  <p className="text-md">Your answers are being evaluated...</p>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Link href={"/contests"}>
-                  <Button color="primary" onPress={onClose}>
+                  <Button
+                    color="primary"
+                    onPress={onClose}
+                    isLoading={!submitted}
+                    disabled={!submitted}
+                  >
                     Go to contests
                   </Button>
                 </Link>
@@ -153,6 +172,7 @@ const AnswerContextProvider = ({ children }) => {
           )}
         </ModalContent>
       </Modal>
+      <Toast />
     </AnswerContext.Provider>
   );
 };
