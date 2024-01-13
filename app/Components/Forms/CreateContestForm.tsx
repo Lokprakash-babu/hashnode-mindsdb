@@ -15,14 +15,21 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure,
 } from "@nextui-org/react";
 import { TONE_TYPES } from "../Editor/constants";
 import Mic from "../Icons/Mic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RightArrow from "../Icons/RightArrow";
 import clsx from "clsx";
 import Button from "../Buttons";
 import moment from "moment";
+import Link from "next/link";
 
 /**
  * Form Fields
@@ -296,18 +303,26 @@ const ContestForm = (
 };
 const CreateContestForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [contestId, setContestId] = useState("");
+  useEffect(() => {
+    if (contestId) {
+      onOpen();
+    }
+  }, [contestId]);
   const onSubmitHandler = async (data: any) => {
     try {
       setIsLoading(true);
-      await requestWrapper("contest", {
+      const response = await requestWrapper("contest", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      toast.success("Contest created successfuly");
+
       setIsLoading(false);
+      setContestId(response.message.contestId);
     } catch {
       setIsLoading(false);
       toast.error("Unable to create Contest!");
@@ -323,7 +338,33 @@ const CreateContestForm = () => {
         infoContent={<></>}
         isLoading={isLoading}
       />
-      <Toast />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Contest created!
+              </ModalHeader>
+              <ModalBody>
+                <p className="text-md">Contest created successfully</p>
+              </ModalBody>
+              <ModalFooter>
+                <Link href={"/contests"}>
+                  <Button color="primary" variant="flat" onPress={onClose}>
+                    Go to contest listing
+                  </Button>
+                </Link>
+
+                <Link href={`/contests/${contestId}`}>
+                  <Button color="primary" variant="solid" onPress={onClose}>
+                    View contest
+                  </Button>
+                </Link>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 };

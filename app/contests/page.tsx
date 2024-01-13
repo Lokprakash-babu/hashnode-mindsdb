@@ -54,6 +54,28 @@ const Contests = async () => {
     }
     const orgId = accountDetails?.organisation_id;
     const contests = (await getContestListHandler(orgId || "")) as [];
+    if (!contests.length) {
+      return (
+        <section className="layout">
+          <HeaderSetter title={"Contests"} />
+          <div>
+            <div className="contest-list-header py-4 border-b-1 flex justify-between items-center w-full">
+              <h2 className="header-1-500 text-black pl-8">Contest Lists</h2>
+              <LinkButton
+                target="/contests/new"
+                ctaLabel="Create Contest"
+                anchorIcon={<PlusIcon />}
+              />
+            </div>
+            <div className="p-4 rounded-md bg-[#cce3fd] w-full">
+              <p className="text-md">
+                You have not created any contests yet...!
+              </p>
+            </div>
+          </div>
+        </section>
+      );
+    }
     return (
       <section className="layout">
         <HeaderSetter title={"Contests"} />
