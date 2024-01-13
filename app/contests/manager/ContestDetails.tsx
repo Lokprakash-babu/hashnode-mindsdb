@@ -31,8 +31,6 @@ import ActionMenu from "@/app/Components/Icons/ActionMenu";
 import QuestionsEditForm from "@/app/Components/Forms/QuestionsEditForm";
 import BackArrow from "@/app/Components/Icons/BackArrow";
 import StartContestBtn from "../[id]/attempt/StartContestBtn";
-import useAccountContext from "@/app/hooks/useAccountContext";
-import { useAuth } from "@clerk/nextjs";
 
 const TYPE_MAPPING = {
   bot_conversation: "Bot Conversation",

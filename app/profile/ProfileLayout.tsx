@@ -7,9 +7,9 @@ const ProfileLayout = () => {
   const { account_type, ...user } = useAccountContext();
   const profileComponent =
     account_type === "hiring_manager" ? (
-      <CandidateProfile user={user} />
-    ) : (
       <ManagerProfile user={user} />
+    ) : (
+      <CandidateProfile user={user} />
     );
 
   return <div className="ml-[60px]">{profileComponent}</div>;

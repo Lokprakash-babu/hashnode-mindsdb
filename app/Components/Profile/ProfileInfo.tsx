@@ -19,7 +19,7 @@ export default function ProfileInfo({ user }) {
       document_url: fileUrl,
     };
     requestWrapper(`account/${user.id}`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -59,7 +59,7 @@ export default function ProfileInfo({ user }) {
                 disabled
                 setFileUrl={setFileUrl}
                 showLabel={false}
-                initialFile={[fileUrl]}
+                initialFile={fileUrl ? [fileUrl] : []}
               />
             </Link>
           )}

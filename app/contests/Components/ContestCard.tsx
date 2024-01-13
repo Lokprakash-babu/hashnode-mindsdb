@@ -9,7 +9,7 @@ import {
   Link,
 } from "@nextui-org/react";
 import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
-
+import Markdown from "react-markdown";
 export const CONTEST_STATUS_MAPPING = {
   upcoming: {
     color: "warning",
@@ -62,7 +62,7 @@ const ContestCard = ({ contest, isCandidate = false }) => {
         </CardHeader>
         <CardBody>
           <article className="line-clamp-5">
-            {removeHtmlTags(contest.job_description)}
+          <Markdown>{removeHtmlTags(contest.job_description)}</Markdown>
           </article>
           <Divider className="my-3 bg-[#EBEFF3]" />
         </CardBody>
