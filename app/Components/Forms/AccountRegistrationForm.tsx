@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import InputField from "./Fields/InputField";
 import Phone from "../Icons/Phone";
@@ -22,7 +21,6 @@ const AccountRegistrationForm = ({
   const email = user?.primaryEmailAddress?.emailAddress;
   const userName = user?.fullName;
   const isCandidate = type === "candidate";
-  const router = useRouter();
   const onSubmitHandler = (data) => {
     const updateData = {
       ...data,
@@ -30,7 +28,7 @@ const AccountRegistrationForm = ({
       organisation_id: currentOrg,
       document_url: resumeFileUrl,
       email,
-      name: userName,
+      name: userName || data.name,
       id: accountId,
     };
     requestWrapper(`account/${accountId}`, {
@@ -57,6 +55,17 @@ const AccountRegistrationForm = ({
       onSubmit={handleSubmit(onSubmitHandler)}
     >
       <div className="form-wrapper flex flex-col gap-y-6">
+        {!user?.fullName && (
+          <InputField
+            type="text"
+            label="Name"
+            register={register("name", {
+              required: true,
+            })}
+            isRequired={true}
+            placeholder="Enter your name"
+          />
+        )}
         <InputField
           type="text"
           label="Phone Number"
@@ -73,6 +82,7 @@ const AccountRegistrationForm = ({
             register={register("area_of_interest", {
               required: true,
             })}
+            isRequired={true}
             placeholder="Enter your interests"
           />
         )}
@@ -82,6 +92,7 @@ const AccountRegistrationForm = ({
           register={register("experience", {
             required: true,
           })}
+          isRequired={true}
           placeholder="Enter your experience"
         />
         <SingleSelect
