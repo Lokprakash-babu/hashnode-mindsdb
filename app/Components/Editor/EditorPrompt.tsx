@@ -20,7 +20,9 @@ const generatePrompt = async ({
   conversationTone,
   setPromptResponse,
   aiUrl,
+  setIsLoading,
 }) => {
+  setIsLoading(true);
   const promptResponse = await requestWrapper(aiUrl, {
     method: "POST",
     headers: {
@@ -33,6 +35,7 @@ const generatePrompt = async ({
       context: "Customer Support Contest Question",
     }),
   });
+  setIsLoading(false);
   setPromptResponse(promptResponse.rows[0]);
 };
 
@@ -47,6 +50,7 @@ export default function EditorPrompt({
   const [promptText, setPromptText] = useState("");
   const [generateClick, setGenerateClick] = useState(false);
   const [promptResponse, setPromptResponse] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const selectedValue = useMemo(
     () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
     [selectedKeys]
@@ -61,6 +65,7 @@ export default function EditorPrompt({
         ></ToneDropdown>
         <Button
           disableRipple
+          isDisabled={isLoading}
           radius="sm"
           className="flex gap-x-1"
           color="primary"
@@ -71,6 +76,7 @@ export default function EditorPrompt({
               conversationTone: selectedValue,
               setPromptResponse,
               aiUrl,
+              setIsLoading,
             });
           }}
         >
@@ -90,6 +96,7 @@ export default function EditorPrompt({
         ></ToneDropdown>
         <div className="action-wrapper flex gap-x-1.5">
           <Button
+            isDisabled={isLoading}
             color="primary"
             className="flex gap-x-1 items-center"
             disableRipple
@@ -109,6 +116,7 @@ export default function EditorPrompt({
           </Button>
           <Button
             disableRipple
+            isDisabled={isLoading}
             radius="sm"
             className="flex gap-x-1 items-center"
             color="primary"
@@ -118,6 +126,7 @@ export default function EditorPrompt({
                 conversationTone: selectedValue,
                 setPromptResponse,
                 aiUrl,
+                setIsLoading,
               })
             }
           >
@@ -147,7 +156,10 @@ export default function EditorPrompt({
             <>
               <ModalBody>
                 <div className="preview-prompt-wrapper flex flex-col gap-y-2">
-                  {promptResponse && (
+                  {isLoading && (
+                    <p className="py-6 px-14 italic">Hang on! Something special is getting cooked..</p>
+                  )}
+                  {promptResponse && !isLoading && (
                     <div className="preview-section gap-y-2">
                       <h1 className="text-black text-md text-medium mb-2">
                         Preview

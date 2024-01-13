@@ -15,7 +15,13 @@ const LinkButton = ({
   className = "",
 }: ILinkButton) => {
   return (
-    <Button className={clsx(className)} href={target} as={Link} variant="solid">
+    <Button
+      className={clsx(className)}
+      href={target}
+      as={Link}
+      variant="solid"
+      color="primary"
+    >
       <div className="btn-content-wrapper flex items-center text-sm font-medium gap-1.5">
         {anchorIcon && <span>{anchorIcon}</span>}
         {ctaLabel}

@@ -19,7 +19,7 @@ export default function ProfileInfo({ user }) {
       document_url: fileUrl,
     };
     requestWrapper(`account/${user.id}`, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
