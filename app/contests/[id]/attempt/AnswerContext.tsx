@@ -1,6 +1,7 @@
 "use client";
 import Button from "@/app/Components/Buttons";
 import Toast from "@/app/Components/Toasts/Toast";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import { requestWrapper } from "@/lib/requestWrapper";
 import {
   Modal,
@@ -84,14 +85,15 @@ const AnswerContextProvider = ({ children }) => {
     const emailAnswerQuestionKey = Object.keys(answer).filter((key) => {
       return typeof answer[key].value === "string";
     })?.[0];
+
     if (!emailAnswerQuestionKey) {
       return true;
     }
-    const emailAnswer = answer[emailAnswerQuestionKey].value.replaceAll(
-      "\n",
-      ""
-    );
-    if (emailAnswer.length >= 250 && emailAnswer <= 500) {
+
+    const emailAnswer = removeHtmlTags(
+      answer[emailAnswerQuestionKey].value
+    ).replaceAll("\n", "");
+    if (emailAnswer.length >= 250 && emailAnswer.length <= 500) {
       return true;
     }
     return false;
@@ -108,7 +110,7 @@ const AnswerContextProvider = ({ children }) => {
     const isHavingMoreThanThreeMessages =
       chatAnswer.filter((answer) => {
         return answer.type !== "bot";
-      }).length > 3;
+      }).length >= 3;
 
     if (isHavingMoreThanThreeMessages) {
       return true;
@@ -144,7 +146,7 @@ const AnswerContextProvider = ({ children }) => {
             "Make the email to have the number of characters between 250 and 500"
           );
         } else {
-          toast.error("Atleast three messages should be there");
+          toast.error("Atleast 3 messages should be there");
         }
       }
     },

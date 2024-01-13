@@ -24,9 +24,7 @@ const ContestChatMessenger = ({
   }).length;
   useEffect(() => {
     if (totalChatMessageByCandidate >= 6) {
-      toast.error(
-        "You have entered more than 6 messages. Either End Chat or Reset the chat"
-      );
+      toast.error("You have entered more than 6 messages. Reset the chat!");
     }
   }, [totalChatMessageByCandidate]);
   return (
