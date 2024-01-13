@@ -6,6 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { GiBookCover } from "react-icons/gi";
 import { FaUserGraduate } from "react-icons/fa6";
 import { MdOutlineTimer } from "react-icons/md";
+import { Md3P } from "react-icons/md";
 import { BsDatabase } from "react-icons/bs";
 import { GiChampions } from "react-icons/gi";
 import useAccountContext from "@/app/hooks/useAccountContext";
@@ -102,10 +103,21 @@ const Sidebar = () => {
           </div>
         </div>
       </Link>
-      <div className="mt-[60px]">
-        {options.map((sidebarOption) => {
-          return <SidebarOption {...sidebarOption} key={sidebarOption.label} />;
-        })}
+      <div className="flex flex-col justify-between h-[90%]">
+        <div className="mt-[60px]">
+          {options.map((sidebarOption) => {
+            return (
+              <SidebarOption {...sidebarOption} key={sidebarOption.label} />
+            );
+          })}
+        </div>
+        <div>
+          <SidebarOption
+            link="/profile"
+            label="Profile"
+            icon={<Md3P size={25} />}
+          />
+        </div>
       </div>
     </aside>
   );

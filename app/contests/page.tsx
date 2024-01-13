@@ -59,7 +59,7 @@ const Contests = async () => {
         <HeaderSetter title={"Contests"} />
 
         <div>
-          <div className="contest-list-header py-4 border flex justify-between pr-[84px] items-center w-full">
+          <div className="contest-list-header py-4 border-b-1 flex justify-between items-center w-full">
             <h2 className="header-1-500 text-black pl-8">Contest Lists</h2>
             <LinkButton
               target="/contests/new"

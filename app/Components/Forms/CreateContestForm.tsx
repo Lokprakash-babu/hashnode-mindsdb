@@ -154,12 +154,16 @@ const ContestForm = (
       <Card radius="sm" shadow="sm">
         <CardHeader className="header-1-400">Contest Questions</CardHeader>
         <CardBody>
-          <Accordion variant="splitted">
-            {questions.map((question) => {
+          <Accordion
+            selectionMode="multiple"
+            variant="splitted"
+            defaultExpandedKeys={[`${questions.length - 1}`]}
+          >
+            {questions.map((question, index) => {
               return (
                 <AccordionItem
                   indicator={<RightArrow />}
-                  key={question}
+                  key={index.toString()}
                   aria-label="Accordion 1"
                   title={
                     getValues(`questions.question_${question}.title`) || "Title"
@@ -276,8 +280,8 @@ const ContestForm = (
         <CardFooter>
           <div className="footer-wrapper w-full flex flex-end justify-end">
             <Button
-              isDisabled={questions.length > 2}
-              className={clsx(questions.length > 2 && "cursor-no-drop")}
+              isDisabled={questions.length > 1}
+              className={clsx(questions.length > 1 && "cursor-no-drop")}
               type="button"
               color="primary"
               onClick={() => setQuestion((prev) => [...prev, Date.now()])}
@@ -303,7 +307,7 @@ const CreateContestForm = () => {
         body: JSON.stringify(data),
       });
       toast.success("Contest created successfuly");
-      setIsLoading(false)
+      setIsLoading(false);
     } catch {
       setIsLoading(false);
       toast.error("Unable to create Contest!");
