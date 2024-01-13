@@ -136,3 +136,7 @@ a[href="https://www.froala.com/wysiwyg-editor?k=u"]
 .fr-second-toolbar {
   display: none !important;
 }
+
+.ql-container {
+  height: 40vh !important;
+}
