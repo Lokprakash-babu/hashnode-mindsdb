@@ -80,27 +80,73 @@ const AnswerContextProvider = ({ children }) => {
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const isEmailMetCondition = () => {
+    const emailAnswerQuestionKey = Object.keys(answer).filter((key) => {
+      return typeof answer[key].value === "string";
+    })?.[0];
+    if (!emailAnswerQuestionKey) {
+      return true;
+    }
+    const emailAnswer = answer[emailAnswerQuestionKey].value.replaceAll(
+      "\n",
+      ""
+    );
+    if (emailAnswer.length >= 250 && emailAnswer <= 500) {
+      return true;
+    }
+    return false;
+  };
+  const isChatMetCondition = () => {
+    const chatAnswerQuestionKey = Object.keys(answer).filter((key) => {
+      return typeof answer[key].value !== "string";
+    })?.[0];
+
+    if (!chatAnswerQuestionKey) {
+      return true;
+    }
+    const chatAnswer = answer[chatAnswerQuestionKey].value.previousMessages;
+    const isHavingMoreThanThreeMessages =
+      chatAnswer.filter((answer) => {
+        return answer.type !== "bot";
+      }).length > 3;
+
+    if (isHavingMoreThanThreeMessages) {
+      return true;
+    }
+    return false;
+  };
   const onContestEndHandler = useCallback(
     (onContestEndNotification?: (response: any) => void) => {
       const requestBody = {
         contestId: param.id,
         answers: answer,
       };
-      onOpen();
-      requestWrapper("/contest/end", {
-        method: "POST",
-        body: JSON.stringify(requestBody),
-      })
-        .then((response) => {
-          onContestEndNotification?.(response);
+
+      if (isEmailMetCondition() && isChatMetCondition()) {
+        onOpen();
+        requestWrapper("/contest/end", {
+          method: "POST",
+          body: JSON.stringify(requestBody),
         })
-        .catch((err) => {
+          .then((response) => {
+            onContestEndNotification?.(response);
+          })
+          .catch((err) => {
+            toast.error(
+              "Something went wrong, don't worry your answers are safe with us!"
+            );
+            console.log("error in answer context", err);
+            throw new Error("Error in answer context");
+          });
+      } else {
+        if (!isEmailMetCondition()) {
           toast.error(
-            "Something went wrong, don't worry your answers are safe with us!"
+            "Make the email to have the number of characters between 250 and 500"
           );
-          console.log("error in answer context", err);
-          throw new Error("Error in answer context");
-        });
+        } else {
+          toast.error("Atleast three messages should be there");
+        }
+      }
     },
     [answer]
   );
@@ -123,9 +169,11 @@ const AnswerContextProvider = ({ children }) => {
   useEffect(() => {
     savedAnswerFetcher();
   }, []);
+
   if (isInitialAnswerFetching) {
     return <p>Loading...</p>;
   }
+
   return (
     <AnswerContext.Provider
       value={{
@@ -163,6 +211,7 @@ const AnswerContextProvider = ({ children }) => {
                     onPress={onClose}
                     isLoading={!submitted}
                     disabled={!submitted}
+                    isDisabled={!submitted}
                   >
                     Go to contests
                   </Button>
