@@ -3,6 +3,7 @@ import ContestChatMessenger from "@/app/Components/ChatMessenger/Contest";
 import { requestWrapper } from "@/lib/requestWrapper";
 import { useEffect, useState } from "react";
 import { useAnswerContext } from "../AnswerContext";
+import { Button } from "@nextui-org/button";
 
 const ChatSolutionWidget = ({ questionDetails, onChange, questionKey }) => {
   const { initial_text, tone } = questionDetails;
@@ -70,13 +71,30 @@ const ChatSolutionWidget = ({ questionDetails, onChange, questionKey }) => {
   };
 
   return (
-    <ContestChatMessenger
-      onPostMessage={onPostMessage}
-      chatMessages={chatMessages.toBeRenderedMessages}
-      isLoading={isChatLoading}
-      userEnteredMessage={userEnteredMessage}
-      setUserEnteredMessage={setUserEnteredMessage}
-    />
+    <>
+      <div className="flex w-full justify-end">
+        <Button
+          variant="ghost"
+          color="default"
+          onClick={(e) => {
+            e.stopPropagation();
+            setChatMessages({
+              previousMessages: [initialState],
+              toBeRenderedMessages: [initialState],
+            });
+          }}
+        >
+          Reset chat
+        </Button>
+      </div>
+      <ContestChatMessenger
+        onPostMessage={onPostMessage}
+        chatMessages={chatMessages.toBeRenderedMessages}
+        isLoading={isChatLoading}
+        userEnteredMessage={userEnteredMessage}
+        setUserEnteredMessage={setUserEnteredMessage}
+      />
+    </>
   );
 };
 

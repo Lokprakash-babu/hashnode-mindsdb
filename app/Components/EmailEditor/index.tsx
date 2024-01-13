@@ -1,10 +1,11 @@
 "use client";
+import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import EmailFooter from "./EmailFooter";
-import RichTextEditor from "../Editor/RichTextEditor";
 import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 import Toast from "../Toasts/Toast";
 import { toast } from "react-toastify";
+import ReactQuill from "react-quill";
 
 export interface IEmailEditor {
   onSubmit?: (val: any) => any;
@@ -22,12 +23,27 @@ const EmailEditor = (props: IEmailEditor) => {
   return (
     <>
       <div className="mb-4">
-        <RichTextEditor
-          field={{
-            value: enteredEmail,
-            onChange: (event) => {
-              setEnteredEmail(event);
-            },
+        <ReactQuill
+          theme="snow"
+          readOnly={!!props.initialValue}
+          modules={{
+            toolbar: [
+              [{ header: "1" }, { header: "2" }, { font: [] }],
+              [{ size: [] }],
+              ["bold", "italic", "underline", "strike", "blockquote"],
+              [
+                { list: "ordered" },
+                { list: "bullet" },
+                { indent: "-1" },
+                { indent: "+1" },
+              ],
+              ["link"],
+              ["clean"],
+            ],
+          }}
+          value={enteredEmail}
+          onChange={(enteredValue) => {
+            setEnteredEmail(enteredValue);
           }}
         />
       </div>
@@ -38,7 +54,7 @@ const EmailEditor = (props: IEmailEditor) => {
             const formattedEmail = removeHtmlTags(enteredEmail);
             if (formattedEmail.length >= 250 && formattedEmail.length <= 500) {
               props?.onSubmit?.({
-                formattedContent: formattedEmail,
+                formattedContent: enteredEmail.replaceAll("\n", ""),
                 unFormattedContent: enteredEmail,
               });
             } else if (formattedEmail.length < 250) {

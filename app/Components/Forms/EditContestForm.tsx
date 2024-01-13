@@ -101,7 +101,7 @@ const EditContestForm = ({ details, disableForm = false }) => {
           labelPlacement="outside"
         />
 
-        <Button isDisabled={disableForm} type="submit">
+        <Button isDisabled={disableForm} type="submit" color="primary">
           Update
         </Button>
       </div>
