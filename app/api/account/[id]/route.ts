@@ -1,3 +1,4 @@
+import { generateUpdateQuery } from "@/app/utils/generateQuery";
 import { findUser } from "@/app/utils/queries";
 import { mysqlConnection } from "@/lib/mysql-connection";
 import { NextRequest, NextResponse } from "next/server";
@@ -69,6 +70,28 @@ export async function POST(req: NextRequest) {
         status: 200,
       }
     );
+  } catch (err) {
+    console.error("err", err);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const mysql = await mysqlConnection();
+    const data = await req.json();
+    const QUERY = generateUpdateQuery(
+      "Account",
+      data,
+      params.id,
+      process.env.NEXT_PLANETSCALE_DB_NAME
+    );
+
+    const updateAccount = await mysql.query(QUERY);
+    return NextResponse.json(updateAccount);
   } catch (err) {
     console.error("err", err);
     return new NextResponse("Internal error", { status: 500 });
