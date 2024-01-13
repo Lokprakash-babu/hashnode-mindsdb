@@ -1,1 +1,1 @@
-This is a cloned version of another repository. This repository is used for production deployment purpose. 
+This is a cloned version of another repository https://github.com/Chris-Blesson/hashnode-mindsdb. This repository is used for production deployment purpose. 
