@@ -3,6 +3,7 @@ import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { useAnswerContext } from "../AnswerContext";
 import ReactQuill from "react-quill";
+import { removeHtmlTags } from "@/app/utils/sanitizeMarkdown";
 
 const EmailSolutionWidget = ({ onChange, questionKey }) => {
   const { answers } = useAnswerContext();
@@ -38,7 +39,8 @@ const EmailSolutionWidget = ({ onChange, questionKey }) => {
       />
 
       <p className="mt-4 text-sm">
-        No of characters: {enteredEmail.replaceAll("\n", "")}
+        No of characters:{" "}
+        {removeHtmlTags(enteredEmail).replaceAll("\n", "").length}
       </p>
     </>
   );
