@@ -42,7 +42,7 @@ const DescriptionCard = ({ title, content }) => {
     <Card
       isBlurred
       shadow="sm"
-      className="border p-3 rounded-lg bg-[#E6F0FE] border-[#B0D5FC]"
+      className="border p-3 rounded-lg bg-[#E6F0FE] border-[#B0D5FC] max-w-[900px] whitespace-pre-wrap"
       radius="sm"
     >
       <CardHeader>
